@@ -5,6 +5,7 @@ import { Kernel } from 'inversify';
 import { DefaultBoostrapper, IBootstrapper } from '../shared/bootstrap';
 import { RetaxOptionReader, IRetaxOptionReader } from '../shared/optionsReaders/retax';
 import { DomStateReader, IStateReader } from '../shared/stateReaders';
+import { DomCookieReader, ICookieReader } from '../shared/cookieReaders';
 import { internalConfig, IInternalConfig }  from '../shared/internalConfig';
 import { ReduxFacade, IReduxFacade } from '../shared/redux';
 
@@ -14,6 +15,7 @@ const kernel = new Kernel();
 kernel.bind<IBootstrapper>('IBootstrapper').to(DefaultBoostrapper).inSingletonScope();
 kernel.bind<IRetaxOptionReader>('IRetaxOptionReader').to(RetaxOptionReader).inSingletonScope();
 kernel.bind<IStateReader>('IStateReader').to(DomStateReader).inSingletonScope();
+kernel.bind<ICookieReader>('ICookieReader').to(DomCookieReader).inSingletonScope();
 kernel.bind<IReduxFacade>('IReduxFacade').to(ReduxFacade).inSingletonScope();
 
 // value
