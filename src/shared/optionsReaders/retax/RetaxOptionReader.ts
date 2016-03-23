@@ -6,10 +6,10 @@ export default class RetaxOptionReader implements IRetaxOptionReader {
       keepInitialState: false,
     },
     router: {
-      routes: {},
+      root: {},
     },
     server: {
-      isomorphicTools: {},
+      isomorphicTools: undefined,
       serverRendering: true,
     },
     store: {
@@ -27,8 +27,15 @@ export default class RetaxOptionReader implements IRetaxOptionReader {
     return this._options;
   }
 
-  public read(option: IRetaxOptions): IRetaxOptions {
-    this._options = Object.assign(RetaxOptionReader.defaultOptions, option);
+  public read(options: IRetaxOptions): IRetaxOptions {
+    this._options = {};
+
+    for (const key in options) {
+      if (options.hasOwnProperty(key) && (key in RetaxOptionReader.defaultOptions)) {
+        this._options[key] = Object.assign({}, RetaxOptionReader.defaultOptions[key], options[key]);
+      }
+    }
+
     return this._options;
   }
 }

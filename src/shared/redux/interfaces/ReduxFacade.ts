@@ -14,5 +14,6 @@ export interface IReducersMap {
 
 export interface IReduxFacade {
   reduxStore: Redux.Store;
+  setAuthToken(token: string): ReduxActions.Action;
   connectRedux(initialState: IImmutableState, history: HistoryModule.History): Redux.Store;
 }

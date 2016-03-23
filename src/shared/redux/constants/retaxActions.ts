@@ -1,3 +1,3 @@
-const RETAX_PREFIX = '@@RETAX/';
+const RETAX_PREFIX = '@@retax/';
 
 export const SET_AUTH_TOKEN = `${RETAX_PREFIX}SET_AUTH_TOKEN`;

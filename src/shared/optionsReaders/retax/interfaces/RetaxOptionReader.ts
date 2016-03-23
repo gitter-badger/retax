@@ -18,7 +18,7 @@ export interface IReduxStoreOptions {
 }
 
 export interface IReactRouterOptions {
-  routes?: Object;
+  root?: ReactRouter.PlainRoute | ReactRouter.RouteElement;
 }
 
 export interface IRetaxOptions {
