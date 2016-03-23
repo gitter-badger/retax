@@ -3,5 +3,6 @@ export interface IImmutableState {
 }
 
 export interface IStateReader {
+  state: Promise<IImmutableState>;
   read(): Promise<IImmutableState>;
 }

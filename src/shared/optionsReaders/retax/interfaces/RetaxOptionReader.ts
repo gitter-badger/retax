@@ -1,3 +1,5 @@
+import { IReducersMap } from '../../../redux';
+
 export interface IClientOptions {
   keepInitialState?: boolean;
 }
@@ -9,9 +11,10 @@ export interface IServerOptions {
 
 export interface IReduxStoreOptions {
   nonImmutableKeys?: string[];
-  middlewares?: Function[];
-  reducers?: Object;
+  middlewares?: Redux.Middleware[];
+  reducers?: IReducersMap;
   initialState?: Object;
+  storeEnchancers?: Function[];
 }
 
 export interface IReactRouterOptions {
@@ -27,5 +30,5 @@ export interface IRetaxOptions {
 
 export interface IRetaxOptionReader {
   config: IRetaxOptions;
-  read(options: IRetaxOptions);
+  read(options: IRetaxOptions): IRetaxOptions;
 }

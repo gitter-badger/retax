@@ -6,20 +6,17 @@ import { DefaultBoostrapper, IBootstrapper } from '../shared/bootstrap';
 import { RetaxOptionReader, IRetaxOptionReader } from '../shared/optionsReaders/retax';
 import { DomStateReader, IStateReader } from '../shared/stateReaders';
 import { internalConfig, IInternalConfig }  from '../shared/internalConfig';
+import { ReduxFacade, IReduxFacade } from '../shared/redux';
 
 const kernel = new Kernel();
 
 // construtor
-kernel.bind<IBootstrapper>('IBootstrapper').to(DefaultBoostrapper);
-kernel.bind<IStateReader>('IStateReader').to(DomStateReader);
-kernel.bind<IRetaxOptionReader>('IRetaxOptionReader').to(RetaxOptionReader);
+kernel.bind<IBootstrapper>('IBootstrapper').to(DefaultBoostrapper).inSingletonScope();
+kernel.bind<IRetaxOptionReader>('IRetaxOptionReader').to(RetaxOptionReader).inSingletonScope();
+kernel.bind<IStateReader>('IStateReader').to(DomStateReader).inSingletonScope();
+kernel.bind<IReduxFacade>('IReduxFacade').to(ReduxFacade).inSingletonScope();
 
 // value
-kernel.bind<IRetaxOptionReader>('RetaxOptionReader').toValue(new RetaxOptionReader());
-kernel.bind<IInternalConfig>('InternalConfig').toValue(internalConfig);
-
-const domStateReader = kernel.get<IStateReader>('IStateReader');
-kernel.bind<IStateReader>('StateReader').toValue(domStateReader);
-
+kernel.bind<IInternalConfig>('IInternalConfig').toValue(internalConfig);
 
 export default kernel.get<IBootstrapper>('IBootstrapper');

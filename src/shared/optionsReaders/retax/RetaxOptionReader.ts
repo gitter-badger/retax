@@ -1,22 +1,23 @@
 import { IRetaxOptionReader, IRetaxOptions } from './interfaces';
 
 export default class RetaxOptionReader implements IRetaxOptionReader {
-  static defaultOptions: IRetaxOptions = {
-    store: {
-      nonImmutableKeys: ['routing'],
-      middlewares: [],
-      reducers: undefined,
-      initialState: {},
+  private static defaultOptions: IRetaxOptions = {
+    client: {
+      keepInitialState: false,
     },
     router: {
       routes: {},
     },
     server: {
-      serverRendering: true,
       isomorphicTools: {},
+      serverRendering: true,
     },
-    client: {
-      keepInitialState: false,
+    store: {
+      initialState: {},
+      middlewares: [],
+      nonImmutableKeys: ['routing'],
+      reducers: undefined,
+      storeEnchancers: [],
     },
   };
 
@@ -26,7 +27,8 @@ export default class RetaxOptionReader implements IRetaxOptionReader {
     return this._options;
   }
 
-  read(option: IRetaxOptions) {
+  public read(option: IRetaxOptions): IRetaxOptions {
     this._options = Object.assign(RetaxOptionReader.defaultOptions, option);
+    return this._options;
   }
 }

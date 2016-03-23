@@ -1,12 +1,14 @@
 import { inject } from 'inversify';
 
 import { IInternalConfig } from '../internalConfig';
-import { IRetaxOptionReader, IClientOptions } from '../optionsReaders/retax';
+import { IRetaxOptionReader } from '../optionsReaders/retax';
 import { IStateReader, IImmutableState } from './interfaces';
 import StateConverter from './StateConverter';
 
-@inject('RetaxOptionReader', 'InternalConfig')
+@inject('IRetaxOptionReader', 'IInternalConfig')
 export default class DomStateReader extends StateConverter implements IStateReader {
+  private _statePromise: Promise<IImmutableState>;
+
   constructor(
     private _optionsReader: IRetaxOptionReader,
     private _internalConfig: IInternalConfig
@@ -14,7 +16,11 @@ export default class DomStateReader extends StateConverter implements IStateRead
     super();
   }
 
-  read(): Promise<IImmutableState> {
+  get state(): Promise<IImmutableState> {
+    return this._statePromise;
+  }
+
+  public read(): Promise<IImmutableState> {
     const { INITIAL_STATE_KEY } = this._internalConfig;
     const { nonImmutableKeys } = this._optionsReader.config.store;
     const { keepInitialState } = this._optionsReader.config.client;
@@ -26,6 +32,7 @@ export default class DomStateReader extends StateConverter implements IStateRead
       delete window[INITIAL_STATE_KEY];
     }
 
-    return Promise.resolve(immutableState);
+    this._statePromise = Promise.resolve<IImmutableState>(immutableState);
+    return this._statePromise;
   }
 }
