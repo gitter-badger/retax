@@ -4,6 +4,7 @@
   "dependencies": {},
   "ambientDependencies": {
     "enzyme": "registry:dt/enzyme#1.2.0+20151218140740",
+    "inversify": "registry:dt/inversify#2.0.0-alpha.3+20160316155526",
     "jest": "registry:dt/jest#0.9.0+20160319033628",
     "react": "registry:dt/react#0.14.0+20160319053454",
     "react-dom": "registry:dt/react-dom#0.14.0+20160316155526",

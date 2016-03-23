@@ -1,6 +1,6 @@
 {
-  "name": "seed-component",
-  "version": "0.3.0",
+  "name": "retax",
+  "version": "0.0.0",
   "dependencies": {
     "abab": {
       "version": "1.0.3",
@@ -914,7 +914,7 @@
     },
     "builder-react-comp": {
       "version": "0.1.6",
-      "from": "builder-react-comp@>=0.1.5 <0.2.0"
+      "from": "builder-react-comp@0.1.6"
     },
     "builtin-modules": {
       "version": "1.1.1",
@@ -2738,6 +2738,11 @@
       "from": "invariant@>=2.2.0 <3.0.0",
       "resolved": "https://registry.npmjs.org/invariant/-/invariant-2.2.1.tgz"
     },
+    "inversify": {
+      "version": "2.0.0-alpha.3",
+      "from": "inversify@2.0.0-alpha.3",
+      "resolved": "https://registry.npmjs.org/inversify/-/inversify-2.0.0-alpha.3.tgz"
+    },
     "invert-kv": {
       "version": "1.0.0",
       "from": "invert-kv@>=1.0.0 <2.0.0",
@@ -2967,7 +2972,8 @@
         },
         "esprima": {
           "version": "2.7.2",
-          "from": "esprima@>=2.7.0 <2.8.0"
+          "from": "esprima@2.7.2",
+          "resolved": "https://registry.npmjs.org/esprima/-/esprima-2.7.2.tgz"
         },
         "fast-levenshtein": {
           "version": "1.0.7",
@@ -4057,6 +4063,11 @@
       "version": "1.0.0",
       "from": "redent@>=1.0.0 <2.0.0",
       "resolved": "https://registry.npmjs.org/redent/-/redent-1.0.0.tgz"
+    },
+    "reflect-metadata": {
+      "version": "0.1.3",
+      "from": "reflect-metadata@latest",
+      "resolved": "https://registry.npmjs.org/reflect-metadata/-/reflect-metadata-0.1.3.tgz"
     },
     "regenerate": {
       "version": "1.2.1",

@@ -1,14 +1,13 @@
-import * as React from 'react';
-import * as ReactDOM from 'react-dom';
-import Playground from 'component-playground';
-import Retax from '../src';
+import 'babel-polyfill';
 
-const RetaxExample: string = require('raw!../src/Retax.example');
+import retax from '../src/client';
 
-const Index = () => (
-  <div className="component-documentation">
-    <Playground codeText={RetaxExample} scope={{ React, Retax }} />
-  </div>
-);
+retax.config({
+  client: {
+    keepInitialState: false,
+  },
+});
 
-ReactDOM.render(<Index />, document.getElementById('root'));
+retax.bootstrap();
+
+console.log(retax);
