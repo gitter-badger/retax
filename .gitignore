@@ -1,0 +1,10 @@
+.DS_Store
+node_modules
+ncp-debug.log
+npm-debug.log
+coverage
+es
+lib
+libts
+.awcache
+typings

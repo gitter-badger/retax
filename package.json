@@ -1,0 +1,42 @@
+{
+  "name": "retax",
+  "version": "0.0.0",
+  "description": "Retax - React component",
+  "main": "lib/index.js",
+  "jsnext:main": "es/index.js",
+  "typings": "libTs/src/index.d.ts",
+  "scripts": {
+    "prepublish": "builder run build",
+    "postinstall": "builder run typings:install",
+    "build": "builder run build",
+    "start": "builder run serve:playground",
+    "tdd": "builder run test:all:watch",
+    "pretest": "builder run lint",
+    "test": "builder run test:all:coverage",
+    "lint": "builder run lint",
+    "release": "builder run release"
+  },
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/hourliert/retax"
+  },
+  "keywords": [
+    "react",
+    "component",
+    "Retax",
+    "seed"
+  ],
+  "author": "hourliert",
+  "license": "MIT",
+  "bugs": {
+    "url": "https://github.com/hourliert/retax/issues"
+  },
+  "homepage": "https://github.com/hourliert/retax",
+  "devDependencies": {
+    "builder": "^2.9.1",
+    "builder-react-comp-dev": "~0.1.6"
+  },
+  "dependencies": {
+    "builder-react-comp": "~0.1.6"
+  }
+}
