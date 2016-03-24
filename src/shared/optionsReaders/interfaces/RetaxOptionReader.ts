@@ -4,11 +4,6 @@ export interface IClientOptions {
   keepInitialState?: boolean;
 }
 
-export interface IServerOptions {
-  serverRendering?: boolean;
-  isomorphicTools?: Object;
-}
-
 export interface IReduxStoreOptions {
   nonImmutableKeys?: string[];
   middlewares?: Redux.Middleware[];
@@ -25,5 +20,4 @@ export interface IRetaxOptions {
   store?: IReduxStoreOptions;
   router?: IReactRouterOptions;
   client?: IClientOptions;
-  server?: IServerOptions;
 }

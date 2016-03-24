@@ -8,7 +8,6 @@ const app = express();
 app.use(morgan('dev'));
 app.use(retax({
   serverRendering: true,
-  retaxOptions: {}
 }));
 
 console.log('Starting server');

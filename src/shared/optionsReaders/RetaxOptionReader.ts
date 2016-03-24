@@ -10,10 +10,6 @@ export default class RetaxOptionReader extends OptionReader<IRetaxOptions> {
     router: {
       root: {},
     },
-    server: {
-      isomorphicTools: undefined,
-      serverRendering: true,
-    },
     store: {
       initialState: {},
       middlewares: [],
