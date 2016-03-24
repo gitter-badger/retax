@@ -24,13 +24,6 @@
     ["transform-regenerator", { "async": false, "asyncGenerators": false }],
   ],
   "env": {
-    "development": {
-      "plugins": [
-        "add-module-exports",
-        "transform-es2015-modules-commonjs"
-      ],
-      "presets": ["react-hmre"]
-    },
     "commonjs": {
       "plugins": [
         "add-module-exports",

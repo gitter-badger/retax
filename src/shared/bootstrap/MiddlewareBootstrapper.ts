@@ -1,3 +1,4 @@
+import { Request, Response, NextFunction } from 'express';
 import { inject } from 'inversify';
 
 import { IBootstrapper, IMiddleware } from './interfaces';
@@ -15,7 +16,7 @@ export default class MiddlewareBootstrapper implements IBootstrapper<IMiddleware
   }
 
   public bootstrap(): IMiddleware {
-    return (req, res, next) => {
+    return (req: Request, res: Response, next: NextFunction) => {
       console.log('here');
       next();
     };

@@ -1,3 +1,3 @@
 ---
 archetypes:
-  - builder-react-comp
+  - builder-ts-library

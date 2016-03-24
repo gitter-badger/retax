@@ -9,8 +9,7 @@
     "prepublish": "builder run build",
     "postinstall": "builder run typings:install",
     "build": "builder run build",
-    "start": "builder run serve:playground",
-    "server": "nodemon --exec 'builder run build:typescript && babel-node libTs/playground/serverEntry.jsx' --watch src --watch playground -e ts,tsx",
+    "start": "builder run build:commonjs:watch",
     "tdd": "builder run test:all:watch",
     "pretest": "builder run lint",
     "test": "builder run test:all:coverage",
@@ -34,10 +33,12 @@
   },
   "homepage": "https://github.com/hourliert/retax",
   "dependencies": {
-    "builder-react-comp": "~0.1.6",
+    "builder-ts-library": "~0.0.2",
     "immutable": "^3.7.6",
     "inversify": "^2.0.0-alpha.6",
     "js-cookie": "^2.1.0",
+    "react": "^0.14.7",
+    "react-dom": "^0.14.7",
     "react-redux": "^4.4.1",
     "react-router": "^2.0.1",
     "react-router-redux": "^4.0.0",
@@ -47,7 +48,7 @@
   },
   "devDependencies": {
     "builder": "^2.9.1",
-    "builder-react-comp-dev": "~0.1.6",
+    "builder-ts-library-dev": "~0.0.2",
     "express": "^4.13.4",
     "morgan": "^1.7.0",
     "redux-logger": "^2.6.1"
