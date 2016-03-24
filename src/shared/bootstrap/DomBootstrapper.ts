@@ -2,16 +2,16 @@ import { inject } from 'inversify';
 import { browserHistory } from 'react-router';
 
 import { IBootstrapper } from './interfaces';
-import { IRetaxOptionReader, IRetaxOptions } from '../optionsReaders/retax';
+import { IOptionReader, IRetaxOptions } from '../optionsReaders';
 import { IStateReader } from '../stateReaders';
 import { ICookieReader } from '../cookieReaders';
 import { IReduxFacade } from '../redux';
 import { IRenderer } from '../renderers';
 
-@inject('IRetaxOptionReader', 'IStateReader', 'ICookieReader', 'IReduxFacade', 'IRenderer')
-export default class DefaultBoostrapper implements IBootstrapper {
+@inject('RetaxOptionReader', 'StateReader', 'CookieReader', 'ReduxFacade', 'Renderer')
+export default class DomBootstrapper implements IBootstrapper<IRetaxOptions, Element, Promise<void>> {
   constructor(
-    private _optionsReader: IRetaxOptionReader,
+    private _optionsReader: IOptionReader<IRetaxOptions>,
     private _stateReader: IStateReader,
     private _cookieReader: ICookieReader,
     private _reduxFacade: IReduxFacade,

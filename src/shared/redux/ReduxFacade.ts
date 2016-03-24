@@ -7,15 +7,15 @@ import { IReduxFacade, IReducersMap, ICreateStoreOptions } from './interfaces';
 import * as internalReducers from './reducers';
 import { setAuthToken } from './actionsCreators';
 
-import { IRetaxOptionReader } from '../optionsReaders';
+import { IOptionReader, IRetaxOptions } from '../optionsReaders';
 import { IImmutableState } from '../stateReaders';
 
-@inject('IRetaxOptionReader')
+@inject('RetaxOptionReader')
 export default class ReduxFacade implements IReduxFacade {
   private _store: Redux.Store;
 
   constructor(
-    private _optionsReader: IRetaxOptionReader
+    private _optionsReader: IOptionReader<IRetaxOptions>
   ) {}
 
   get reduxStore(): Redux.Store {

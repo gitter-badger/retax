@@ -1,6 +1,11 @@
-import { IRetaxOptions } from '../../optionsReaders/retax';
+export interface IBootstrapper<O, B, R> {
+  /**
+   * Configure the boostrapper.
+   */
+  config(options: O): void;
 
-export interface IBootstrapper {
-  config(options: IRetaxOptions): void;
-  bootstrap(element?: Element): Promise<void>;
+  /**
+   * Run the bootstrapper.
+   */
+  bootstrap(options?: B): R;
 }

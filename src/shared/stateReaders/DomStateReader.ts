@@ -1,16 +1,16 @@
 import { inject } from 'inversify';
 
 import { IInternalConfig } from '../internalConfig';
-import { IRetaxOptionReader } from '../optionsReaders/retax';
+import { IOptionReader, IRetaxOptions } from '../optionsReaders';
 import { IStateReader, IImmutableState } from './interfaces';
 import StateConverter from './StateConverter';
 
-@inject('IRetaxOptionReader', 'IInternalConfig')
+@inject('RetaxOptionReader', 'InternalConfig')
 export default class DomStateReader extends StateConverter implements IStateReader {
   private _statePromise: Promise<IImmutableState>;
 
   constructor(
-    private _optionsReader: IRetaxOptionReader,
+    private _optionsReader: IOptionReader<IRetaxOptions>,
     private _internalConfig: IInternalConfig
   ) {
     super();

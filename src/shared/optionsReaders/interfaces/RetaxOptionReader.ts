@@ -1,4 +1,4 @@
-import { IReducersMap } from '../../../redux';
+import { IReducersMap } from '../../redux';
 
 export interface IClientOptions {
   keepInitialState?: boolean;
@@ -26,9 +26,4 @@ export interface IRetaxOptions {
   router?: IReactRouterOptions;
   client?: IClientOptions;
   server?: IServerOptions;
-}
-
-export interface IRetaxOptionReader {
-  config: IRetaxOptions;
-  read(options: IRetaxOptions): IRetaxOptions;
 }

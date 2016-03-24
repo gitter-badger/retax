@@ -7,8 +7,6 @@ import { SET_AUTH_TOKEN } from '../constants';
 export interface IRetaxState extends Immutable.Map<string, any> {}
 
 function getInitialState(): IRetaxState {
-  'use strict';
-
   return fromJS({
     authToken: undefined,
   });

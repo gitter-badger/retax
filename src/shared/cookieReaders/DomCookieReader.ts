@@ -4,7 +4,7 @@ import * as Cookie from 'js-cookie';
 import { ICookieReader } from './interfaces';
 import { IInternalConfig } from '../internalConfig';
 
-@inject('IInternalConfig')
+@inject('InternalConfig')
 export default class DomCookieReader implements ICookieReader {
   constructor(
     private _internalConfig: IInternalConfig

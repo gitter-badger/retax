@@ -4,8 +4,11 @@
   "dependencies": {},
   "ambientDependencies": {
     "enzyme": "registry:dt/enzyme#1.2.0+20151218140740",
+    "express-serve-static-core": "registry:dt/express-serve-static-core#0.0.0+20160317120654",
     "jest": "registry:dt/jest#0.9.0+20160319033628",
     "js-cookie": "registry:dt/js-cookie#2.0.0+20160317120654",
+    "mime": "registry:dt/mime#0.0.0+20160316155526",
+    "node": "registry:dt/node#4.0.0+20160319033040",
     "react": "registry:dt/react#0.14.0+20160319053454",
     "react-dom": "registry:dt/react-dom#0.14.0+20160316155526",
     "react-redux": "registry:dt/react-redux#4.4.0+20160316155526",
@@ -14,7 +17,7 @@
     "react-router/history": "registry:dt/react-router/history#2.0.0+20160316155526",
     "redux": "registry:dt/redux#1.0.0+20160317120654",
     "redux-actions": "registry:dt/redux-actions#0.8.0+20160317120654",
-    "require": "registry:dt/require#2.1.20+20160316155526"
+    "serve-static": "registry:dt/serve-static#0.0.0+20160317120654"
   },
   "ambientDevDependencies": {}
 }

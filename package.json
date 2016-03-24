@@ -10,6 +10,7 @@
     "postinstall": "builder run typings:install",
     "build": "builder run build",
     "start": "builder run serve:playground",
+    "server": "nodemon --exec 'builder run build:typescript && babel-node libTs/playground/serverEntry.jsx' --watch src --watch playground -e ts,tsx",
     "tdd": "builder run test:all:watch",
     "pretest": "builder run lint",
     "test": "builder run test:all:coverage",
@@ -47,6 +48,8 @@
   "devDependencies": {
     "builder": "^2.9.1",
     "builder-react-comp-dev": "~0.1.6",
+    "express": "^4.13.4",
+    "morgan": "^1.7.0",
     "redux-logger": "^2.6.1"
   }
 }
