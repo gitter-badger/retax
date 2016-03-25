@@ -1,7 +1,7 @@
 import { inject } from 'inversify';
 import { browserHistory } from 'react-router';
 
-import { IBootstrapper } from './interfaces';
+import { IDomBootstrapper } from './interfaces';
 import { IRetaxOptionReader, IRetaxOptions } from '../optionsReaders';
 import { IStateReader } from '../stateReaders';
 import { ICookieReader } from '../cookieReaders';
@@ -9,7 +9,7 @@ import { IReduxFacade } from '../redux';
 import { IRenderer } from '../renderers';
 
 @inject('RetaxOptionReader', 'StateReader', 'CookieReader', 'ReduxFacade', 'Renderer')
-export default class DomBootstrapper implements IBootstrapper<IRetaxOptions, Element, Promise<void>> {
+export default class DomBootstrapper implements IDomBootstrapper {
   constructor(
     private _optionsReader: IRetaxOptionReader,
     private _stateReader: IStateReader,

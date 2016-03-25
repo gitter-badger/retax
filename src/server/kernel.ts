@@ -1,20 +1,25 @@
-import { Kernel } from 'inversify';
+import { Kernel, IKernel } from 'inversify';
 
-import { IBootstrapper, MiddlewareBootstrapper } from '../bootstrap';
-import { MiddlewareOptionReader, IOptionReader, IMiddlewareOptions } from '../optionsReaders';
-import { StaticMiddlewareFactory, RenderingMiddlewareFactory, IRetaxMiddlewareFactory, IRetaxMiddleware } from '../middleware';
+import { MiddlewareBootstrapper, IMiddlewareBoostrapper, ServerBootstrapper , IServerBootstrapper } from '../bootstrap';
+import { MiddlewareOptionReader, IMiddlewareOptionReader, RetaxOptionReader, IRetaxOptionReader } from '../optionsReaders';
+import { StaticMiddlewareFactory, RenderingMiddlewareFactory, IRetaxMiddlewareFactory } from '../middleware';
 import { internalConfig, IInternalConfig }  from '../internalConfig';
 
 const kernel = new Kernel();
 
-// construtor
-kernel.bind<IBootstrapper<IMiddlewareOptions, void, IRetaxMiddleware>>('MiddlewareBootstrapper')
-  .to(MiddlewareBootstrapper).inSingletonScope();
-kernel.bind<IOptionReader<IMiddlewareOptions>>('MiddlewareOptionReader').to(MiddlewareOptionReader).inSingletonScope();
+// middleware
+// constructor
+kernel.bind<IMiddlewareBoostrapper>('MiddlewareBootstrapper').to(MiddlewareBootstrapper).inSingletonScope();
+kernel.bind<IMiddlewareOptionReader>('MiddlewareOptionReader').to(MiddlewareOptionReader).inSingletonScope();
 kernel.bind<IRetaxMiddlewareFactory>('RetaxMiddlewareFactory').to(StaticMiddlewareFactory).inSingletonScope();
 kernel.bind<IRetaxMiddlewareFactory>('RetaxMiddlewareFactory').to(RenderingMiddlewareFactory).inSingletonScope();
 
+// retax server
+kernel.bind<IServerBootstrapper>('ServerBootstrapper').to(ServerBootstrapper);
+kernel.bind<IRetaxOptionReader>('RetaxOptionReader').to(RetaxOptionReader).inSingletonScope();
+
 // value
 kernel.bind<IInternalConfig>('InternalConfig').toValue(internalConfig);
+kernel.bind<IKernel>('Kernel').toValue(kernel); // this thing is crazy. DI is awesome. DIncpetion :)
 
 export default kernel;

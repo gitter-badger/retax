@@ -34,9 +34,7 @@ export default class StaticMiddlewareFactory implements IRetaxMiddlewareFactory 
           <link href="https://fonts.googleapis.com/icon?family=Material+Icons" rel="stylesheet" />
         </head>
         <body class="fullbleed layout vertical">
-          <div
-            id="root" class="flex layout vertical"
-          >
+          <div id="root" class="flex layout vertical">
             Loading...
           </div>
           <script>

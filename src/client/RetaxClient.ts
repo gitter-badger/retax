@@ -1,9 +1,8 @@
 import 'reflect-metadata';
 import kernel from './kernel';
 
-import { IBootstrapper } from '../bootstrap';
-import { IRetaxOptions } from '../optionsReaders';
+import { IDomBootstrapper } from '../bootstrap';
 
-const retaxBootstrapper = kernel.get<IBootstrapper<IRetaxOptions, Element, Promise<void>>>('Bootstrapper');
+const retaxBootstrapper = kernel.get<IDomBootstrapper>('Bootstrapper');
 
 export default retaxBootstrapper;

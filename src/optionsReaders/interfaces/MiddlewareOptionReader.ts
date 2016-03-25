@@ -1,3 +1,4 @@
+import { IOptionReader } from './OptionReader';
 import { IRetaxOptions } from './RetaxOptionReader';
 
 export interface IMiddlewareOptions {
@@ -5,3 +6,5 @@ export interface IMiddlewareOptions {
   isomorphicTools?: any;
   retaxOptions?: IRetaxOptions;
 }
+
+export interface IMiddlewareOptionReader extends IOptionReader<IMiddlewareOptions> {}

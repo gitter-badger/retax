@@ -1,12 +1,12 @@
 import { inject } from 'inversify';
 
-import { IBootstrapper } from './interfaces';
+import { IMiddlewareBoostrapper } from './interfaces';
 
 import { IOptionReader, IMiddlewareOptions } from '../optionsReaders';
 import { IRetaxMiddlewareFactory, IRetaxMiddleware } from '../middleware';
 
 @inject('MiddlewareOptionReader', 'RetaxMiddlewareFactory[]')
-export default class MiddlewareBootstrapper implements IBootstrapper<IMiddlewareOptions, void, IRetaxMiddleware> {
+export default class MiddlewareBootstrapper implements IMiddlewareBoostrapper {
   private _staticMiddlewareFactory: IRetaxMiddlewareFactory;
   private _renderingMiddlewareFactory: IRetaxMiddlewareFactory;
 
