@@ -1,16 +1,17 @@
 import { inject } from 'inversify';
 
 import { IServerBootstrapper } from './interfaces';
-import { IRetaxOptionReader, IRetaxOptions } from '../optionsReaders';
+import { IRetaxConfigProxy } from '../configProxies';
+import { IRetaxConfig } from '../config';
 
-@inject('RetaxOptionReader')
+@inject('RetaxConfigProxy')
 export default class ServerBootstrapper implements IServerBootstrapper {
   constructor(
-    private _optionsReader: IRetaxOptionReader
+    private _configProxy: IRetaxConfigProxy
   ) {}
 
-  public config(options: IRetaxOptions): void {
-    this._optionsReader.read(options);
+  public config(config: IRetaxConfig): void {
+    this._configProxy.config = config;
   }
 
   public bootstrap(): string {

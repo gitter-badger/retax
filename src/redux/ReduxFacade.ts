@@ -1,5 +1,4 @@
 import { inject } from 'inversify';
-
 import { combineReducers, createStore, applyMiddleware, compose } from 'redux';
 import { routerReducer, routerMiddleware, syncHistoryWithStore } from 'react-router-redux';
 
@@ -7,15 +6,15 @@ import { IReduxFacade, IReducersMap, ICreateStoreOptions } from './interfaces';
 import * as internalReducers from './reducers';
 import { setAuthToken } from './actionsCreators';
 
-import { IOptionReader, IRetaxOptions } from '../optionsReaders';
-import { IImmutableState } from '../stateReaders';
+import { IRetaxConfigProxy } from '../configProxies';
+import { IImmutableState } from '../stateProxies';
 
-@inject('RetaxOptionReader')
+@inject('RetaxConfigProxy')
 export default class ReduxFacade implements IReduxFacade {
   private _store: Redux.Store;
 
   constructor(
-    private _optionsReader: IOptionReader<IRetaxOptions>
+    private _configProxy: IRetaxConfigProxy
   ) {}
 
   get reduxStore(): Redux.Store {
@@ -27,7 +26,7 @@ export default class ReduxFacade implements IReduxFacade {
   }
 
   public connectRedux(initialState: IImmutableState, history: HistoryModule.History): Redux.Store {
-    const { middlewares, reducers, storeEnhancers } = this._optionsReader.config.store;
+    const { middlewares, reducers, storeEnhancers } = this._configProxy.config.store;
     const rootReducer = this.combineReducers(reducers);
 
     this._store = this.createStore({

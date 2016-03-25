@@ -1,17 +1,17 @@
 import { inject } from 'inversify';
-
 import { Request, Response, NextFunction } from 'express';
 
 import { IRetaxMiddlewareFactory, IRetaxMiddleware } from './interfaces';
 
-import { IOptionReader, IMiddlewareOptions } from '../optionsReaders';
-import { IInternalConfig } from '../internalConfig';
+import { IMiddlewareConfigProxy } from '../configProxies';
+import { IInternalConfig } from '../config';
+import { IConfigStore } from '../configStore';
 
-@inject('MiddlewareOptionReader', 'InternalConfig')
+@inject('MiddlewareConfigProxy', 'InternalConfigStore')
 export default class StaticMiddlewareFactory implements IRetaxMiddlewareFactory {
   constructor(
-    private _optionsReader: IOptionReader<IMiddlewareOptions>,
-    private _internalConfig: IInternalConfig
+    private _configProxy: IMiddlewareConfigProxy,
+    private _store: IConfigStore<IInternalConfig>
   ) {}
 
   public create(): IRetaxMiddleware {
@@ -23,8 +23,8 @@ export default class StaticMiddlewareFactory implements IRetaxMiddlewareFactory 
   }
 
   private generateHtmlMarkup(): string {
-    const { INITIAL_STATE_KEY } = this._internalConfig;
-    const assets = this._optionsReader.config.isomorphicTools.assets();
+    const { INITIAL_STATE_KEY } = this._store.config;
+    const assets = this._configProxy.config.isomorphicTools.assets();
 
     return `
       <!DOCTYPE html>

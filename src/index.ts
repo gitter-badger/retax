@@ -1,2 +1,2 @@
 export { default as RetaxClient } from './client';
-export { default as retaxMiddleware } from './server';
+export { default as RetaxServer } from './server';

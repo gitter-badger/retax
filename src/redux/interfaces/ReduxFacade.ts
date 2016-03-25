@@ -1,4 +1,4 @@
-import { IImmutableState } from '../../stateReaders';
+import { IImmutableState } from '../../stateProxies';
 
 export interface ICreateStoreOptions {
   initialState: IImmutableState;

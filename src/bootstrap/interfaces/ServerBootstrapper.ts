@@ -1,4 +1,4 @@
 import { IBootstrapper } from './Bootstrapper';
-import { IRetaxOptions } from '../../optionsReaders';
+import { IRetaxConfig } from '../../config';
 
-export interface IServerBootstrapper extends IBootstrapper<IRetaxOptions, void, string> {}
+export interface IServerBootstrapper extends IBootstrapper<IRetaxConfig, void, string> {}

@@ -1,10 +1,8 @@
 import 'reflect-metadata';
 import kernel from './kernel';
 
-import { IBootstrapper } from '../bootstrap';
-import { IMiddlewareOptions } from '../optionsReaders';
-import { IRetaxMiddleware } from '../middleware';
+import { IMiddlewareBoostrapper } from '../bootstrap';
 
-const middlewareBootstrapper = kernel.get<IBootstrapper<IMiddlewareOptions, void, IRetaxMiddleware>>('MiddlewareBootstrapper');
+const middlewareBootstrapper = kernel.get<IMiddlewareBoostrapper>('MiddlewareBootstrapper');
 
 export default middlewareBootstrapper;

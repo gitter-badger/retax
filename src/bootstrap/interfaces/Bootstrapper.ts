@@ -11,7 +11,7 @@ export interface IBootstrapper<O, B, R> {
   /**
    * Configure the boostrapper.
    */
-  config(options: O): void;
+  config(config: O): void;
 
   /**
    * Run the bootstrapper.

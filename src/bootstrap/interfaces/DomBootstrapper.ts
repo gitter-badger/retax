@@ -1,4 +1,4 @@
 import { IBootstrapper } from './Bootstrapper';
-import { IRetaxOptions } from '../../optionsReaders';
+import { IRetaxConfig } from '../../config';
 
-export interface IDomBootstrapper extends IBootstrapper<IRetaxOptions, Element, Promise<void>> {}
+export interface IDomBootstrapper extends IBootstrapper<IRetaxConfig, Element, Promise<void>> {}

@@ -1,25 +1,31 @@
 import { Kernel, IKernel } from 'inversify';
 
 import { MiddlewareBootstrapper, IMiddlewareBoostrapper, ServerBootstrapper , IServerBootstrapper } from '../bootstrap';
-import { MiddlewareOptionReader, IMiddlewareOptionReader, RetaxOptionReader, IRetaxOptionReader } from '../optionsReaders';
+import { MiddlewareConfigProxy, IMiddlewareConfigProxy, RetaxConfigProxy, IRetaxConfigProxy } from '../configProxies';
 import { StaticMiddlewareFactory, RenderingMiddlewareFactory, IRetaxMiddlewareFactory } from '../middleware';
-import { internalConfig, IInternalConfig }  from '../internalConfig';
+import { createConfigStore, IConfigStore }  from '../configStore';
+import {
+  internalConfig, IInternalConfig,
+  retaxConfig, IRetaxConfig,
+  middlewareConfig, IMiddlewareConfig,
+} from '../config';
 
 const kernel = new Kernel();
 
 // middleware
-// constructor
-kernel.bind<IMiddlewareBoostrapper>('MiddlewareBootstrapper').to(MiddlewareBootstrapper).inSingletonScope();
-kernel.bind<IMiddlewareOptionReader>('MiddlewareOptionReader').to(MiddlewareOptionReader).inSingletonScope();
-kernel.bind<IRetaxMiddlewareFactory>('RetaxMiddlewareFactory').to(StaticMiddlewareFactory).inSingletonScope();
-kernel.bind<IRetaxMiddlewareFactory>('RetaxMiddlewareFactory').to(RenderingMiddlewareFactory).inSingletonScope();
+kernel.bind<IMiddlewareBoostrapper>('MiddlewareBootstrapper').to(MiddlewareBootstrapper);
+kernel.bind<IMiddlewareConfigProxy>('MiddlewareConfigProxy').to(MiddlewareConfigProxy);
+kernel.bind<IRetaxMiddlewareFactory>('RetaxMiddlewareFactory').to(StaticMiddlewareFactory);
+kernel.bind<IRetaxMiddlewareFactory>('RetaxMiddlewareFactory').to(RenderingMiddlewareFactory);
 
 // retax server
 kernel.bind<IServerBootstrapper>('ServerBootstrapper').to(ServerBootstrapper);
-kernel.bind<IRetaxOptionReader>('RetaxOptionReader').to(RetaxOptionReader).inSingletonScope();
+kernel.bind<IRetaxConfigProxy>('RetaxConfigProxy').to(RetaxConfigProxy);
 
 // value
-kernel.bind<IInternalConfig>('InternalConfig').toValue(internalConfig);
-kernel.bind<IKernel>('Kernel').toValue(kernel); // this thing is crazy. DI is awesome. DIncpetion :)
+kernel.bind<IConfigStore<IInternalConfig>>('InternalConfigStore').toValue(createConfigStore(internalConfig));
+kernel.bind<IConfigStore<IRetaxConfig>>('RetaxConfigStore').toValue(createConfigStore(retaxConfig));
+kernel.bind<IConfigStore<IMiddlewareConfig>>('MiddlewareConfigStore').toValue(createConfigStore(middlewareConfig));
+kernel.bind<IKernel>('Kernel').toValue(kernel); // dincpetion :)
 
 export default kernel;
