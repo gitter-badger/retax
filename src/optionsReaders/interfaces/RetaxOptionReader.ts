@@ -1,3 +1,4 @@
+import { IOptionReader } from './OptionReader';
 import { IReducersMap } from '../../redux';
 
 export interface IClientOptions {
@@ -9,15 +10,22 @@ export interface IReduxStoreOptions {
   middlewares?: Redux.Middleware[];
   reducers?: IReducersMap;
   initialState?: Object;
-  storeEnchancers?: Function[];
+  storeEnhancers?: Function[];
 }
 
+export type IRoute = ReactRouter.PlainRoute | ReactRouter.RouteElement;
+
 export interface IReactRouterOptions {
-  root?: ReactRouter.PlainRoute | ReactRouter.RouteElement;
+  static?: IRoute;
+  dynamic?: (s: Redux.Store) => IRoute;
 }
 
 export interface IRetaxOptions {
   store?: IReduxStoreOptions;
   router?: IReactRouterOptions;
   client?: IClientOptions;
+}
+
+export interface IRetaxOptionReader extends IOptionReader<IRetaxOptions> {
+  evaluateRoute(store: Redux.Store): IRoute;
 }

@@ -2,7 +2,7 @@ import { inject } from 'inversify';
 import { browserHistory } from 'react-router';
 
 import { IBootstrapper } from './interfaces';
-import { IOptionReader, IRetaxOptions } from '../optionsReaders';
+import { IRetaxOptionReader, IRetaxOptions } from '../optionsReaders';
 import { IStateReader } from '../stateReaders';
 import { ICookieReader } from '../cookieReaders';
 import { IReduxFacade } from '../redux';
@@ -11,7 +11,7 @@ import { IRenderer } from '../renderers';
 @inject('RetaxOptionReader', 'StateReader', 'CookieReader', 'ReduxFacade', 'Renderer')
 export default class DomBootstrapper implements IBootstrapper<IRetaxOptions, Element, Promise<void>> {
   constructor(
-    private _optionsReader: IOptionReader<IRetaxOptions>,
+    private _optionsReader: IRetaxOptionReader,
     private _stateReader: IStateReader,
     private _cookieReader: ICookieReader,
     private _reduxFacade: IReduxFacade,
@@ -30,15 +30,17 @@ export default class DomBootstrapper implements IBootstrapper<IRetaxOptions, Ele
     const initialState = await this._stateReader.read();
 
     // initialize Redux store
-    this._reduxFacade.connectRedux(initialState, browserHistory);
+    const store = this._reduxFacade.connectRedux(initialState, browserHistory);
     this._reduxFacade.setAuthToken(authToken);
+
+    const routes = this._optionsReader.evaluateRoute(store);
 
     // render the app
     this._renderer.render({
       history: browserHistory,
       mountPoint: element,
-      routes: this._optionsReader.config.router.root,
-      store: this._reduxFacade.reduxStore,
+      routes,
+      store,
     });
   }
 }

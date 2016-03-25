@@ -1,18 +1,18 @@
 import { Kernel } from 'inversify';
 
-import { DomBootstrapper, IBootstrapper } from '../shared/bootstrap';
-import { RetaxOptionReader, IOptionReader, IRetaxOptions } from '../shared/optionsReaders';
-import { DomStateReader, IStateReader } from '../shared/stateReaders';
-import { DomCookieReader, ICookieReader } from '../shared/cookieReaders';
-import { internalConfig, IInternalConfig }  from '../shared/internalConfig';
-import { ReduxFacade, IReduxFacade } from '../shared/redux';
-import { DomRenderer, IRenderer } from '../shared/renderers';
+import { DomBootstrapper, IBootstrapper } from '../bootstrap';
+import { RetaxOptionReader,IRetaxOptionReader, IRetaxOptions } from '../optionsReaders';
+import { DomStateReader, IStateReader } from '../stateReaders';
+import { DomCookieReader, ICookieReader } from '../cookieReaders';
+import { internalConfig, IInternalConfig }  from '../internalConfig';
+import { ReduxFacade, IReduxFacade } from '../redux';
+import { DomRenderer, IRenderer } from '../renderers';
 
 const kernel = new Kernel();
 
 // construtor
 kernel.bind<IBootstrapper<IRetaxOptions, Element, Promise<void>>>('Bootstrapper').to(DomBootstrapper).inSingletonScope();
-kernel.bind<IOptionReader<IRetaxOptions>>('RetaxOptionReader').to(RetaxOptionReader).inSingletonScope();
+kernel.bind<IRetaxOptionReader>('RetaxOptionReader').to(RetaxOptionReader).inSingletonScope();
 kernel.bind<IStateReader>('StateReader').to(DomStateReader).inSingletonScope();
 kernel.bind<ICookieReader>('CookieReader').to(DomCookieReader).inSingletonScope();
 kernel.bind<IReduxFacade>('ReduxFacade').to(ReduxFacade).inSingletonScope();

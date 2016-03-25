@@ -4,7 +4,7 @@ export interface ICreateStoreOptions {
   initialState: IImmutableState;
   history: HistoryModule.History;
   middlewares: Redux.Middleware[];
-  storeEnchancers: Function[];
+  storeEnhancers: Function[];
   rootReducer: Redux.Reducer;
 }
 

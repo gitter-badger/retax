@@ -1,7 +1,9 @@
 {
   "name": "seed-component",
   "version": false,
-  "dependencies": {},
+  "dependencies": {
+    "lodash": "registry:npm/lodash#4.0.0+20160305082308"
+  },
   "ambientDependencies": {
     "enzyme": "registry:dt/enzyme#1.2.0+20151218140740",
     "express-serve-static-core": "registry:dt/express-serve-static-core#0.0.0+20160317120654",

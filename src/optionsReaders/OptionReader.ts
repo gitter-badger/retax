@@ -1,7 +1,9 @@
+import * as _ from 'lodash';
+
 import { IOptionReader } from './interfaces';
 
 export default class OptionReader<T extends Object> implements IOptionReader<T> {
-  private _options: T;
+  protected _options: T;
 
   constructor(defaultOptions: T) {
     this._options = defaultOptions;
@@ -12,11 +14,7 @@ export default class OptionReader<T extends Object> implements IOptionReader<T> 
   }
 
   public read(options: T): T {
-    for (const key in options) {
-      if (options.hasOwnProperty(key) && (key in this._options)) {
-        this._options[key] = Object.assign(this._options[key], options[key]);
-      }
-    }
+    this._options = _.merge(this._options, options);
 
     return this._options;
   }

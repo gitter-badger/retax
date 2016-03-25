@@ -27,14 +27,14 @@ export default class ReduxFacade implements IReduxFacade {
   }
 
   public connectRedux(initialState: IImmutableState, history: HistoryModule.History): Redux.Store {
-    const { middlewares, reducers, storeEnchancers } = this._optionsReader.config.store;
+    const { middlewares, reducers, storeEnhancers } = this._optionsReader.config.store;
     const rootReducer = this.combineReducers(reducers);
 
     this._store = this.createStore({
       initialState,
       history,
       rootReducer,
-      storeEnchancers,
+      storeEnhancers,
       middlewares,
     });
 
@@ -50,7 +50,7 @@ export default class ReduxFacade implements IReduxFacade {
   }
 
   private createStore(options: ICreateStoreOptions): Redux.Store {
-    const { initialState, history, middlewares = [], storeEnchancers = [], rootReducer } = options;
+    const { initialState, history, middlewares = [], storeEnhancers = [], rootReducer } = options;
 
     const reduxRouterMiddleware = routerMiddleware(history);
 
@@ -61,7 +61,7 @@ export default class ReduxFacade implements IReduxFacade {
       ]),
     ];
 
-    finalStoreEnhancers.push(...storeEnchancers);
+    finalStoreEnhancers.push(...storeEnhancers);
 
     return createStore(
       rootReducer,
