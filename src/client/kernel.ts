@@ -1,7 +1,7 @@
 import { Kernel } from 'inversify';
 
 import { DomBootstrapper, IBootstrapper } from '../bootstrap';
-import { RetaxOptionReader,IRetaxOptionReader, IRetaxOptions } from '../optionsReaders';
+import { RetaxOptionReader, IRetaxOptionReader, IRetaxOptions } from '../optionsReaders';
 import { DomStateReader, IStateReader } from '../stateReaders';
 import { DomCookieReader, ICookieReader } from '../cookieReaders';
 import { internalConfig, IInternalConfig }  from '../internalConfig';
