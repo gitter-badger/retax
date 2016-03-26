@@ -16,7 +16,7 @@ export type IRoute = ReactRouter.PlainRoute | ReactRouter.RouteElement;
 
 export interface IReactRouterConfig {
   static?: IRoute;
-  dynamic?: (s: Redux.Store) => IRoute;
+  dynamic?: (s: Redux.Store, u: string) => IRoute;
 }
 
 export interface IRetaxConfig {

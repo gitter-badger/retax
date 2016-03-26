@@ -7,12 +7,12 @@ import ConfigProxy from './ConfigProxy';
 
 @inject('RetaxConfigStore')
 export default class RetaxConfigProxy extends ConfigProxy<IRetaxConfig> implements IRetaxConfigProxy {
-  public evaluateConfig(store: Redux.Store): IRetaxConfig {
+  public evaluateConfig(store: Redux.Store, userAgent: string): IRetaxConfig {
     const evaluatedConfig = super.config;
     const { router } = evaluatedConfig;
 
     if (router.dynamic && typeof router.dynamic === 'function') {
-      router.static = router.dynamic(store);
+      router.static = router.dynamic(store, userAgent);
     }
 
     return evaluatedConfig;

@@ -16,9 +16,12 @@ export default class StaticMiddlewareFactory implements IRetaxMiddlewareFactory 
 
   public create(): IRetaxMiddleware {
     return (req: Request, res: Response, next: NextFunction) => {
-      res.status(200).send(
-        this.generateHtmlMarkup()
-      );
+      try {
+        const markup = this.generateHtmlMarkup();
+        res.status(200).send(markup);
+      } catch (e) {
+        next(e);
+      }
     };
   }
 

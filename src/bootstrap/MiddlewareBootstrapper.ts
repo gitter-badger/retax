@@ -3,7 +3,7 @@ import { inject } from 'inversify';
 import { IMiddlewareBoostrapper } from './interfaces';
 
 import { IMiddlewareConfigProxy } from '../configProxies';
-import { IRetaxMiddlewareFactory, IRetaxMiddleware } from '../middleware';
+import { IRetaxMiddlewareFactory, IRetaxMiddleware } from '../middlewares';
 import { IMiddlewareConfig } from '../config';
 
 @inject('MiddlewareConfigProxy', 'RetaxMiddlewareFactory[]')
@@ -12,7 +12,7 @@ export default class MiddlewareBootstrapper implements IMiddlewareBoostrapper {
   private _renderingMiddlewareFactory: IRetaxMiddlewareFactory;
 
   constructor(
-    private _configProxy: IMiddlewareConfigProxy,
+    private _middlewareConfigProxy: IMiddlewareConfigProxy,
     private _retaxMiddlewareFactories: IRetaxMiddlewareFactory[]
   ) {
     this._staticMiddlewareFactory = _retaxMiddlewareFactories[0];
@@ -20,11 +20,13 @@ export default class MiddlewareBootstrapper implements IMiddlewareBoostrapper {
   }
 
   public config(config: IMiddlewareConfig): void {
-    this._configProxy.config = config;
+    this._middlewareConfigProxy.config = config;
   }
 
   public bootstrap(): IRetaxMiddleware {
-    if (this._configProxy.config.serverRendering) {
+    const { config } = this._middlewareConfigProxy;
+
+    if (config.serverRendering) {
       return this._renderingMiddlewareFactory.create();
     } else {
       return this._staticMiddlewareFactory.create();

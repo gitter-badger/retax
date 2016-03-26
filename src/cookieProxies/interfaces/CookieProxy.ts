@@ -1,3 +1,3 @@
 export interface ICookieProxy {
-  getAuthToken(): any;
+  getAuthToken(...args: any[]): string;
 }

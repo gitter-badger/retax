@@ -22,7 +22,7 @@ export default class DomStateProxy extends StateConverter implements IStateProxy
     return this._statePromise;
   }
 
-  public read(): Promise<IImmutableState> {
+  public get(): Promise<IImmutableState> {
     const { INITIAL_STATE_KEY } = this._internalConfig.config;
     const { nonImmutableKeys } = this._configProxy.config.store;
     const { keepInitialState } = this._configProxy.config.client;
