@@ -4,6 +4,7 @@ const retaxConfig: IRetaxConfig = {
   client: {
     keepInitialState: false,
   },
+  react: {},
   router: {
     static: {},
   },

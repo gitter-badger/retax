@@ -55,12 +55,12 @@ export default class ReduxFacade implements IReduxFacade {
 
     const finalStoreEnhancers = [
       applyMiddleware(...[
-        ...middlewares.filter((x: Redux.Middleware) => !!x),
+        ...middlewares.filter(x => !!x),
         reduxRouterMiddleware,
       ]),
     ];
 
-    finalStoreEnhancers.push(...storeEnhancers);
+    finalStoreEnhancers.push(...storeEnhancers.filter(x => !!x));
 
     return createStore(
       rootReducer,

@@ -9,13 +9,7 @@ export default class ServerStateProxy extends StateConverter implements IStatePr
   }
 
   public get(): Promise<IImmutableState> {
-    const immutableState = super.convertStateToImmutable({
-      app: {
-        initialRenderTime: +new Date(),
-      },
-    });
-
-    this._statePromise = Promise.resolve<IImmutableState>(immutableState);
+    this._statePromise = Promise.resolve<IImmutableState>({});
 
     return this._statePromise;
   }

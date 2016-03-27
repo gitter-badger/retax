@@ -8,19 +8,21 @@ import { RouterContext } from 'react-router';
 import { IJSXBuilder, IBuilderConfig } from './interfaces';
 
 import { Html } from '../components';
-import { IMiddlewareConfigProxy } from '../configProxies';
+import { IMiddlewareConfigProxy, IRetaxConfigProxy } from '../configProxies';
 
-@inject('MiddlewareConfigProxy', 'Html')
+@inject('MiddlewareConfigProxy', 'RetaxConfigProxy', 'Html')
 export default class ServerBuilder implements IJSXBuilder {
   constructor(
-    private _configProxy: IMiddlewareConfigProxy,
+    private _middlewareConfigProxy: IMiddlewareConfigProxy,
+    private _retaxConfigProxy: IRetaxConfigProxy,
     private HtmlComponent: typeof Html
   ) {}
 
   public build(options: IBuilderConfig): JSX.Element {
     const { HtmlComponent } = this;
     const { store, renderProps } = options;
-    const { isomorphicTools } = this._configProxy.config;
+    const { isomorphicTools } = this._middlewareConfigProxy.config;
+    const { react: { appendChild } } = this._retaxConfigProxy.config;
 
     const assets = isomorphicTools.assets();
 
@@ -28,6 +30,7 @@ export default class ServerBuilder implements IJSXBuilder {
       <Provider store={store} key="provider">
         <div className="flex layout vertical">
           <RouterContext {...renderProps} />
+          {appendChild}
         </div>
       </Provider>
     );

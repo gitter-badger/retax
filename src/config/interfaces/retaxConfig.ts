@@ -19,8 +19,13 @@ export interface IReactRouterConfig {
   dynamic?: (store: Redux.Store, userAgent: string) => IRoute;
 }
 
+export interface IReactConfig {
+  appendChild?: JSX.Element;
+}
+
 export interface IRetaxConfig {
   store?: IReduxStoreConfig;
   router?: IReactRouterConfig;
+  react?: IReactConfig;
   client?: IClientConfig;
 }
