@@ -1,7 +1,7 @@
 import { Kernel, IKernel, INewable } from 'inversify';
 
 import {
-  MiddlewareBootstrapper,IMiddlewareBoostrapper,
+  MiddlewareBootstrapper, IMiddlewareBoostrapper,
   ServerBootstrapper, IServerBootstrapper,
 } from '../bootstrap';
 import {
@@ -36,8 +36,8 @@ kernel.bind<IRetaxConfigProxy>('RetaxConfigProxy').to(RetaxConfigProxy);
 kernel.bind<IStateProxy>('StateProxy').to(ServerStateProxy);
 kernel.bind<IServerCookieProxy>('CookieProxy').to(ServerCookieProxy);
 kernel.bind<IReduxFacade>('ReduxFacade').to(ReduxFacade);
-kernel.bind<IReactRouterFacade>('ReactRouterFacade').to(ReactRouterFacade);
 kernel.bind<IJSXBuilder>('JSXBuilder').to(ServerBuilder);
+kernel.bind<IReactRouterFacade>('ReactRouterFacade').to(ReactRouterFacade);
 
 // constructor
 kernel.bind<INewable<Html>>('Html').toConstructor(Html);

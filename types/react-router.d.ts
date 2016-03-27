@@ -4,7 +4,7 @@ declare namespace ReactRouter {
 
   interface IRouterContextProps extends RouterState {
     history: H.History;
-    router: Router;
+    router?: Router;
     createElement?: (component: RouteComponent, props: Object) => any;
     location: H.Location;
     routes: PlainRoute[];

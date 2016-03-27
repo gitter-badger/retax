@@ -17,7 +17,7 @@ export default class StaticMiddlewareFactory implements IRetaxMiddlewareFactory 
   public create(): IRetaxMiddleware {
     return (req: Request, res: Response, next: NextFunction) => {
       try {
-        const markup = this.generateHtmlMarkup();
+        const markup = this._generateHtmlMarkup();
         res.status(200).send(markup);
       } catch (e) {
         next(e);
@@ -25,7 +25,7 @@ export default class StaticMiddlewareFactory implements IRetaxMiddlewareFactory 
     };
   }
 
-  private generateHtmlMarkup(): string {
+  private _generateHtmlMarkup(): string {
     const { INITIAL_STATE_KEY } = this._store.config;
     const assets = this._configProxy.config.isomorphicTools.assets();
 

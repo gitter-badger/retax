@@ -21,15 +21,20 @@ export default class ReduxFacade implements IReduxFacade {
     return this._store;
   }
 
-  public setAuthToken(token: string): ReduxActions.Action {
-    return this._store.dispatch(setAuthToken(token));
+  get authToken(): string {
+    const { retax } = this._store.getState();
+    return retax.get('authToken');
+  }
+
+  set authToken(token: string) {
+    this._store.dispatch(setAuthToken(token));
   }
 
   public connectRedux(initialState: IImmutableState, history: HistoryModule.History): Redux.Store {
     const { middlewares, reducers, storeEnhancers } = this._configProxy.config.store;
-    const rootReducer = this.combineReducers(reducers);
+    const rootReducer = this._combineReducers(reducers);
 
-    this._store = this.createStore({
+    this._store = this._createStore({
       initialState,
       history,
       rootReducer,
@@ -42,13 +47,13 @@ export default class ReduxFacade implements IReduxFacade {
     return this._store;
   }
 
-  private combineReducers(reducers: IReducersMap): Redux.Reducer {
+  private _combineReducers(reducers: IReducersMap): Redux.Reducer {
     return combineReducers(Object.assign({
       routing: routerReducer,
     }, internalReducers, reducers));
   }
 
-  private createStore(options: ICreateStoreOptions): Redux.Store {
+  private _createStore(options: ICreateStoreOptions): Redux.Store {
     const { initialState, history, middlewares = [], storeEnhancers = [], rootReducer } = options;
 
     const reduxRouterMiddleware = routerMiddleware(history);

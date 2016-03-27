@@ -23,9 +23,20 @@ export interface IReactConfig {
   appendChild?: JSX.Element;
 }
 
+export interface IApiRoutesConfig {
+  [key: string]: string;
+}
+
+export interface IApiConfig {
+  baseUrl?: string;
+  authHeaderName?: string;
+  routes?: IApiRoutesConfig;
+}
+
 export interface IRetaxConfig {
   store?: IReduxStoreConfig;
   router?: IReactRouterConfig;
   react?: IReactConfig;
   client?: IClientConfig;
+  api?: IApiConfig;
 }

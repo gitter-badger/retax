@@ -39,7 +39,7 @@ export default class DomBootstrapper implements IDomBootstrapper {
 
     // initialize Redux store
     const store = this._reduxFacade.connectRedux(initialState, history);
-    this._reduxFacade.setAuthToken(authToken);
+    this._reduxFacade.authToken = authToken;
 
     const { router } = this._configProxy.evaluateConfig(store, navigator.userAgent);
 
