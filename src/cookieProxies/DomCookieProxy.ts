@@ -4,10 +4,10 @@ import * as Cookie from 'js-cookie';
 import { IInternalConfig } from '../config';
 import { IConfigStore } from '../configStore';
 
-import { ICookieProxy } from './interfaces';
+import { IDomCookieProxy } from './interfaces';
 
 @inject('InternalConfigStore')
-export default class DomCookieProxy implements ICookieProxy {
+export default class DomCookieProxy implements IDomCookieProxy {
   constructor(
     private _store: IConfigStore<IInternalConfig>
   ) {}

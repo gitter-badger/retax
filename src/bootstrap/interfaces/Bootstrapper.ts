@@ -7,14 +7,14 @@
  * @template B Type of the input parameter of boostrap
  * @template R Type of the output parameter of boostrap
  */
-export interface IBootstrapper<O, B, R> {
+export interface IBootstrapper<InputConfig, InputBootstrap, OutputBootstrap> {
   /**
    * Configure the boostrapper.
    */
-  config(config: O): void;
+  config(config: InputConfig): void;
 
   /**
    * Run the bootstrapper.
    */
-  bootstrap(options?: B): R;
+  bootstrap(options?: InputBootstrap): OutputBootstrap;
 }

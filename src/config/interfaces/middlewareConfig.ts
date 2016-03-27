@@ -7,7 +7,7 @@ export interface IAssets {
 
 export interface IIsomorphicTools {
   assets(): IAssets;
-  development(b: boolean): IIsomorphicTools;
+  development(inDevelopment: boolean): IIsomorphicTools;
 }
 
 export interface IMiddlewareConfig {

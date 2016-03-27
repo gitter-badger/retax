@@ -1,8 +1,8 @@
 import { Kernel, IKernel, INewable } from 'inversify';
 
 import {
-  MiddlewareBootstrapper, IMiddlewareBoostrapper,
-  ServerBootstrapper , IServerBootstrapper,
+  MiddlewareBootstrapper,IMiddlewareBoostrapper,
+  ServerBootstrapper, IServerBootstrapper,
 } from '../bootstrap';
 import {
   MiddlewareConfigProxy, IMiddlewareConfigProxy,
