@@ -2,7 +2,7 @@ import { inject } from 'inversify';
 import { combineReducers, createStore, applyMiddleware, compose } from 'redux';
 import { routerReducer, routerMiddleware, syncHistoryWithStore } from 'react-router-redux';
 
-import { IReduxFacade, IReducersMap, ICreateStoreOptions } from './interfaces';
+import { IReduxFacade, IReducersMap, ICreateStoreConfig } from './interfaces';
 import * as internalReducers from './reducers';
 import { setAuthToken } from './actionsCreators';
 
@@ -53,8 +53,8 @@ export default class ReduxFacade implements IReduxFacade {
     }, internalReducers, reducers));
   }
 
-  private _createStore(options: ICreateStoreOptions): Redux.Store {
-    const { initialState, history, middlewares = [], storeEnhancers = [], rootReducer } = options;
+  private _createStore(config: ICreateStoreConfig): Redux.Store {
+    const { initialState, history, middlewares = [], storeEnhancers = [], rootReducer } = config;
 
     const reduxRouterMiddleware = routerMiddleware(history);
 

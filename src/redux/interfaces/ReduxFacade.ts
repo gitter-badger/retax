@@ -1,6 +1,6 @@
 import { IImmutableState } from '../../stateProxies';
 
-export interface ICreateStoreOptions {
+export interface ICreateStoreConfig {
   initialState: IImmutableState;
   history: HistoryModule.History;
   middlewares: Redux.Middleware[];

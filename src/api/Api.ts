@@ -24,9 +24,9 @@ export default class Api implements IApi {
 
   constructor(
     private _reduxFacade: IReduxFacade,
-    _configProxy: IRetaxConfigProxy
+    configProxy: IRetaxConfigProxy
   ) {
-    const { authHeaderName, baseUrl, routes } = _configProxy.config.api;
+    const { authHeaderName, baseUrl, routes } = configProxy.config.api;
     this._authHeaderName = authHeaderName;
     this.baseUrl = baseUrl;
     this.routes = routes;
