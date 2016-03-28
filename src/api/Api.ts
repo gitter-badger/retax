@@ -12,11 +12,10 @@ import {
 } from './interfaces';
 import { HTTP_METHODS } from './httpMethods';
 
-import { IReduxFacade } from '../redux';
-import { IRetaxConfigProxy } from '../configProxies';
+import { IReduxFacade, IRetaxConfigProxy } from '../retax';
 
 @inject('ReduxFacade', 'ReduxConfigProxy')
-export default class Api implements IApi {
+abstract class AApi implements IApi {
   public baseUrl: string;
   public routes: IRoutesMap;
 
@@ -95,3 +94,5 @@ export default class Api implements IApi {
     return `${this.baseUrl}${url}?Filter=${JSON.stringify(filters)}`;
   }
 }
+
+export default AApi;

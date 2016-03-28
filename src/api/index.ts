@@ -1,3 +1,3 @@
-export { default as Api } from './Api';
+export { default as AApi } from './Api';
 
 export * from './interfaces';

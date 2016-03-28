@@ -1,7 +1,9 @@
-import { IReducersMap } from '../../redux';
-
 export interface IClientConfig {
   keepInitialState?: boolean;
+}
+
+export interface IReducersMap {
+  [key: string]: Function;
 }
 
 export interface IReduxStoreConfig {
