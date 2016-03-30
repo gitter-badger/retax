@@ -1,4 +1,4 @@
 export { default as DomCookieProxy } from './DomCookieProxy';
-export { default as ServerCookieProxy } from './ServerCookieProxy';
+export { default as RequestCookieProxy } from './RequestCookieProxy';
 
 export * from './interfaces';

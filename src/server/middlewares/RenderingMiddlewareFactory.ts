@@ -4,7 +4,7 @@ import { Request, Response, NextFunction } from 'express';
 import { IRetaxMiddlewareFactory, IRetaxMiddleware } from './interfaces';
 
 import { IServerConfigProxy } from '../configProxy';
-import { IRequestBootstrapper, internalModule, retaxModule, serverModule } from '../../retax';
+import { IRequestBootstrapper, internalModule, retaxModule, requestModule } from '../../retax';
 import { IKernelFactory } from '../../kernel';
 import { apiModule } from '../../api';
 
@@ -20,8 +20,7 @@ export default class RenderingMiddlewareFactory implements IRetaxMiddlewareFacto
 
     return async (req: Request, res: Response, next: NextFunction) => {
       try {
-        const kernel = this._kernelFactory.create([apiModule, internalModule, retaxModule, serverModule]);
-
+        const kernel = this._kernelFactory.create([apiModule, internalModule, retaxModule, requestModule]);
         const requestBootstrapper = kernel.get<IRequestBootstrapper>('RequestBootstrapper');
 
         requestBootstrapper.config(retaxConfig);

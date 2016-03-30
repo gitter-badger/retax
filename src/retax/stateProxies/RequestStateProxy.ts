@@ -1,7 +1,7 @@
 import { IStateProxy, IImmutableState } from './interfaces';
 import AStateConverter from './StateConverter';
 
-export default class ServerStateProxy extends AStateConverter implements IStateProxy {
+export default class RequestStateProxy extends AStateConverter implements IStateProxy {
   private _statePromise: Promise<IImmutableState>;
 
   get state(): Promise<IImmutableState> {

@@ -1,12 +1,12 @@
 import { inject } from 'inversify';
 
-import { IServerCookieProxy, Cookies } from './interfaces';
+import { IRequestCookieProxy, Cookies } from './interfaces';
 
 import { IInternalConfig } from '../config';
 import { IConfigStore } from '../../utils';
 
 @inject('InternalConfigStore')
-export default class ServerCookieProxy implements IServerCookieProxy {
+export default class RequestCookieProxy implements IRequestCookieProxy {
   constructor(
     private _store: IConfigStore<IInternalConfig>
   ) {}

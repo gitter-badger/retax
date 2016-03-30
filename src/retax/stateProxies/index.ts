@@ -1,4 +1,4 @@
 export { default as DomStateProxy } from './DomStateProxy';
-export { default as ServerStateProxy } from './ServerStateProxy';
+export { default as RequestStateProxy } from './RequestStateProxy';
 
 export * from './interfaces';
