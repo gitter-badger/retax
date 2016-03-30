@@ -3,7 +3,7 @@ import { inject } from 'inversify';
 import { IStateProxy, IImmutableState } from './interfaces';
 import AStateConverter from './StateConverter';
 
-import { IInternalConfig } from '../../config';
+import { IInternalConfig } from '../config';
 import { IRetaxConfigProxy } from '../configProxy';
 import { IConfigStore } from '../../utils';
 

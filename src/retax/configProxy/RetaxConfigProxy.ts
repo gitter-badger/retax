@@ -1,6 +1,6 @@
 import { inject } from 'inversify';
 
-import { IRetaxConfig } from '../../config';
+import { IRetaxConfig } from '../config';
 import { AConfigProxy } from '../../utils/configProxy';
 
 @inject('RetaxConfigStore')

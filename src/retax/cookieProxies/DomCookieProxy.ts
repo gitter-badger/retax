@@ -3,7 +3,7 @@ import * as Cookie from 'js-cookie';
 
 import { IDomCookieProxy } from './interfaces';
 
-import { IInternalConfig } from '../../config';
+import { IInternalConfig } from '../config';
 import { IConfigStore } from '../../utils';
 
 @inject('InternalConfigStore')

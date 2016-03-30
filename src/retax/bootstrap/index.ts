@@ -1,4 +1,4 @@
 export { default as DomBootstrapper } from './DomBootstrapper';
-export { default as ServerBootstrapper } from './ServerBootstrapper';
+export { default as RequestBootstrapper } from './RequestBootstrapper';
 
 export * from './interfaces';

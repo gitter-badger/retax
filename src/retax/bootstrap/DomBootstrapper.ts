@@ -9,7 +9,7 @@ import { IStateProxy } from '../stateProxies';
 import { ICookieProxy } from '../cookieProxies';
 import { IReduxFacade } from '../redux';
 import { IJSXBuilder } from '../JSXBuilders';
-import { IRetaxConfig } from '../../config';
+import { IRetaxConfig } from '../config';
 import { IReactRouterFacade } from '../reactRouter';
 
 @inject('RetaxConfigProxy', 'DomStateProxy', 'DomCookieProxy', 'ReduxFacade', 'ClientJSXBuilder', 'ReactRouterFacade')

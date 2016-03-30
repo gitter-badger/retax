@@ -1,5 +1,5 @@
 import { IBootstrapper } from '../../../utils';
-import { IRetaxConfig } from '../../../config';
+import { IRetaxConfig } from '../../config';
 
 export interface IDomBootstrapper extends IBootstrapper<
   IRetaxConfig,

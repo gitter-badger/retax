@@ -8,6 +8,8 @@ export default class ReactRouterFacade implements IReactRouterFacade {
       match(config, (err, redirectLocation, renderProps) => {
         if (err) reject(err);
 
+        // todo: handle redirectLocation
+
         resolve({
           redirectLocation,
           renderProps,

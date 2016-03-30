@@ -1,4 +1,4 @@
-import { IIsomorphicTools } from '../../../config';
+import { IIsomorphicTools } from '../../bootstrap';
 
 export interface IBuilderConfig {
   store: Redux.Store;

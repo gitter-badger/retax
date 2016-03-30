@@ -9,7 +9,7 @@ import { setAuthToken } from './actionsCreators';
 import { IRetaxConfigProxy } from '../configProxy';
 import { IImmutableState } from '../stateProxies';
 
-import { IReducersMap } from '../../config';
+import { IReducersMap } from '../config';
 
 @inject('RetaxConfigProxy')
 export default class ReduxFacade implements IReduxFacade {

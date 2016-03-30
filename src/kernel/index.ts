@@ -1,1 +1,3 @@
-export { default as kernel } from './kernel';
+export * from './injector';
+export * from './kernelFactory';
+export * from './kernelModules';

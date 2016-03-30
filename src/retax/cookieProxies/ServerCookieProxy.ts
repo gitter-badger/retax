@@ -2,7 +2,7 @@ import { inject } from 'inversify';
 
 import { IServerCookieProxy, Cookies } from './interfaces';
 
-import { IInternalConfig } from '../../config';
+import { IInternalConfig } from '../config';
 import { IConfigStore } from '../../utils';
 
 @inject('InternalConfigStore')

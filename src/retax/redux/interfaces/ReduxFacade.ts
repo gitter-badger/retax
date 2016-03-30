@@ -8,10 +8,6 @@ export interface ICreateStoreConfig {
   rootReducer: Redux.Reducer;
 }
 
-export interface IReducersMap {
-  [key: string]: Function;
-}
-
 export interface IReduxFacade {
   reduxStore: Redux.Store;
   authToken: string;
