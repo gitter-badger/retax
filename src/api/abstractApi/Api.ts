@@ -14,7 +14,7 @@ import { HTTP_METHODS } from './httpMethods';
 
 import { IReduxFacade, IRetaxConfigProxy } from '../../retax';
 
-@inject('ReduxFacade', 'ReduxConfigProxy')
+@inject('ReduxFacade', 'RetaxConfigProxy')
 abstract class AApi implements IApi {
   public baseUrl: string;
   public routes: IRoutesMap;
@@ -77,6 +77,7 @@ abstract class AApi implements IApi {
       body: bodyToSend,
       credentials: 'include',
       headers: Object.assign(
+        {},
         jsonHeader,
         headers,
         authHeader

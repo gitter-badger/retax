@@ -8,9 +8,9 @@ import { IRetaxConfig, retaxConfig } from '../config';
 import { IConfigStore, createConfigStore } from '../../utils';
 
 export default function retaxModule(kernel: IKernel): void {
-  kernel.bind<IRetaxConfigProxy>('RetaxConfigProxy').to(RetaxConfigProxy);
-  kernel.bind<IReduxFacade>('ReduxFacade').to(ReduxFacade);
-  kernel.bind<IReactRouterFacade>('ReactRouterFacade').to(ReactRouterFacade);
+  kernel.bind<IRetaxConfigProxy>('RetaxConfigProxy').to(RetaxConfigProxy).inSingletonScope();
+  kernel.bind<IReduxFacade>('ReduxFacade').to(ReduxFacade).inSingletonScope();
+  kernel.bind<IReactRouterFacade>('ReactRouterFacade').to(ReactRouterFacade).inSingletonScope();
 
   kernel.bind<IConfigStore<IRetaxConfig>>('RetaxConfigStore').toValue(createConfigStore(retaxConfig));
 }

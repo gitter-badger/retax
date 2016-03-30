@@ -20,7 +20,9 @@ export default class RenderingMiddlewareFactory implements IRetaxMiddlewareFacto
 
     return async (req: Request, res: Response, next: NextFunction) => {
       try {
-        const kernel = this._kernelFactory.create([apiModule, internalModule, retaxModule, requestModule]);
+        const kernel = this._kernelFactory.create([
+          apiModule, internalModule, retaxModule, requestModule,
+        ]);
         const requestBootstrapper = kernel.get<IRequestBootstrapper>('RequestBootstrapper');
 
         requestBootstrapper.config(retaxConfig);
