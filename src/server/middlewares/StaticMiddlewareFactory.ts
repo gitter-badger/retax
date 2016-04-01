@@ -1,13 +1,13 @@
-import { inject } from 'inversify';
+import { injectable } from 'inversify';
 import { Request, Response, NextFunction } from 'express';
 
 import { IRetaxMiddlewareFactory, IRetaxMiddleware } from './interfaces';
 
-import { IServerConfigProxy } from '../configProxy';
+import { IServerConfigProxy, ServerConfigProxy } from '../configProxy';
 import { IInternalConfig } from '../../retax';
 import { IConfigStore } from '../../utils';
 
-@inject('ServerConfigProxy', 'InternalConfigStore')
+@injectable(ServerConfigProxy, 'InternalConfigStore')
 export default class StaticMiddlewareFactory implements IRetaxMiddlewareFactory {
   constructor(
     private _configProxy: IServerConfigProxy,

@@ -35,7 +35,6 @@
   "homepage": "https://github.com/hourliert/retax",
   "dependencies": {
     "builder-ts-library": "~0.0.2",
-    "inversify": "^2.0.0-alpha.6",
     "js-cookie": "^2.1.0",
     "lodash": "^4.6.1",
     "reflect-metadata": "^0.1.3"

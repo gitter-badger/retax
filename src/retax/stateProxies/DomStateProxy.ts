@@ -1,13 +1,13 @@
-import { inject } from 'inversify';
+import { injectable } from 'inversify';
 
 import { IStateProxy, IImmutableState } from './interfaces';
 import AStateConverter from './StateConverter';
 
 import { IInternalConfig } from '../config';
-import { IRetaxConfigProxy } from '../configProxy';
+import { IRetaxConfigProxy, RetaxConfigProxy } from '../configProxy';
 import { IConfigStore } from '../../utils';
 
-@inject('RetaxConfigProxy', 'InternalConfigStore')
+@injectable(RetaxConfigProxy, 'InternalConfigStore')
 export default class DomStateProxy extends AStateConverter implements IStateProxy {
   private _statePromise: Promise<IImmutableState>;
 

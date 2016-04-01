@@ -1,3 +1,4 @@
+import { IKernel } from 'inversify';
 import { Request } from 'express';
 
 import { IBootstrapper } from '../../../utils';
@@ -16,6 +17,7 @@ export interface IIsomorphicTools {
 export interface IRequestBootstrapConfig {
   req: Request;
   isomorphicTools: IIsomorphicTools;
+  kernel: IKernel;
 }
 
 export interface IRequestBootstrapper extends IBootstrapper<

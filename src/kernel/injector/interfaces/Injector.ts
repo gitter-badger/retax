@@ -1,17 +1,11 @@
 import { INewable, IKernelModule } from 'inversify';
 
-export interface IModulesMap {
-  [index: string]: IKernelModule;
-}
-
-export interface IInjectable {}
-
-export interface IInjectDecorator extends Function {
-  (target: INewable<IInjectable>): INewable<IInjectable>;
-}
+export type IModulesMap = Map<INewable<any>, IKernelModule>;
 
 export interface IInjector {
   userModules: IKernelModule[];
-  registerService<T>(name: string, Service: INewable<T>): void;
-  injectService(name: string): IInjectDecorator;
+
+  registerService<T>(Service: INewable<T>): void;
+  injectService<T>(Service: INewable<T>): ClassDecorator;
+  injectActions<T>(Service: INewable<T>): ClassDecorator;
 }

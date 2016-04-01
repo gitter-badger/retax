@@ -7,10 +7,10 @@ import { IServerConfig, serverConfig } from '../config';
 import { IConfigStore, createConfigStore } from '../../utils';
 
 export default function serverModule(kernel: IKernel): void {
-  kernel.bind<IServerBoostrapper>('ServerBootstrapper').to(ServerBootstrapper).inSingletonScope();
-  kernel.bind<IServerConfigProxy>('ServerConfigProxy').to(ServerConfigProxy).inSingletonScope();
-  kernel.bind<IRetaxMiddlewareFactory>('RetaxMiddlewareFactory').to(StaticMiddlewareFactory).inSingletonScope();
-  kernel.bind<IRetaxMiddlewareFactory>('RetaxMiddlewareFactory').to(RenderingMiddlewareFactory).inSingletonScope();
+  kernel.bind<IServerBoostrapper>(ServerBootstrapper).to(ServerBootstrapper).inSingletonScope();
+  kernel.bind<IServerConfigProxy>(ServerConfigProxy).to(ServerConfigProxy).inSingletonScope();
+  kernel.bind<IRetaxMiddlewareFactory>(StaticMiddlewareFactory).to(StaticMiddlewareFactory).inSingletonScope();
+  kernel.bind<IRetaxMiddlewareFactory>(RenderingMiddlewareFactory).to(RenderingMiddlewareFactory).inSingletonScope();
 
   kernel.bind<IConfigStore<IServerConfig>>('ServerConfigStore').toValue(createConfigStore(serverConfig));
 }

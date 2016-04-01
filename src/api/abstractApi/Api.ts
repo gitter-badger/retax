@@ -1,4 +1,4 @@
-import { inject } from 'inversify';
+import { injectable } from 'inversify';
 import fetch from 'isomorphic-fetch';
 
 import {
@@ -12,9 +12,9 @@ import {
 } from './interfaces';
 import { HTTP_METHODS } from './httpMethods';
 
-import { IReduxFacade, IRetaxConfigProxy } from '../../retax';
+import { IReduxFacade, IRetaxConfigProxy, ReduxFacade, RetaxConfigProxy } from '../../retax';
 
-@inject('ReduxFacade', 'RetaxConfigProxy')
+@injectable(ReduxFacade, RetaxConfigProxy)
 abstract class AApi implements IApi {
   public baseUrl: string;
   public routes: IRoutesMap;
@@ -62,6 +62,8 @@ abstract class AApi implements IApi {
     { method, body, headers }: IFetchConfig = { method: HTTP_METHODS.GET }
   ): RequestInit {
     const token = this._reduxFacade.authToken;
+
+    console.log(token);
 
     const isJson = typeof body === 'object' && !(body instanceof FormData);
     const bodyToSend = isJson ? JSON.stringify(body) : body;

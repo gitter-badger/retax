@@ -1,10 +1,10 @@
-import { inject, Kernel, IKernelModule, IKernel } from 'inversify';
+import { injectable, Kernel, IKernelModule, IKernel } from 'inversify';
 
 import { IKernelFactory } from './interfaces';
 
-import { IInjector } from '../injector';
+import { IInjector, Injector } from '../injector';
 
-@inject('Injector')
+@injectable(Injector)
 export default class KernelFactory implements IKernelFactory {
   constructor(
     private _injector: IInjector
@@ -13,8 +13,9 @@ export default class KernelFactory implements IKernelFactory {
   public create(modules: IKernelModule[]): IKernel {
     const userModules = this._injector.userModules;
 
-    return new Kernel({
-      modules: modules.concat(userModules),
-    });
+    const kernel = new Kernel();
+    kernel.load(...modules.concat(userModules));
+
+    return kernel;
   }
 }

@@ -1,19 +1,21 @@
-import { inject } from 'inversify';
+import { injectable } from 'inversify';
 import { render } from 'react-dom';
 import { browserHistory } from 'react-router';
 
+import { IDomBootstrapConfig } from './interfaces';
+
 import { ABootstrapper } from '../../utils/bootstrap';
 
-import { IRetaxConfigProxy } from '../configProxy';
-import { IStateProxy } from '../stateProxies';
-import { ICookieProxy } from '../cookieProxies';
-import { IReduxFacade } from '../redux';
-import { IJSXBuilder } from '../JSXBuilders';
+import { IRetaxConfigProxy, RetaxConfigProxy } from '../configProxy';
+import { IStateProxy, DomStateProxy } from '../stateProxies';
+import { ICookieProxy, DomCookieProxy } from '../cookieProxies';
+import { IReduxFacade, ReduxFacade } from '../redux';
+import { IJSXBuilder, ClientBuilder } from '../JSXBuilders';
 import { IRetaxConfig } from '../config';
-import { IReactRouterFacade } from '../reactRouter';
+import { IReactRouterFacade, ReactRouterFacade } from '../reactRouter';
 
-@inject('RetaxConfigProxy', 'DomStateProxy', 'DomCookieProxy', 'ReduxFacade', 'ClientJSXBuilder', 'ReactRouterFacade')
-export default class DomBootstrapper extends ABootstrapper<IRetaxConfig, Element, Promise<void>> {
+@injectable(RetaxConfigProxy, DomStateProxy, DomCookieProxy, ReduxFacade, ClientBuilder, ReactRouterFacade)
+export default class DomBootstrapper extends ABootstrapper<IRetaxConfig, IDomBootstrapConfig, Promise<void>> {
   constructor(
     private _configProxy: IRetaxConfigProxy,
     private _stateProxy: IStateProxy,
@@ -29,7 +31,7 @@ export default class DomBootstrapper extends ABootstrapper<IRetaxConfig, Element
     this._configProxy.config = config;
   }
 
-  public async bootstrap(element: Element): Promise<void> {
+  public async bootstrap({ element, kernel }: IDomBootstrapConfig): Promise<void> {
     // retrieve the auth token from cookies
     const authToken = this._cookieProxy.getAuthToken();
 
@@ -55,6 +57,7 @@ export default class DomBootstrapper extends ABootstrapper<IRetaxConfig, Element
 
     // build the app
     const app = this._JSXBuilder.build({
+      kernel,
       store,
       renderProps,
     });

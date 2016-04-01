@@ -1,4 +1,4 @@
-import { inject } from 'inversify';
+import { injectable } from 'inversify';
 import { combineReducers, createStore, applyMiddleware, compose } from 'redux';
 import { routerReducer, routerMiddleware, syncHistoryWithStore } from 'react-router-redux';
 
@@ -6,12 +6,12 @@ import { IReduxFacade, ICreateStoreConfig } from './interfaces';
 import * as internalReducers from './reducers';
 import { setAuthToken } from './actionsCreators';
 
-import { IRetaxConfigProxy } from '../configProxy';
+import { IRetaxConfigProxy, RetaxConfigProxy } from '../configProxy';
 import { IImmutableState } from '../stateProxies';
 
 import { IReducersMap } from '../config';
 
-@inject('RetaxConfigProxy')
+@injectable(RetaxConfigProxy)
 export default class ReduxFacade implements IReduxFacade {
   private _store: Redux.Store;
 

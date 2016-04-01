@@ -1,4 +1,4 @@
-import { IAssets } from '../../bootstrap';
+import { IAssets } from '../../../bootstrap';
 
 export interface IHtmlProps {
   store: Redux.Store;
