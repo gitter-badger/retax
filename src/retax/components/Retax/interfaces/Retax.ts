@@ -1,4 +1,3 @@
-import * as React from 'react';
 import { IKernel } from 'inversify';
 
 export interface IRetaxChildContext {
@@ -6,4 +5,3 @@ export interface IRetaxChildContext {
 }
 
 export interface IRetaxProps extends IRetaxChildContext {}
-export interface IRetaxContextTypes extends React.ValidationMap<any> {}

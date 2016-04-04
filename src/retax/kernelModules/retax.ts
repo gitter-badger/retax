@@ -6,7 +6,7 @@ import { IReactRouterFacade, ReactRouterFacade } from '../reactRouter';
 
 import { IRetaxConfig, retaxConfig } from '../config';
 import { IConfigStore, createConfigStore } from '../../utils';
-import { Retax } from '../components';
+import { RetaxProvider } from '../components';
 
 export default function retaxModule(kernel: IKernel): void {
   kernel.bind<IRetaxConfigProxy>(RetaxConfigProxy).to(RetaxConfigProxy).inSingletonScope();
@@ -16,5 +16,5 @@ export default function retaxModule(kernel: IKernel): void {
   kernel.bind<IConfigStore<IRetaxConfig>>('RetaxConfigStore').toValue(createConfigStore(retaxConfig));
 
   // constructor
-  kernel.bind<INewable<Retax>>('RetaxComponent').toConstructor(Retax);
+  kernel.bind<INewable<RetaxProvider>>('RetaxProvider').toConstructor(RetaxProvider);
 }

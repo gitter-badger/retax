@@ -15,4 +15,9 @@ interface ObjectConstructor {
    * Return in a array all the values of an object
    */
   values<T>(map: { [key: number]: T; }): T[];
+
+  /**
+   * Return in a array all the entries (key, value) of an object
+   */
+  entries<T>(map: { [key: string]: T; }): Array<[ string, T ]>;
 }

@@ -1,10 +1,12 @@
-import * as React from 'react';
-import { injectable, IKernelModule, INewable } from 'inversify';
+import { IKernelModule } from 'inversify';
 
-import { IInjector, IModulesMap } from './interfaces';
+import {
+  IInjector,
+  IUserServiceConstructor,
+} from './interfaces';
 
 export default class Injector implements IInjector {
-  private _modules: IModulesMap = new Map<INewable<any>, IKernelModule>();
+  private _modules: Map<IUserServiceConstructor, IKernelModule> = new Map<IUserServiceConstructor, IKernelModule>();
 
   get userModules(): IKernelModule[] {
     const res: IKernelModule[] = [];
@@ -16,51 +18,13 @@ export default class Injector implements IInjector {
     return res;
   }
 
-  public registerService<T>(Service: INewable<T>): void {
+  public registerService(Service: IUserServiceConstructor): void {
     this._modules.set(Service, this.createKernelModule(Service));
   }
 
-  public injectService<T>(Service: INewable<T>): ClassDecorator {
-    this.registerService(Service);
-
-    return (Target: typeof Object) => {
-
-      @injectable(Service)
-      class WithApi extends Target {
-        constructor(api: T) {
-          super();
-          this['testApi'] = api;
-        }
-      }
-
-      return WithApi;
-    };
-  }
-
-  public injectActions<T>(Service: INewable<T>): ClassDecorator {
-    this.registerService(Service);
-
-    return (ComposedComponent: any) => {
-      class Super extends React.Component<void, void> {
-        public static contextTypes: any = {
-          kernel: React.PropTypes.any,
-        };
-
-        public render() {
-          const kernel = this.context['kernel'];
-          const actions = kernel.get(Service);
-
-          return React.createElement(ComposedComponent, Object.assign({ actions }, this.props));
-        }
-      }
-
-      return Super;
-    };
-  }
-
-  private createKernelModule<T>(Service: INewable<T>): IKernelModule {
+  private createKernelModule(Service: IUserServiceConstructor): IKernelModule {
     return kernel => {
-      kernel.bind<T>(Service).to(Service);
+      kernel.bind(Service).to(Service);
     };
   }
 }

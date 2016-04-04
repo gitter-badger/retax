@@ -7,33 +7,33 @@ import { RouterContext } from 'react-router';
 
 import { IJSXBuilder, IBuilderConfig } from './interfaces';
 
-import { Html, Retax } from '../components';
+import { Html, RetaxProvider } from '../components';
 import { IRetaxConfigProxy, RetaxConfigProxy } from '../configProxy';
 
-@injectable(RetaxConfigProxy, 'HtmlComponent', 'RetaxComponent')
+@injectable(RetaxConfigProxy, 'HtmlComponent', 'RetaxProvider')
 export default class ServerBuilder implements IJSXBuilder {
   constructor(
     private _retaxConfigProxy: IRetaxConfigProxy,
     private HtmlComponent: typeof Html,
-    private RetaxComponent: typeof Retax
+    private RetaxProviderComponent: typeof RetaxProvider
   ) {}
 
   public build(options: IBuilderConfig): JSX.Element {
-    const { HtmlComponent, RetaxComponent } = this;
+    const { HtmlComponent, RetaxProviderComponent } = this;
     const { kernel, store, renderProps, isomorphicTools } = options;
     const { react: { appendChild } } = this._retaxConfigProxy.config;
 
     const assets = isomorphicTools && isomorphicTools.assets();
 
     const rootComponent = (
-      <RetaxComponent kernel={kernel}>
+      <RetaxProviderComponent kernel={kernel}>
         <Provider store={store} key="provider">
           <div className="flex layout vertical">
             <RouterContext {...renderProps} />
             {appendChild}
           </div>
         </Provider>
-      </RetaxComponent>
+      </RetaxProviderComponent>
     );
 
     return (

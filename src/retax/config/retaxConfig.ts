@@ -4,7 +4,6 @@ const retaxConfig: IRetaxConfig = {
   api: {
     authHeaderName: 'auth_token',
     baseUrl: '',
-    routes: {},
   },
   client: {
     keepInitialState: false,

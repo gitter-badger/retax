@@ -1,1 +1,2 @@
-export { default as Retax } from './Retax';
+export { default as RetaxProvider } from './RetaxProvider';
+export { default as RetaxConsumer } from './RetaxConsumer';
