@@ -1,21 +1,21 @@
 import * as React from 'react';
+import * as _ from 'lodash';
 import { injectable, Kernel } from 'inversify';
 
 import { IEnhancer, IEnhancedComponentContextType, ISplitEntriesReturn } from './interfaces';
 
-import { IUserService, IInjectableUserServiceMap } from '../../kernel';
-import { mapValuesToKeys } from '../../utils';
 import {
-  IApiRuntimeConfig, IApiConstructor, IRoutesMap,
-  IActionsCreatorConstructor,
-} from '../../components';
+  IUserService, IInjectableUserServiceMap, IUserServiceMap,
+  IApiServiceRuntimeConfig, IApiServiceConstructor,
+  IActionsCreatorServiceConstructor,
+} from '../../kernel';
 import { RetaxConsumer } from '../../retax';
 
 export default class Enhancer implements IEnhancer {
-  public extendApi<R extends IRoutesMap>(
-    Target: IApiConstructor<R>,
-    config: IApiRuntimeConfig<R>
-  ): IApiConstructor<R> {
+  public extendApi(
+    Target: IApiServiceConstructor,
+    config: IApiServiceRuntimeConfig
+  ): IApiServiceConstructor {
 
     class EnhancedApi extends Target {
       constructor(...args: any[]) {
@@ -28,9 +28,9 @@ export default class Enhancer implements IEnhancer {
   }
 
   public extendActionsCreator(
-    Target: IActionsCreatorConstructor,
+    Target: IActionsCreatorServiceConstructor,
     injectableEntries: IInjectableUserServiceMap
-  ): IActionsCreatorConstructor {
+  ): IActionsCreatorServiceConstructor {
 
     const { keys, values } = this.splitEntries(injectableEntries);
 
@@ -38,7 +38,8 @@ export default class Enhancer implements IEnhancer {
     class EnhancedActionsCreator extends Target {
       constructor(...args: IUserService[]) {
         super(...args);
-        this.configure({ apis: mapValuesToKeys(keys, args) });
+
+        this.configure({ apis: _.zipObject<IUserServiceMap>(keys, args) });
       }
     }
 
@@ -66,7 +67,7 @@ export default class Enhancer implements IEnhancer {
 
         return React.createElement(
           ComposedComponent,
-          Object.assign(mapValuesToKeys(keys, services), this.props)
+          Object.assign(_.zipObject<IUserServiceMap>(keys, services), this.props)
         );
       }
     }

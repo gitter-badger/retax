@@ -1,5 +1,5 @@
 import { IServerConfig } from './interfaces';
-import { retaxConfig } from '../../retax';
+import { retaxConfig } from '../../core';
 
 const serverConfig: IServerConfig = {
   isomorphicTools: undefined,

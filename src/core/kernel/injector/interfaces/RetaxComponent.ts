@@ -1,4 +1,4 @@
-import { IInjectableUserServiceMap } from '../../../kernel';
+import { IInjectableUserServiceMap } from './Injector';
 
 export interface IRetaxComponentRuntimeConfig {
   actionsCreators: IInjectableUserServiceMap;

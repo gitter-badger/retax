@@ -1,6 +1,6 @@
 import { injectable } from 'inversify';
 
-import { ABootstrapper } from '../../utils/bootstrap';
+import { ABootstrapper } from '../../core';
 
 import { IServerConfigProxy, ServerConfigProxy } from '../configProxy';
 import { IServerConfig } from '../config';

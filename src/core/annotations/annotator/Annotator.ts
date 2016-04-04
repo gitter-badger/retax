@@ -4,15 +4,13 @@ import { injectable } from 'inversify';
 import { IAnnotator } from './interfaces';
 
 import { Enhancer, IEnhancer } from '../enhancer';
-
-import { Injector, IInjector } from '../../kernel';
 import {
-  IApiRuntimeConfig, IApiConstructor, IRoutesMap,
-  IActionsCreatorConstructor,
-  IActionsCreatorRuntimeConfig,
+  Injector, IInjector,
+  IApiServiceRuntimeConfig, IApiServiceConstructor,
+  IActionsCreatorServiceConstructor,
+  IActionsCreatorServiceRuntimeConfig,
   IRetaxComponentRuntimeConfig,
-} from '../../components';
-
+} from '../../kernel';
 
 @injectable(Injector, Enhancer)
 export default class Annotator implements IAnnotator {
@@ -33,8 +31,8 @@ export default class Annotator implements IAnnotator {
     };
   }
 
-  public Api<R extends IRoutesMap>(config: IApiRuntimeConfig<R>): ClassDecorator {
-    return (Target: IApiConstructor<R>) => {
+  public Api(config: IApiServiceRuntimeConfig): ClassDecorator {
+    return (Target: IApiServiceConstructor) => {
 
       const EnhancedTarget = this._enhancer.extendApi(Target, config);
       this._injector.registerService(EnhancedTarget);
@@ -43,8 +41,8 @@ export default class Annotator implements IAnnotator {
     };
   }
 
-  public ActionsCreator(config: IActionsCreatorRuntimeConfig): ClassDecorator {
-    return (Target: IActionsCreatorConstructor) => {
+  public ActionsCreator(config: IActionsCreatorServiceRuntimeConfig): ClassDecorator {
+    return (Target: IActionsCreatorServiceConstructor) => {
 
       const EnhancedTarget = this._enhancer.extendActionsCreator(Target, config.apis);
       this._injector.registerService(EnhancedTarget);

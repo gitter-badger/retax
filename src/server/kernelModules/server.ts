@@ -4,7 +4,7 @@ import { IServerBoostrapper, ServerBootstrapper } from '../bootstrap';
 import { IServerConfigProxy, ServerConfigProxy } from '../configProxy';
 import { IRetaxMiddlewareFactory, StaticMiddlewareFactory, RenderingMiddlewareFactory } from '../middlewares';
 import { IServerConfig, serverConfig } from '../config';
-import { IConfigStore, createConfigStore } from '../../utils';
+import { IConfigStore, createConfigStore } from '../../core';
 
 export default function serverModule(kernel: IKernel): void {
   kernel.bind<IServerBoostrapper>(ServerBootstrapper).to(ServerBootstrapper).inSingletonScope();

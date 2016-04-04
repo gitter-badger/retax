@@ -1,4 +1,4 @@
-import { IBootstrapper } from '../../../utils';
+import { IBootstrapper } from '../../../core';
 import { IServerConfig } from '../../config';
 import { IRetaxMiddleware } from '../../middlewares';
 

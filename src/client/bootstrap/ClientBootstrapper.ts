@@ -1,12 +1,12 @@
 import { injectable } from 'inversify';
 
-import { ABootstrapper } from '../../utils/bootstrap';
+import { ABootstrapper } from '../../core';
 
 import {
   internalModule, domModule, retaxModule,
   IRetaxConfig, IDomBootstrapper, DomBootstrapper,
-} from '../../retax';
-import { IKernelFactory, KernelFactory } from '../../kernel';
+} from '../../core';
+import { IKernelFactory, KernelFactory } from '../../core';
 
 @injectable(KernelFactory)
 export default class ClientBootstrapper extends ABootstrapper<IRetaxConfig, Element, Promise<void>> {

@@ -2,17 +2,18 @@ import 'reflect-metadata';
 
 import { Kernel } from 'inversify';
 
-import { kernelModule } from './kernel';
+import {
+  kernelModule,
+  annotationsModule, Annotator, IAnnotator,
+  internalModule,
+} from './core';
 import { serverModule, IServerBoostrapper, ServerBootstrapper } from './server';
 import { clientModule, IClientBootstrapper, ClientBootstrapper } from './client';
-import { annotationsModule, Annotator, IAnnotator } from './annotations';
 import {
   componentsModule,
   AbstractApi as AbstractApiClass,
   AbstractActionsCreator as AbstractActionsCreatorClass,
 } from './components';
-
-import { internalModule } from './retax';
 
 const kernel = new Kernel();
 kernel.load(kernelModule, annotationsModule, componentsModule, clientModule, serverModule, internalModule);

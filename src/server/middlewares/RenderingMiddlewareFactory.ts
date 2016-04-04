@@ -4,8 +4,11 @@ import { Request, Response, NextFunction } from 'express';
 import { IRetaxMiddlewareFactory, IRetaxMiddleware } from './interfaces';
 
 import { IServerConfigProxy, ServerConfigProxy } from '../configProxy';
-import { IRequestBootstrapper, internalModule, retaxModule, requestModule, RequestBootstrapper } from '../../retax';
-import { IKernelFactory, KernelFactory } from '../../kernel';
+import {
+  IRequestBootstrapper, RequestBootstrapper,
+  IKernelFactory, KernelFactory,
+  internalModule, retaxModule, requestModule,
+} from '../../core';
 
 @injectable(ServerConfigProxy, KernelFactory)
 export default class RenderingMiddlewareFactory implements IRetaxMiddlewareFactory {

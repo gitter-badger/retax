@@ -1,4 +1,4 @@
-import { IRetaxConfig, IIsomorphicTools } from '../../../retax';
+import { IRetaxConfig, IIsomorphicTools } from '../../../core';
 
 export interface IServerConfig {
   serverRendering?: boolean;

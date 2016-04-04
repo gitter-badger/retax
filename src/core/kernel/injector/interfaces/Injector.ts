@@ -1,7 +1,7 @@
 import { IKernelModule } from 'inversify';
 
 export interface IUserServiceConstructor {
-  new(...args: IUserService[]): IUserService;
+  new(...args: any[]): IUserService;
 }
 export interface IUserService {
   configure<T>(config: T): void;
@@ -12,7 +12,8 @@ export interface IInjectableUserServiceMap extends HashMap<IUserServiceConstruct
 
 export interface IInjector {
   userModules: IKernelModule[];
-  registerService(config: IUserServiceConstructor): void;
+
+  registerService(service: IUserServiceConstructor): void;
 }
 
 

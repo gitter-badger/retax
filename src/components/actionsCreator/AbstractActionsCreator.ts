@@ -1,11 +1,14 @@
-import { IActionsCreator, IActionsCreatorConfig, IExportReturn} from './interfaces';
+import { IActionsCreator, IExportReturn } from './interfaces';
 
-import { IUserServiceMap } from '../../kernel';
+import {
+  IActionsCreatorServiceConfig,
+  IUserServiceMap,
+} from '../../core';
 
 abstract class AbstractActionsCreator implements IActionsCreator {
   public apis: IUserServiceMap;
 
-  public configure(config: IActionsCreatorConfig): void {
+  public configure(config: IActionsCreatorServiceConfig): void {
     this.apis = config.apis;
   }
 

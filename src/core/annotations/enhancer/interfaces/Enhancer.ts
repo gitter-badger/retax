@@ -1,11 +1,11 @@
 import * as React from 'react';
 import { IKernel } from 'inversify';
 
-import { IUserServiceConstructor, IInjectableUserServiceMap } from '../../../kernel';
 import {
-  IApiRuntimeConfig, IApiConstructor, IRoutesMap,
-  IActionsCreatorConstructor,
-} from '../../../components';
+  IUserServiceConstructor, IInjectableUserServiceMap,
+  IApiServiceRuntimeConfig, IApiServiceConstructor,
+  IActionsCreatorServiceConstructor,
+} from '../../../kernel';
 import { RetaxConsumer } from '../../../retax';
 
 export interface IEnhancedComponentContextType {
@@ -13,15 +13,15 @@ export interface IEnhancedComponentContextType {
 }
 
 export interface IEnhancer {
-  extendApi<R extends IRoutesMap>(
-    Target: IApiConstructor<R>,
-    config: IApiRuntimeConfig<R>
-  ): IApiConstructor<R>;
+  extendApi(
+    Target: IApiServiceConstructor,
+    config: IApiServiceRuntimeConfig
+  ): IApiServiceConstructor;
 
   extendActionsCreator(
-    Target: IActionsCreatorConstructor,
+    Target: IActionsCreatorServiceConstructor,
     injectableEntries: IInjectableUserServiceMap
-  ): IActionsCreatorConstructor;
+  ): IActionsCreatorServiceConstructor;
 
   extendComponent(
     ComposedComponent: React.ComponentClass<any>,

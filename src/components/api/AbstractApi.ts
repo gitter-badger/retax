@@ -3,22 +3,24 @@ import fetch from 'isomorphic-fetch';
 
 import {
   IApi,
-  IApiRuntimeConfig,
   IUrlConfig,
   IMethodConfig,
   IFetchConfig,
   IHeader,
-  IRoutesMap,
   HttpMethod,
 } from './interfaces';
 import { HTTP_METHODS } from './httpMethods';
 
-import { IReduxFacade, IRetaxConfigProxy, ReduxFacade, RetaxConfigProxy } from '../../retax';
+import {
+  IReduxFacade, ReduxFacade,
+  IRetaxConfigProxy, RetaxConfigProxy,
+  IRoutesMap, IApiServiceRuntimeConfig,
+} from '../../core';
 
 
 @injectable(ReduxFacade, RetaxConfigProxy)
-abstract class AbstractApi<R extends IRoutesMap> implements IApi<R> {
-  public routes: R;
+abstract class AbstractApi implements IApi {
+  public routes: IRoutesMap;
   public baseUrl: string;
 
   private _authHeaderName: string;
@@ -32,7 +34,7 @@ abstract class AbstractApi<R extends IRoutesMap> implements IApi<R> {
     this.baseUrl = baseUrl;
   }
 
-  public configure(config: IApiRuntimeConfig<R>): void {
+  public configure(config: IApiServiceRuntimeConfig): void {
     this.baseUrl = config.baseUrl || this.baseUrl;
     this.routes = config.routes;
   }

@@ -1,5 +1,4 @@
-import { IBootstrapper } from '../../../utils';
-import { IRetaxConfig } from '../../../retax';
+import { IBootstrapper, IRetaxConfig } from '../../../core';
 
 export interface IClientBootstrapper extends IBootstrapper<
   IRetaxConfig,

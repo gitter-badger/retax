@@ -4,8 +4,7 @@ import { Request, Response, NextFunction } from 'express';
 import { IRetaxMiddlewareFactory, IRetaxMiddleware } from './interfaces';
 
 import { IServerConfigProxy, ServerConfigProxy } from '../configProxy';
-import { IInternalConfig } from '../../retax';
-import { IConfigStore } from '../../utils';
+import { IInternalConfig, IConfigStore } from '../../core';
 
 @injectable(ServerConfigProxy, 'InternalConfigStore')
 export default class StaticMiddlewareFactory implements IRetaxMiddlewareFactory {
