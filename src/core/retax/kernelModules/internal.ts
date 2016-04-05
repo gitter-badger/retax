@@ -1,8 +1,0 @@
-import { IKernel } from 'inversify';
-
-import { IInternalConfig, internalConfig } from '../config';
-import { IConfigStore, createConfigStore } from '../../utils';
-
-export default function internalModule(kernel: IKernel): void {
-  kernel.bind<IConfigStore<IInternalConfig>>('InternalConfigStore').toValue(createConfigStore(internalConfig));
-}

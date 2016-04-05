@@ -1,22 +1,24 @@
 import * as React from 'react';
-import { injectable } from 'inversify';
+import { injectable, inject } from 'inversify';
 
 import { IAnnotator } from './interfaces';
 
-import { Enhancer, IEnhancer } from '../enhancer';
+import { ENHANCER, IEnhancer } from '../enhancer';
 import {
-  Injector, IInjector,
+  INJECTOR, IInjector,
+  IInjectableUserServiceMap,
+  IUserServiceConstructor,
   IApiServiceRuntimeConfig, IApiServiceConstructor,
   IActionsCreatorServiceConstructor,
   IActionsCreatorServiceRuntimeConfig,
   IRetaxComponentRuntimeConfig,
 } from '../../kernel';
 
-@injectable(Injector, Enhancer)
+@injectable()
 export default class Annotator implements IAnnotator {
   constructor(
-    private _injector: IInjector,
-    private _enhancer: IEnhancer
+    @inject(INJECTOR) private _injector: IInjector,
+    @inject(ENHANCER) private _enhancer: IEnhancer
   ) {}
 
   public action(): MethodDecorator {
@@ -26,8 +28,6 @@ export default class Annotator implements IAnnotator {
       metadata.push(key);
 
       Reflect.defineMetadata('retax:actions', metadata, target);
-
-      descriptor.enumerable = true;
     };
   }
 
@@ -35,7 +35,7 @@ export default class Annotator implements IAnnotator {
     return (Target: IApiServiceConstructor) => {
 
       const EnhancedTarget = this._enhancer.extendApi(Target, config);
-      this._injector.registerService(EnhancedTarget);
+      this._injector.deferRegister(EnhancedTarget);
 
       return EnhancedTarget;
     };
@@ -43,9 +43,13 @@ export default class Annotator implements IAnnotator {
 
   public ActionsCreator(config: IActionsCreatorServiceRuntimeConfig): ClassDecorator {
     return (Target: IActionsCreatorServiceConstructor) => {
+      const { keys, values } = this._splitEntries(config.apis);
 
-      const EnhancedTarget = this._enhancer.extendActionsCreator(Target, config.apis);
-      this._injector.registerService(EnhancedTarget);
+      const servicesId = this._injector.registerServicesList(values);
+
+      const EnhancedTarget = this._enhancer.extendActionsCreator(Target, keys, servicesId);
+
+      this._injector.deferRegister(EnhancedTarget);
 
       return EnhancedTarget;
     };
@@ -53,8 +57,19 @@ export default class Annotator implements IAnnotator {
 
   public RetaxComponent(config: IRetaxComponentRuntimeConfig): ClassDecorator {
     return (ComposedComponent: React.ComponentClass<any>) => {
+      const { keys, values } = this._splitEntries(config.actionsCreators);
 
-      return this._enhancer.extendComponent(ComposedComponent, config.actionsCreators);
+      const servicesId = this._injector.registerServicesList(values);
+
+      return this._enhancer.extendComponent(ComposedComponent, keys, servicesId);
     };
+  }
+
+  private _splitEntries(injectableEntries: IInjectableUserServiceMap): { keys: string[], values: IUserServiceConstructor[] } {
+    const entries = Object.entries(injectableEntries);
+    const keys = entries.map(e => e[0]);
+    const values = entries.map(e => e[1]);
+
+    return { keys, values };
   }
 }

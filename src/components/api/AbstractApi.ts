@@ -1,4 +1,3 @@
-import { injectable } from 'inversify';
 import fetch from 'isomorphic-fetch';
 
 import {
@@ -12,13 +11,11 @@ import {
 import { HTTP_METHODS } from './httpMethods';
 
 import {
-  IReduxFacade, ReduxFacade,
-  IRetaxConfigProxy, RetaxConfigProxy,
   IRoutesMap, IApiServiceRuntimeConfig,
+  IReduxFacade,
+  IRetaxConfigProxy,
 } from '../../core';
 
-
-@injectable(ReduxFacade, RetaxConfigProxy)
 abstract class AbstractApi implements IApi {
   public routes: IRoutesMap;
   public baseUrl: string;
@@ -27,9 +24,9 @@ abstract class AbstractApi implements IApi {
 
   constructor(
     private _reduxFacade: IReduxFacade,
-    configProxy: IRetaxConfigProxy
+    private _configProxy: IRetaxConfigProxy
   ) {
-    const { authHeaderName, baseUrl } = configProxy.config.api;
+    const { authHeaderName, baseUrl } = _configProxy.config.api;
     this._authHeaderName = authHeaderName;
     this.baseUrl = baseUrl;
   }

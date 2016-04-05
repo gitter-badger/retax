@@ -1,25 +1,34 @@
 import * as React from 'react';
 import * as _ from 'lodash';
-import { injectable, Kernel } from 'inversify';
+import { inject, multiInject, injectable, Kernel } from 'inversify';
 
-import { IEnhancer, IEnhancedComponentContextType, ISplitEntriesReturn } from './interfaces';
+import { IEnhancer, IEnhancedComponentContextType } from './interfaces';
 
 import {
-  IUserService, IInjectableUserServiceMap, IUserServiceMap,
+  IUserService, IUserServiceMap,
   IApiServiceRuntimeConfig, IApiServiceConstructor,
   IActionsCreatorServiceConstructor,
 } from '../../kernel';
-import { RetaxConsumer } from '../../retax';
+import {
+  RetaxConsumer,
+  IRetaxConfigProxy, RETAX_CONFIG_PROXY,
+  IReduxFacade, REDUX_FACADE,
+} from '../../retax';
 
+@injectable()
 export default class Enhancer implements IEnhancer {
   public extendApi(
     Target: IApiServiceConstructor,
     config: IApiServiceRuntimeConfig
   ): IApiServiceConstructor {
 
+    @injectable()
     class EnhancedApi extends Target {
-      constructor(...args: any[]) {
-        super(...args);
+      constructor(
+        @inject(REDUX_FACADE) reduxFacade: IReduxFacade,
+        @inject(RETAX_CONFIG_PROXY) configProxy: IRetaxConfigProxy
+      ) {
+        super(reduxFacade, configProxy);
         this.configure(config);
       }
     }
@@ -29,17 +38,18 @@ export default class Enhancer implements IEnhancer {
 
   public extendActionsCreator(
     Target: IActionsCreatorServiceConstructor,
-    injectableEntries: IInjectableUserServiceMap
+    keys: string[],
+    servicesId: Symbol
   ): IActionsCreatorServiceConstructor {
 
-    const { keys, values } = this.splitEntries(injectableEntries);
-
-    @injectable(...values)
+    @injectable()
     class EnhancedActionsCreator extends Target {
-      constructor(...args: IUserService[]) {
-        super(...args);
+      constructor(
+        @multiInject(servicesId) services: IUserService[]
+      ) {
+        super();
 
-        this.configure({ apis: _.zipObject<IUserServiceMap>(keys, args) });
+        this.configure({ apis: _.zipObject<IUserServiceMap>(keys, services) });
       }
     }
 
@@ -48,10 +58,9 @@ export default class Enhancer implements IEnhancer {
 
   public extendComponent(
     ComposedComponent: React.ComponentClass<any>,
-    injectableEntries: IInjectableUserServiceMap
+    keys: string[],
+    servicesId: Symbol
   ): typeof RetaxConsumer {
-
-    const { keys, values } = this.splitEntries(injectableEntries);
 
     class RetaxComponent extends RetaxConsumer<void, void> {
       public static displayName: string = `WithServices(${ComposedComponent.displayName || 'Nameless'})`;
@@ -63,7 +72,8 @@ export default class Enhancer implements IEnhancer {
 
       public render(): JSX.Element {
         const { kernel } = this.context;
-        const services = values.map(Service => kernel.get<IUserService>(Service));
+
+        const services = kernel.get<IUserService[]>(servicesId);
 
         return React.createElement(
           ComposedComponent,
@@ -73,13 +83,5 @@ export default class Enhancer implements IEnhancer {
     }
 
     return RetaxComponent;
-  }
-
-  private splitEntries(injectableEntries: IInjectableUserServiceMap): ISplitEntriesReturn {
-    const entries = Object.entries(injectableEntries);
-    const keys = entries.map(e => e[0]);
-    const values = entries.map(e => e[1]);
-
-    return { keys, values };
   }
 }

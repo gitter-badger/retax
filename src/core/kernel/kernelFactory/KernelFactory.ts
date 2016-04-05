@@ -1,13 +1,13 @@
-import { injectable, Kernel, IKernelModule, IKernel } from 'inversify';
+import { injectable, inject, Kernel, IKernelModule, IKernel } from 'inversify';
 
 import { IKernelFactory } from './interfaces';
 
-import { IInjector, Injector } from '../injector';
+import { IInjector, INJECTOR } from '../injector';
 
-@injectable(Injector)
+@injectable()
 export default class KernelFactory implements IKernelFactory {
   constructor(
-    private _injector: IInjector
+    @inject(INJECTOR) private _injector: IInjector
   ) {}
 
   public create(modules: IKernelModule[]): IKernel {

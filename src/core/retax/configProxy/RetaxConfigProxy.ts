@@ -1,10 +1,16 @@
-import { injectable } from 'inversify';
+import { injectable, inject } from 'inversify';
 
-import { IRetaxConfig } from '../config';
-import { AConfigProxy } from '../../utils/configProxy';
+import { IRetaxConfig, RETAX_CONFIG_STORE } from '../config';
+import { AConfigProxy, IConfigStore } from '../../../utils';
 
-@injectable('RetaxConfigStore')
+@injectable()
 export default class RetaxConfigProxy extends AConfigProxy<IRetaxConfig> {
+  constructor(
+    @inject(RETAX_CONFIG_STORE) store: IConfigStore<IRetaxConfig>
+  ) {
+    super(store);
+  }
+
   public evaluateConfig(store: Redux.Store, userAgent: string): IRetaxConfig {
     const evaluatedConfig = super.config;
     const { router } = evaluatedConfig;

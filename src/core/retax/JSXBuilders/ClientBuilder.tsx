@@ -1,23 +1,21 @@
-import { injectable } from 'inversify';
-/* tslint:disable:no-unused-variable */
+import { injectable, inject } from 'inversify';
 import * as React from 'react';
-/* tslint:enable:no-unused-variable */
 import { Provider } from 'react-redux';
 import { Router } from 'react-router';
 
 import { IJSXBuilder, IBuilderConfig } from './interfaces';
 
-import { RetaxProvider } from '../components';
-import { IRetaxConfigProxy, RetaxConfigProxy } from '../configProxy';
+import { RetaxProvider, RETAX_PROVIDER_COMPONENT } from '../components';
+import { IRetaxConfigProxy, RETAX_CONFIG_PROXY } from '../configProxy';
 
-@injectable(RetaxConfigProxy, 'RetaxProvider')
+@injectable()
 export default class ClientBuilder implements IJSXBuilder {
   constructor(
-    private _configProxy: IRetaxConfigProxy,
-    private RetaxProviderComponent: typeof RetaxProvider
+    @inject(RETAX_CONFIG_PROXY) private _configProxy: IRetaxConfigProxy,
+    @inject(RETAX_PROVIDER_COMPONENT) private RetaxProviderComponent: typeof RetaxProvider
   ) {}
 
-  public build(options: IBuilderConfig): JSX.Element {
+  public build(options: IBuilderConfig): React.ReactElement<any> {
     const { RetaxProviderComponent} = this;
     const { kernel, store, renderProps } = options;
     const { react: { appendChild } } = this._configProxy.config;

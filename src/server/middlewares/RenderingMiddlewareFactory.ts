@@ -1,20 +1,20 @@
-import { injectable } from 'inversify';
+import { injectable, inject } from 'inversify';
 import { Request, Response, NextFunction } from 'express';
 
 import { IRetaxMiddlewareFactory, IRetaxMiddleware } from './interfaces';
 
-import { IServerConfigProxy, ServerConfigProxy } from '../configProxy';
+import { IServerConfigProxy, SERVER_CONFIG_PROXY } from '../configProxy';
 import {
-  IRequestBootstrapper, RequestBootstrapper,
-  IKernelFactory, KernelFactory,
-  internalModule, retaxModule, requestModule,
+  IRequestBootstrapper, REQUEST_BOOTSTRAPPER,
+  IKernelFactory, KERNEL_FACTORY,
+  retaxServerModule,
 } from '../../core';
 
-@injectable(ServerConfigProxy, KernelFactory)
+@injectable()
 export default class RenderingMiddlewareFactory implements IRetaxMiddlewareFactory {
   constructor(
-    private _configProxy: IServerConfigProxy,
-    private _kernelFactory: IKernelFactory
+    @inject(SERVER_CONFIG_PROXY) private _configProxy: IServerConfigProxy,
+    @inject(KERNEL_FACTORY) private _kernelFactory: IKernelFactory
   ) {}
 
   public create(): IRetaxMiddleware {
@@ -23,9 +23,9 @@ export default class RenderingMiddlewareFactory implements IRetaxMiddlewareFacto
     return async (req: Request, res: Response, next: NextFunction) => {
       try {
         const kernel = this._kernelFactory.create([
-          internalModule, retaxModule, requestModule,
+          retaxServerModule,
         ]);
-        const requestBootstrapper = kernel.get<IRequestBootstrapper>(RequestBootstrapper);
+        const requestBootstrapper = kernel.get<IRequestBootstrapper>(REQUEST_BOOTSTRAPPER);
 
         requestBootstrapper.config(retaxConfig);
 

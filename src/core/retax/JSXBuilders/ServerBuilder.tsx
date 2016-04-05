@@ -1,24 +1,22 @@
-import { injectable } from 'inversify';
-/* tslint:disable:no-unused-variable */
+import { injectable, inject } from 'inversify';
 import * as React from 'react';
-/* tslint:enable:no-unused-variable */
 import { Provider } from 'react-redux';
 import { RouterContext } from 'react-router';
 
 import { IJSXBuilder, IBuilderConfig } from './interfaces';
 
-import { Html, RetaxProvider } from '../components';
-import { IRetaxConfigProxy, RetaxConfigProxy } from '../configProxy';
+import { Html, RetaxProvider, HTML_COMPONENT, RETAX_PROVIDER_COMPONENT } from '../components';
+import { IRetaxConfigProxy, RETAX_CONFIG_PROXY } from '../configProxy';
 
-@injectable(RetaxConfigProxy, 'HtmlComponent', 'RetaxProvider')
+@injectable()
 export default class ServerBuilder implements IJSXBuilder {
   constructor(
-    private _retaxConfigProxy: IRetaxConfigProxy,
-    private HtmlComponent: typeof Html,
-    private RetaxProviderComponent: typeof RetaxProvider
+    @inject(RETAX_CONFIG_PROXY) private _retaxConfigProxy: IRetaxConfigProxy,
+    @inject(HTML_COMPONENT) private HtmlComponent: typeof Html,
+    @inject(RETAX_PROVIDER_COMPONENT) private RetaxProviderComponent: typeof RetaxProvider
   ) {}
 
-  public build(options: IBuilderConfig): JSX.Element {
+  public build(options: IBuilderConfig): React.ReactElement<any> {
     const { HtmlComponent, RetaxProviderComponent } = this;
     const { kernel, store, renderProps, isomorphicTools } = options;
     const { react: { appendChild } } = this._retaxConfigProxy.config;

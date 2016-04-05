@@ -1,17 +1,17 @@
-import { injectable } from 'inversify';
+import { injectable, inject } from 'inversify';
 
-import { ABootstrapper } from '../../core';
+import { ABootstrapper } from '../../utils';
 
-import { IServerConfigProxy, ServerConfigProxy } from '../configProxy';
+import { IServerConfigProxy, SERVER_CONFIG_PROXY } from '../configProxy';
 import { IServerConfig } from '../config';
-import { IRetaxMiddlewareFactory, IRetaxMiddleware, StaticMiddlewareFactory, RenderingMiddlewareFactory } from '../middlewares';
+import { IRetaxMiddlewareFactory, IRetaxMiddleware, MIDDLEWARES } from '../middlewares';
 
-@injectable(ServerConfigProxy, StaticMiddlewareFactory, RenderingMiddlewareFactory)
+@injectable()
 export default class ServerBootstrapper extends ABootstrapper<IServerConfig, void, IRetaxMiddleware> {
   constructor(
-    private _configProxy: IServerConfigProxy,
-    private _staticMiddlewareFactory: IRetaxMiddlewareFactory,
-    private _renderingMiddlewareFactory: IRetaxMiddlewareFactory
+    @inject(SERVER_CONFIG_PROXY) private _configProxy: IServerConfigProxy,
+    @inject(MIDDLEWARES.STATIC_MIDDLEWARE_FACTORY) private _staticMiddlewareFactory: IRetaxMiddlewareFactory,
+    @inject(MIDDLEWARES.RENDERING_MIDDLEWARE_FACTORY) private _renderingMiddlewareFactory: IRetaxMiddlewareFactory
   ) {
     super();
   }

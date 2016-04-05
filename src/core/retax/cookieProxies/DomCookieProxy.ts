@@ -1,15 +1,15 @@
-import { injectable } from 'inversify';
+import { injectable, inject } from 'inversify';
 import * as Cookie from 'js-cookie';
 
 import { IDomCookieProxy } from './interfaces';
 
-import { IInternalConfig } from '../config';
-import { IConfigStore } from '../../utils';
+import { IInternalConfig, INTERNAL_CONFIG_STORE } from '../config';
+import { IConfigStore } from '../../../utils';
 
-@injectable('InternalConfigStore')
+@injectable()
 export default class DomCookieProxy implements IDomCookieProxy {
   constructor(
-    private _store: IConfigStore<IInternalConfig>
+    @inject(INTERNAL_CONFIG_STORE) private _store: IConfigStore<IInternalConfig>
   ) {}
 
   public getAuthToken(): string {

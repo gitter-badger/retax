@@ -7,4 +7,4 @@ export * from './reactRouter';
 export * from './redux';
 export * from './stateProxies';
 export * from './config';
-export * from './kernelModules';
+export * from './di';

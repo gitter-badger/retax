@@ -1,5 +1,10 @@
 import { IKernelModule } from 'inversify';
 
+export interface IUserModule {
+  id: Symbol;
+  kernelModule: IKernelModule;
+}
+
 export interface IUserServiceConstructor {
   new(...args: any[]): IUserService;
 }
@@ -13,7 +18,10 @@ export interface IInjectableUserServiceMap extends HashMap<IUserServiceConstruct
 export interface IInjector {
   userModules: IKernelModule[];
 
-  registerService(service: IUserServiceConstructor): void;
+  registerService(Service: IUserServiceConstructor): Symbol;
+  registerServicesList(Service: IUserServiceConstructor[]): Symbol;
+
+  deferRegister(Service: IUserServiceConstructor): void;
 }
 
 

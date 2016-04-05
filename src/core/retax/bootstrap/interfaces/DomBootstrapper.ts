@@ -1,6 +1,6 @@
 import { IKernel } from 'inversify';
 
-import { IBootstrapper } from '../../../utils';
+import { IBootstrapper } from '../../../../utils';
 import { IRetaxConfig } from '../../config';
 
 export interface IDomBootstrapper extends IBootstrapper<

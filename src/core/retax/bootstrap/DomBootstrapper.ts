@@ -1,28 +1,28 @@
-import { injectable } from 'inversify';
+import { injectable, inject } from 'inversify';
 import { render } from 'react-dom';
 import { browserHistory } from 'react-router';
 
 import { IDomBootstrapConfig } from './interfaces';
 
-import { ABootstrapper } from '../../utils/bootstrap';
+import { ABootstrapper } from '../../../utils';
 
-import { IRetaxConfigProxy, RetaxConfigProxy } from '../configProxy';
-import { IStateProxy, DomStateProxy } from '../stateProxies';
-import { ICookieProxy, DomCookieProxy } from '../cookieProxies';
-import { IReduxFacade, ReduxFacade } from '../redux';
-import { IJSXBuilder, ClientBuilder } from '../JSXBuilders';
+import { IRetaxConfigProxy, RETAX_CONFIG_PROXY } from '../configProxy';
+import { IStateProxy, DOM_STATE_PROXY } from '../stateProxies';
+import { ICookieProxy, DOM_COOKIE_PROXY } from '../cookieProxies';
+import { IReduxFacade, REDUX_FACADE } from '../redux';
+import { IJSXBuilder, CLIENT_BUILDER } from '../JSXBuilders';
 import { IRetaxConfig } from '../config';
-import { IReactRouterFacade, ReactRouterFacade } from '../reactRouter';
+import { IReactRouterFacade, REACT_ROUTER_FACADE } from '../reactRouter';
 
-@injectable(RetaxConfigProxy, DomStateProxy, DomCookieProxy, ReduxFacade, ClientBuilder, ReactRouterFacade)
+@injectable()
 export default class DomBootstrapper extends ABootstrapper<IRetaxConfig, IDomBootstrapConfig, Promise<void>> {
   constructor(
-    private _configProxy: IRetaxConfigProxy,
-    private _stateProxy: IStateProxy,
-    private _cookieProxy: ICookieProxy,
-    private _reduxFacade: IReduxFacade,
-    private _JSXBuilder: IJSXBuilder,
-    private _reactRouterFacade: IReactRouterFacade
+    @inject(RETAX_CONFIG_PROXY) private _configProxy: IRetaxConfigProxy,
+    @inject(DOM_STATE_PROXY) private _stateProxy: IStateProxy,
+    @inject(DOM_COOKIE_PROXY) private _cookieProxy: ICookieProxy,
+    @inject(REDUX_FACADE) private _reduxFacade: IReduxFacade,
+    @inject(CLIENT_BUILDER) private _JSXBuilder: IJSXBuilder,
+    @inject(REACT_ROUTER_FACADE) private _reactRouterFacade: IReactRouterFacade
   ) {
     super();
   }

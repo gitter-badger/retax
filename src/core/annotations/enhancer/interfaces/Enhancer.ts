@@ -20,12 +20,14 @@ export interface IEnhancer {
 
   extendActionsCreator(
     Target: IActionsCreatorServiceConstructor,
-    injectableEntries: IInjectableUserServiceMap
+    keys: string[],
+    servicesId: Symbol
   ): IActionsCreatorServiceConstructor;
 
   extendComponent(
     ComposedComponent: React.ComponentClass<any>,
-    injectableEntries: IInjectableUserServiceMap
+    keys: string[],
+    servicesId: Symbol
   ): typeof RetaxConsumer;
 }
 

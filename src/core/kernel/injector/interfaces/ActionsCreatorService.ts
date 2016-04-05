@@ -28,5 +28,5 @@ export interface IActionsCreatorService extends IUserService {
 }
 
 export interface IActionsCreatorServiceConstructor {
-  new(...args: any[]): IActionsCreatorService;
+  new(services?: IUserService[]): IActionsCreatorService;
 }

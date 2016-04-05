@@ -1,27 +1,27 @@
-import { injectable } from 'inversify';
+import { injectable, inject } from 'inversify';
 import { renderToString } from 'react-dom/server';
 import { createMemoryHistory } from 'react-router';
 
 import { IRequestBootstrapConfig } from './interfaces';
 
-import { ABootstrapper } from '../../utils/bootstrap';
-import { IRetaxConfigProxy, RetaxConfigProxy } from '../configProxy';
+import { ABootstrapper } from '../../../utils';
+import { IRetaxConfigProxy, RETAX_CONFIG_PROXY } from '../configProxy';
 import { IRetaxConfig } from '../config';
-import { IStateProxy, RequestStateProxy } from '../stateProxies';
-import { IRequestCookieProxy, RequestCookieProxy } from '../cookieProxies';
-import { IReduxFacade, ReduxFacade } from '../redux';
-import { IJSXBuilder, ServerBuilder } from '../JSXBuilders';
-import { IReactRouterFacade, ReactRouterFacade } from '../reactRouter';
+import { IStateProxy, REQUEST_STATE_PROXY } from '../stateProxies';
+import { IRequestCookieProxy, REQUEST_COOKIE_PROXY } from '../cookieProxies';
+import { IReduxFacade, REDUX_FACADE } from '../redux';
+import { IJSXBuilder, SERVER_BUILDER } from '../JSXBuilders';
+import { IReactRouterFacade, REACT_ROUTER_FACADE } from '../reactRouter';
 
-@injectable(RetaxConfigProxy, RequestStateProxy, RequestCookieProxy, ReduxFacade, ServerBuilder, ReactRouterFacade)
+@injectable()
 export default class RequestBootstrapper extends ABootstrapper<IRetaxConfig, IRequestBootstrapConfig, Promise<string>> {
   constructor(
-    private _configProxy: IRetaxConfigProxy,
-    private _stateProxy: IStateProxy,
-    private _cookieProxy: IRequestCookieProxy,
-    private _reduxFacade: IReduxFacade,
-    private _JSXBuilder: IJSXBuilder,
-    private _reactRouterFacade: IReactRouterFacade
+    @inject(RETAX_CONFIG_PROXY) private _configProxy: IRetaxConfigProxy,
+    @inject(REQUEST_STATE_PROXY) private _stateProxy: IStateProxy,
+    @inject(REQUEST_COOKIE_PROXY) private _cookieProxy: IRequestCookieProxy,
+    @inject(REDUX_FACADE) private _reduxFacade: IReduxFacade,
+    @inject(SERVER_BUILDER) private _JSXBuilder: IJSXBuilder,
+    @inject(REACT_ROUTER_FACADE) private _reactRouterFacade: IReactRouterFacade
   ) {
     super();
   }

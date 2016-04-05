@@ -1,7 +1,7 @@
 import { IKernel } from 'inversify';
 import { Request } from 'express';
 
-import { IBootstrapper } from '../../../utils';
+import { IBootstrapper } from '../../../../utils';
 import { IRetaxConfig } from '../../config';
 
 export interface IAssets {

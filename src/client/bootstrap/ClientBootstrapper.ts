@@ -1,19 +1,20 @@
-import { injectable } from 'inversify';
+import { injectable, inject } from 'inversify';
 
-import { ABootstrapper } from '../../core';
+import { ABootstrapper } from '../../utils';
 
 import {
-  internalModule, domModule, retaxModule,
-  IRetaxConfig, IDomBootstrapper, DomBootstrapper,
+  IKernelFactory, KERNEL_FACTORY,
+  retaxClientModule,
+  IRetaxConfig,
+  DOM_BOOTSTRAPPER, IDomBootstrapper,
 } from '../../core';
-import { IKernelFactory, KernelFactory } from '../../core';
 
-@injectable(KernelFactory)
+@injectable()
 export default class ClientBootstrapper extends ABootstrapper<IRetaxConfig, Element, Promise<void>> {
   private _retaxConfig: IRetaxConfig;
 
   constructor(
-    private _kernelFactory: IKernelFactory
+    @inject(KERNEL_FACTORY) private _kernelFactory: IKernelFactory
   ) {
     super();
   }
@@ -24,9 +25,9 @@ export default class ClientBootstrapper extends ABootstrapper<IRetaxConfig, Elem
 
   public bootstrap(element: Element): Promise<void> {
     const kernel = this._kernelFactory.create([
-      internalModule, domModule, retaxModule,
+      retaxClientModule,
     ]);
-    const bootstrapper = kernel.get<IDomBootstrapper>(DomBootstrapper);
+    const bootstrapper = kernel.get<IDomBootstrapper>(DOM_BOOTSTRAPPER);
 
     bootstrapper.config(this._retaxConfig);
 
