@@ -2,6 +2,7 @@ import * as React from 'react';
 import { injectable, inject } from 'inversify';
 
 import { IAnnotator } from './interfaces';
+import { METADATA_KEYS } from './metadataKeys';
 
 import { ENHANCER, IEnhancer } from '../enhancer';
 import {
@@ -23,7 +24,7 @@ export default class Annotator implements IAnnotator {
 
   public action(): MethodDecorator {
     return (target: typeof Object, key: string, descriptor: PropertyDescriptor) => {
-      const metadata: string[] = Reflect.getMetadata('retax:actions', target) || [];
+      const metadata: string[] = Reflect.getMetadata(METADATA_KEYS.RETAX_ACTIONS, target) || [];
 
       metadata.push(key);
 
@@ -54,6 +55,7 @@ export default class Annotator implements IAnnotator {
 
   public RetaxComponent(config: IRetaxComponentRuntimeConfig): ClassDecorator {
     return (ComposedComponent: React.ComponentClass<any>) => {
+
       const { keys: actionsCreatorKeys, values: ActionsCreators } = this._splitEntries(config.actionsCreators);
 
       const actionsCreatorServiceId = this._injector.registerService(ActionsCreators);
