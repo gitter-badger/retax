@@ -35,7 +35,6 @@ export default class Annotator implements IAnnotator {
     return (Target: IApiServiceConstructor) => {
 
       const EnhancedTarget = this._enhancer.extendApi(Target, config);
-      this._injector.deferRegister(EnhancedTarget);
 
       return EnhancedTarget;
     };
@@ -43,13 +42,11 @@ export default class Annotator implements IAnnotator {
 
   public ActionsCreator(config: IActionsCreatorServiceRuntimeConfig): ClassDecorator {
     return (Target: IActionsCreatorServiceConstructor) => {
-      const { keys, values } = this._splitEntries(config.apis);
+      const { keys: apiKeys, values: Apis } = this._splitEntries(config.apis);
 
-      const servicesId = this._injector.registerServicesList(values);
+      const apisServiceId = this._injector.registerService(Apis);
 
-      const EnhancedTarget = this._enhancer.extendActionsCreator(Target, keys, servicesId);
-
-      this._injector.deferRegister(EnhancedTarget);
+      const EnhancedTarget = this._enhancer.extendActionsCreator(Target, apiKeys, apisServiceId);
 
       return EnhancedTarget;
     };
@@ -57,11 +54,11 @@ export default class Annotator implements IAnnotator {
 
   public RetaxComponent(config: IRetaxComponentRuntimeConfig): ClassDecorator {
     return (ComposedComponent: React.ComponentClass<any>) => {
-      const { keys, values } = this._splitEntries(config.actionsCreators);
+      const { keys: actionsCreatorKeys, values: ActionsCreators } = this._splitEntries(config.actionsCreators);
 
-      const servicesId = this._injector.registerServicesList(values);
+      const actionsCreatorServiceId = this._injector.registerService(ActionsCreators);
 
-      return this._enhancer.extendComponent(ComposedComponent, keys, servicesId);
+      return this._enhancer.extendComponent(ComposedComponent, actionsCreatorKeys, actionsCreatorServiceId);
     };
   }
 

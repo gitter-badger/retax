@@ -1,7 +1,7 @@
 import { IKernelModule } from 'inversify';
 
 export interface IUserModule {
-  id: Symbol;
+  serviceId: Symbol;
   kernelModule: IKernelModule;
 }
 
@@ -19,9 +19,7 @@ export interface IInjector {
   userModules: IKernelModule[];
 
   registerService(Service: IUserServiceConstructor): Symbol;
-  registerServicesList(Service: IUserServiceConstructor[]): Symbol;
-
-  deferRegister(Service: IUserServiceConstructor): void;
+  registerService(Services: IUserServiceConstructor[]): Symbol;
 }
 
 

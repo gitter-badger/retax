@@ -7,14 +7,11 @@ import {
   IUserModule,
 } from './interfaces';
 
+import { generateRandomId } from '../../../utils';
+
 @injectable()
 export default class Injector implements IInjector {
-  private _userModules: Map<
-    IUserServiceConstructor|IUserServiceConstructor[],
-    IUserModule
-  > = new Map<IUserServiceConstructor|IUserServiceConstructor[], IUserModule>();
-
-  private _deferedRegisters: IUserServiceConstructor[] = [];
+  private _userModules: Map<IUserServiceConstructor[], IUserModule> = new Map<IUserServiceConstructor[], IUserModule>();
 
   get userModules(): IKernelModule[] {
     const res: IKernelModule[] = [];
@@ -26,51 +23,40 @@ export default class Injector implements IInjector {
     return res;
   }
 
-  public registerService(Service: IUserServiceConstructor): Symbol {
-    const serviceId = Symbol('UserService');
-    const kernelModule = this._createKernelModule(serviceId, Service);
+  public registerService(Services: IUserServiceConstructor|IUserServiceConstructor[]): Symbol {
+    let serviceId: Symbol;
+    let ServicesToRegister: IUserServiceConstructor[];
 
-    this._userModules.set(Service, this._createUserModule(serviceId, kernelModule));
+    if (Services instanceof Array) {
+      serviceId = Symbol(`UserService[] - ${generateRandomId()}`);
+      ServicesToRegister = Services;
+    } else {
+      serviceId = Symbol(`UserService - ${generateRandomId()}`);
+      ServicesToRegister = [Services];
+    }
+
+    const kernelModule = this._createKernelModule(serviceId, ServicesToRegister);
+    this._setUserModule(ServicesToRegister, serviceId, kernelModule);
 
     return serviceId;
   }
 
-  public registerServicesList(Service: IUserServiceConstructor[]): Symbol {
-    const serviceId = Symbol('UserService[]');
-    const kernelModule = this._createKernelModules(serviceId, Service);
-
-    this._userModules.set(Service, this._createUserModule(serviceId, kernelModule));
-
-    return serviceId;
-  }
-
-  public deferRegister(Service: IUserServiceConstructor): void {
-    if (!this._deferedRegisters.includes(Service)) {
-      this._deferedRegisters.push(Service);
+  private _setUserModule(
+    key: IUserServiceConstructor[],
+    serviceId: Symbol,
+    kernelModule: IKernelModule
+  ): void {
+    if (this._userModules.has(key)) {
+      throw new Error(`Duplicate module for key ${key.toString()}`);
     }
+
+    this._userModules.set(key, { serviceId, kernelModule });
   }
 
-  private _createUserModule(id: Symbol, kernelModule: IKernelModule): IUserModule {
-    return {
-      id,
-      kernelModule,
-    }
-  }
-
-  private _createKernelModule(id: Symbol, Service: IUserServiceConstructor): IKernelModule {
-    return kernel => {
-      kernel.bind<IUserService>(id).to(Service);
-    };
-  }
-
-  private _createKernelModules(id: Symbol, Services: IUserServiceConstructor[]): IKernelModule {
+  private _createKernelModule(id: Symbol, Services: IUserServiceConstructor[]): IKernelModule {
     return kernel => {
       Services.forEach(Service => {
-        if (!this._deferedRegisters.includes(Service)) {
-          throw new Error('Missing binding');
-        }
-
-        kernel.bind<IUserService>(id).to(Service)
+        kernel.bind<IUserService>(id).to(Service);
       });
     };
   }

@@ -39,16 +39,15 @@ export default class Enhancer implements IEnhancer {
   public extendActionsCreator(
     Target: IActionsCreatorServiceConstructor,
     keys: string[],
-    servicesId: Symbol
+    apiListId: Symbol
   ): IActionsCreatorServiceConstructor {
 
     @injectable()
     class EnhancedActionsCreator extends Target {
       constructor(
-        @multiInject(servicesId) services: IUserService[]
+        @multiInject(apiListId) services: IUserService[]
       ) {
-        super();
-
+        super(services);
         this.configure({ apis: _.zipObject<IUserServiceMap>(keys, services) });
       }
     }
@@ -59,7 +58,7 @@ export default class Enhancer implements IEnhancer {
   public extendComponent(
     ComposedComponent: React.ComponentClass<any>,
     keys: string[],
-    servicesId: Symbol
+    actionsCreatorListId: Symbol
   ): typeof RetaxConsumer {
 
     class RetaxComponent extends RetaxConsumer<void, void> {
@@ -73,7 +72,7 @@ export default class Enhancer implements IEnhancer {
       public render(): JSX.Element {
         const { kernel } = this.context;
 
-        const services = kernel.get<IUserService[]>(servicesId);
+        const services = kernel.getAll<IUserService[]>(actionsCreatorListId);
 
         return React.createElement(
           ComposedComponent,
