@@ -1,6 +1,7 @@
 import { injectable, inject } from 'inversify';
 import { render } from 'react-dom';
 import { browserHistory } from 'react-router';
+import { replace } from 'react-router-redux';
 
 import { IDomBootstrapConfig } from './interfaces';
 
@@ -40,6 +41,8 @@ export default class DomBootstrapper extends ABootstrapper<IRetaxConfig, IDomBoo
 
     // history
     const history = browserHistory;
+    const location = history.createLocation(window.location);
+    history.replace(location);
 
     // initialize Redux store
     const store = this._reduxFacade.connectRedux(initialState, history);
@@ -48,11 +51,10 @@ export default class DomBootstrapper extends ABootstrapper<IRetaxConfig, IDomBoo
     const { router } = this._configProxy.evaluateConfig(store, navigator.userAgent);
 
     // route matching
-    const location = history.createLocation(window.location);
-    const { renderProps } = await this._reactRouterFacade.match({
+    const renderProps = await this._reactRouterFacade.resolveRoute({
+      store,
       history,
       routes: router.static,
-      location,
     });
 
     // build the app

@@ -1,4 +1,4 @@
-import { injectable, inject } from 'inversify';
+import { injectable, inject, IKernel } from 'inversify';
 
 import { ABootstrapper } from '../../utils';
 
@@ -12,6 +12,7 @@ import {
 @injectable()
 export default class ClientBootstrapper extends ABootstrapper<IRetaxConfig, Element, Promise<void>> {
   private _retaxConfig: IRetaxConfig;
+  private _kernel: IKernel;
 
   constructor(
     @inject(KERNEL_FACTORY) private _kernelFactory: IKernelFactory
@@ -24,16 +25,20 @@ export default class ClientBootstrapper extends ABootstrapper<IRetaxConfig, Elem
   }
 
   public bootstrap(element: Element): Promise<void> {
-    const kernel = this._kernelFactory.create([
+    this._kernel = this._kernelFactory.create([
       retaxClientModule,
     ]);
-    const bootstrapper = kernel.get<IDomBootstrapper>(DOM_BOOTSTRAPPER);
+    const bootstrapper = this._kernel.get<IDomBootstrapper>(DOM_BOOTSTRAPPER);
 
     bootstrapper.config(this._retaxConfig);
 
     return bootstrapper.bootstrap({
-      kernel,
+      kernel: this._kernel,
       element,
     });
+  }
+
+  public updateKernel(): void {
+    // do something with this._kernel and maybe injector to reload new user modules
   }
 }

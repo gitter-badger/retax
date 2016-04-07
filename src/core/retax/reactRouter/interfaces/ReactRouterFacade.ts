@@ -5,6 +5,10 @@ export interface IMatchResult {
   renderProps: ReactRouter.IRouterContextProps;
 }
 
+export interface IResolveRouteConfig extends ReactRouter.MatchArgs {
+  store: Redux.Store;
+}
+
 export interface IReactRouterFacade {
-  match(args: IMatchArgs): Promise<IMatchResult>;
+  resolveRoute(config: IResolveRouteConfig): Promise<ReactRouter.IRouterContextProps>;
 }

@@ -39,6 +39,8 @@ export default class RequestBootstrapper extends ABootstrapper<IRetaxConfig, IRe
 
     // history
     const history = createMemoryHistory();
+    const location = history.createLocation(req.originalUrl);
+    history.replace(location);
 
     // initialize Redux store
     const store = this._reduxFacade.connectRedux(initialState, history);
@@ -47,11 +49,10 @@ export default class RequestBootstrapper extends ABootstrapper<IRetaxConfig, IRe
     const { router } = this._configProxy.evaluateConfig(store, req.header('user-agent'));
 
     // route matching
-    const location = history.createLocation(req.originalUrl);
-    const { renderProps } = await this._reactRouterFacade.match({
+    const renderProps = await this._reactRouterFacade.resolveRoute({
+      store,
       history,
       routes: router.static,
-      location,
     });
 
     // build the app
