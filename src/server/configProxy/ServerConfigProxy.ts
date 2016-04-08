@@ -1,12 +1,14 @@
 import { injectable, inject } from 'inversify';
 
-import { IServerConfig, SERVER_CONFIG_STORE } from '../config';
-import { AConfigProxy, IConfigStore } from '../../utils';
+import { IServerConfig, IServerConfigStore } from '../configStores';
+import { AConfigProxy } from '../../utils';
+
+import { SERVER_CONFIG_STORE } from '../inversify';
 
 @injectable()
 export default class ServerConfigProxy extends AConfigProxy<IServerConfig> {
   constructor(
-    @inject(SERVER_CONFIG_STORE) config: IConfigStore<IServerConfig>
+    @inject(SERVER_CONFIG_STORE) config: IServerConfigStore
   ) {
     super(config);
   }

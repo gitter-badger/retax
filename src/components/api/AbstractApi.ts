@@ -11,10 +11,10 @@ import {
 import { HTTP_METHODS } from './httpMethods';
 
 import {
-  IRoutesMap, IApiServiceRuntimeConfig,
   IReduxFacade,
   IRetaxConfigProxy,
 } from '../../core';
+import { IRoutesMap, IApiServiceRuntimeConfig } from '../../di';
 
 abstract class AbstractApi implements IApi {
   public routes: IRoutesMap;

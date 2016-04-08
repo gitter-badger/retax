@@ -3,9 +3,13 @@ import { Request, Response, NextFunction } from 'express';
 
 import { IRetaxMiddlewareFactory, IRetaxMiddleware } from './interfaces';
 
-import { IServerConfigProxy, SERVER_CONFIG_PROXY } from '../configProxy';
-import { IInternalConfig, INTERNAL_CONFIG_STORE } from '../../core';
+import { IServerConfigProxy } from '../configProxy';
 import { IConfigStore } from '../../utils';
+import { IInternalConfig, INTERNAL_CONFIG_STORE } from '../../core';
+
+import {
+  SERVER_CONFIG_PROXY,
+} from '../inversify';
 
 @injectable()
 export default class StaticMiddlewareFactory implements IRetaxMiddlewareFactory {

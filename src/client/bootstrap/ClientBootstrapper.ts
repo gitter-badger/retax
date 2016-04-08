@@ -1,44 +1,51 @@
-import { injectable, inject, IKernel } from 'inversify';
+import { injectable, inject } from 'inversify';
 
-import { ABootstrapper } from '../../utils';
+import { IClientBootstrapper } from './interfaces';
 
 import {
   IKernelFactory, KERNEL_FACTORY,
-  retaxClientModule,
+  IInjector, INJECTOR,
+} from '../../di';
+import {
+  clientModule,
+  IInversifyKernelFacade,
   IRetaxConfig,
   DOM_BOOTSTRAPPER, IDomBootstrapper,
 } from '../../core';
 
 @injectable()
-export default class ClientBootstrapper extends ABootstrapper<IRetaxConfig, Element, Promise<void>> {
+export default class ClientBootstrapper implements IClientBootstrapper {
   private _retaxConfig: IRetaxConfig;
-  private _kernel: IKernel;
+  private _kernelFacade: IInversifyKernelFacade;
 
   constructor(
-    @inject(KERNEL_FACTORY) private _kernelFactory: IKernelFactory
-  ) {
-    super();
-  }
+    @inject(KERNEL_FACTORY) private _kernelFactory: IKernelFactory,
+    @inject(INJECTOR) private _injector: IInjector
+  ) {}
 
   public config(config: IRetaxConfig): void {
     this._retaxConfig = config;
   }
 
   public bootstrap(element: Element): Promise<void> {
-    this._kernel = this._kernelFactory.create([
-      retaxClientModule,
+    this._kernelFacade = this._kernelFactory.create([
+      clientModule,
     ]);
-    const bootstrapper = this._kernel.get<IDomBootstrapper>(DOM_BOOTSTRAPPER);
+    const bootstrapper = this._kernelFacade.getService<IDomBootstrapper>(DOM_BOOTSTRAPPER);
 
     bootstrapper.config(this._retaxConfig);
 
     return bootstrapper.bootstrap({
-      kernel: this._kernel,
+      kernel: this._kernelFacade,
       element,
     });
   }
 
-  public updateKernel(): void {
-    // do something with this._kernel and maybe injector to reload new user modules
+  public reload(): void {
+    if (this._kernelFacade) {
+      const userModules = this._injector.userModules;
+
+      this._kernelFacade.loadModules(userModules);
+    }
   }
 }

@@ -3,8 +3,9 @@ import { IActionsCreator, IExportReturn } from './interfaces';
 import {
   IActionsCreatorServiceConfig,
   IUserServiceMap,
-  METADATA_KEYS,
-} from '../../core';
+} from '../../di';
+
+import { METADATA_KEYS } from '../annotator';
 
 abstract class AbstractActionsCreator implements IActionsCreator {
   public apis: IUserServiceMap;

@@ -3,12 +3,14 @@ import { Request, Response, NextFunction } from 'express';
 
 import { IRetaxMiddlewareFactory, IRetaxMiddleware } from './interfaces';
 
-import { IServerConfigProxy, SERVER_CONFIG_PROXY } from '../configProxy';
+import { IServerConfigProxy } from '../configProxy';
 import {
+  serverModule,
   IRequestBootstrapper, REQUEST_BOOTSTRAPPER,
-  IKernelFactory, KERNEL_FACTORY,
-  retaxServerModule,
 } from '../../core';
+import { IKernelFactory, KERNEL_FACTORY } from '../../di';
+
+import { SERVER_CONFIG_PROXY } from '../inversify';
 
 @injectable()
 export default class RenderingMiddlewareFactory implements IRetaxMiddlewareFactory {
@@ -23,9 +25,9 @@ export default class RenderingMiddlewareFactory implements IRetaxMiddlewareFacto
     return async (req: Request, res: Response, next: NextFunction) => {
       try {
         const kernel = this._kernelFactory.create([
-          retaxServerModule,
+          serverModule,
         ]);
-        const requestBootstrapper = kernel.get<IRequestBootstrapper>(REQUEST_BOOTSTRAPPER);
+        const requestBootstrapper = kernel.getService<IRequestBootstrapper>(REQUEST_BOOTSTRAPPER);
 
         requestBootstrapper.config(retaxConfig);
 

@@ -1,2 +1,2 @@
 export * from './bootstrap';
-export * from './di';
+export * from './inversify';
