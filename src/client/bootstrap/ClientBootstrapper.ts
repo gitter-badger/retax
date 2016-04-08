@@ -3,8 +3,7 @@ import { injectable, inject } from 'inversify';
 import { IClientBootstrapper } from './interfaces';
 
 import {
-  IKernelFactory, KERNEL_FACTORY,
-  IInjector, INJECTOR,
+  IKernelMediator, KERNEL_MEDIATOR,
 } from '../../di';
 import {
   clientModule,
@@ -19,8 +18,7 @@ export default class ClientBootstrapper implements IClientBootstrapper {
   private _kernelFacade: IInversifyKernelFacade;
 
   constructor(
-    @inject(KERNEL_FACTORY) private _kernelFactory: IKernelFactory,
-    @inject(INJECTOR) private _injector: IInjector
+    @inject(KERNEL_MEDIATOR) private _kernelMediator: IKernelMediator
   ) {}
 
   public config(config: IRetaxConfig): void {
@@ -28,7 +26,7 @@ export default class ClientBootstrapper implements IClientBootstrapper {
   }
 
   public bootstrap(element: Element): Promise<void> {
-    this._kernelFacade = this._kernelFactory.create([
+    this._kernelFacade = this._kernelMediator.create([
       clientModule,
     ]);
     const bootstrapper = this._kernelFacade.getService<IDomBootstrapper>(DOM_BOOTSTRAPPER);
@@ -42,10 +40,6 @@ export default class ClientBootstrapper implements IClientBootstrapper {
   }
 
   public reload(): void {
-    if (this._kernelFacade) {
-      const userModules = this._injector.userModules;
-
-      this._kernelFacade.loadModules(userModules);
-    }
+    this._kernelMediator.reload(this._kernelFacade);
   }
 }

@@ -6,3 +6,6 @@ export const INVERSIFY_KERNEL_FACADE_FACTORY = Symbol('InversifyKernelFacadeFact
 
 // kernel factory
 export const KERNEL_FACTORY = Symbol('KernelFactory');
+
+// kernel mediator
+export const KERNEL_MEDIATOR = Symbol('KernelMediator');

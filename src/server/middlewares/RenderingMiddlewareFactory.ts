@@ -8,7 +8,7 @@ import {
   serverModule,
   IRequestBootstrapper, REQUEST_BOOTSTRAPPER,
 } from '../../core';
-import { IKernelFactory, KERNEL_FACTORY } from '../../di';
+import { IKernelMediator, KERNEL_MEDIATOR } from '../../di';
 
 import { SERVER_CONFIG_PROXY } from '../inversify';
 
@@ -16,7 +16,7 @@ import { SERVER_CONFIG_PROXY } from '../inversify';
 export default class RenderingMiddlewareFactory implements IRetaxMiddlewareFactory {
   constructor(
     @inject(SERVER_CONFIG_PROXY) private _configProxy: IServerConfigProxy,
-    @inject(KERNEL_FACTORY) private _kernelFactory: IKernelFactory
+    @inject(KERNEL_MEDIATOR) private _kernelMediator: IKernelMediator
   ) {}
 
   public create(): IRetaxMiddleware {
@@ -24,7 +24,7 @@ export default class RenderingMiddlewareFactory implements IRetaxMiddlewareFacto
 
     return async (req: Request, res: Response, next: NextFunction) => {
       try {
-        const kernel = this._kernelFactory.create([
+        const kernel = this._kernelMediator.create([
           serverModule,
         ]);
         const requestBootstrapper = kernel.getService<IRequestBootstrapper>(REQUEST_BOOTSTRAPPER);
