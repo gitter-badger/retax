@@ -3,6 +3,5 @@ export interface IImmutableState {
 }
 
 export interface IStateProxy {
-  state: Promise<IImmutableState>;
-  get(): Promise<IImmutableState>;
+  statePromise: Promise<IImmutableState>;
 }

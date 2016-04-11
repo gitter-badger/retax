@@ -3,25 +3,41 @@ import * as React from 'react';
 import { Provider } from 'react-redux';
 import { RouterContext } from 'react-router';
 
-import { IJSXBuilder, IBuilderConfig } from './interfaces';
+import { IJSXBuilder } from './interfaces';
 
+import { IInversifyKernelFacade } from '../inversifyKernelFacade';
 import { Html, RetaxProvider } from '../components';
-import { IRetaxConfigProxy } from '../configProxy';
+import { IRetaxConfigStore } from '../configStores';
+import { IContext } from '../context';
+import { IReduxFacade } from '../redux';
+import { IReactRouterFacade } from '../reactRouter';
 
-import { HTML_COMPONENT, RETAX_PROVIDER_COMPONENT, RETAX_CONFIG_PROXY } from '../inversify';
+import {
+  HTML_COMPONENT, RETAX_PROVIDER_COMPONENT,
+  RETAX_CONFIG_STORE,
+  REDUX_FACADE,
+  REACT_ROUTER_FACADE,
+  CONTEXT,
+} from '../inversify';
 
 @injectable()
 export default class ServerBuilder implements IJSXBuilder {
   constructor(
-    @inject(RETAX_CONFIG_PROXY) private _retaxConfigProxy: IRetaxConfigProxy,
+    @inject(RETAX_CONFIG_STORE) private _configStore: IRetaxConfigStore,
     @inject(HTML_COMPONENT) private HtmlComponent: typeof Html,
-    @inject(RETAX_PROVIDER_COMPONENT) private RetaxProviderComponent: typeof RetaxProvider
+    @inject(RETAX_PROVIDER_COMPONENT) private RetaxProviderComponent: typeof RetaxProvider,
+    @inject(REDUX_FACADE) private _reduxFacade: IReduxFacade,
+    @inject(REACT_ROUTER_FACADE) private _routerFacade: IReactRouterFacade,
+    @inject(CONTEXT) private _context: IContext
   ) {}
 
-  public build(options: IBuilderConfig): React.ReactElement<any> {
+  public async build(kernel: IInversifyKernelFacade): Promise<JSX.Element> {
     const { HtmlComponent, RetaxProviderComponent } = this;
-    const { kernel, store, renderProps, isomorphicTools } = options;
-    const { react: { appendChild } } = this._retaxConfigProxy.config;
+    const { react: { appendChild } } = this._configStore.config;
+    const { isomorphicTools } = this._context.request;
+
+    const store = await this._reduxFacade.storePromise;
+    const renderProps = await this._routerFacade.renderPropsPromise;
 
     const assets = isomorphicTools && isomorphicTools.assets();
 

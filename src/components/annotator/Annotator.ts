@@ -34,7 +34,7 @@ export default class Annotator implements IAnnotator {
     };
   }
 
-  public Api(config: IApiServiceRuntimeConfig): ClassDecorator {
+  public Api(config: IApiServiceRuntimeConfig = {}): ClassDecorator {
     return (Target: IApiServiceConstructor) => {
 
       const EnhancedTarget = this._enhancer.extendApi(Target, config);
@@ -43,30 +43,46 @@ export default class Annotator implements IAnnotator {
     };
   }
 
-  public ActionsCreator(config: IActionsCreatorServiceRuntimeConfig): ClassDecorator {
+  public ActionsCreator(config: IActionsCreatorServiceRuntimeConfig = {}): ClassDecorator {
     return (Target: IActionsCreatorServiceConstructor) => {
       const { keys: apiKeys, values: Apis } = this._splitEntries(config.apis);
+      const { keys: actionsCreatorsKeys, values: ActionsCreators } = this._splitEntries(config.actionsCreators);
 
       const apisServiceId = this._injector.registerService(Apis);
+      const actionsCreatorsServiceId = this._injector.registerService(ActionsCreators);
 
-      const EnhancedTarget = this._enhancer.extendActionsCreator(Target, apiKeys, apisServiceId);
+      const EnhancedTarget = this._enhancer.extendActionsCreator(Target, {
+        actionsCreators: {
+          keys: actionsCreatorsKeys,
+          serviceId: actionsCreatorsServiceId,
+        },
+        apis: {
+          keys: apiKeys,
+          serviceId: apisServiceId,
+        },
+      });
 
       return EnhancedTarget;
     };
   }
 
-  public RetaxComponent(config: IRetaxComponentRuntimeConfig): ClassDecorator {
+  public RetaxComponent(config: IRetaxComponentRuntimeConfig = {}): ClassDecorator {
     return (ComposedComponent: React.ComponentClass<any>) => {
 
       const { keys: actionsCreatorKeys, values: ActionsCreators } = this._splitEntries(config.actionsCreators);
 
       const actionsCreatorServiceId = this._injector.registerService(ActionsCreators);
 
-      return this._enhancer.extendComponent(ComposedComponent, actionsCreatorKeys, actionsCreatorServiceId);
+      return this._enhancer.extendComponent(ComposedComponent, {
+        actionsCreators: {
+          keys: actionsCreatorKeys,
+          serviceId: actionsCreatorServiceId,
+        },
+      });
     };
   }
 
-  private _splitEntries(injectableEntries: IInjectableUserServiceMap): { keys: string[], values: IUserServiceConstructor[] } {
+  private _splitEntries(injectableEntries: IInjectableUserServiceMap = {}): { keys: string[], values: IUserServiceConstructor[] } {
     const entries = Object.entries(injectableEntries);
     const keys = entries.map(e => e[0]);
     const values = entries.map(e => e[1]);

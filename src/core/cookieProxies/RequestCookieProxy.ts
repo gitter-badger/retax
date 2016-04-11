@@ -1,21 +1,38 @@
 import { injectable, inject } from 'inversify';
 
-import { IRequestCookieProxy, Cookies } from './interfaces';
+import { ICookieProxy } from './interfaces';
 
 import { IInternalConfig } from '../configStores';
+import { IContext } from '../context';
 import { IConfigStore } from '../../utils';
 
-import { INTERNAL_CONFIG_STORE } from '../inversify';
+import { INTERNAL_CONFIG_STORE, CONTEXT } from '../inversify';
 
 @injectable()
-export default class RequestCookieProxy implements IRequestCookieProxy {
+export default class RequestCookieProxy implements ICookieProxy {
+
   constructor(
-    @inject(INTERNAL_CONFIG_STORE) private _store: IConfigStore<IInternalConfig>
+    @inject(INTERNAL_CONFIG_STORE) private _store: IConfigStore<IInternalConfig>,
+    @inject(CONTEXT) private _context: IContext
   ) {}
 
-  public getAuthToken(cookies: Cookies): string {
+  get authToken(): string {
+    return this._readAuthToken();
+  }
+
+  set authToken(token: string) {
+    this._setAuthToken(token);
+  }
+
+  private _readAuthToken(): string {
     const { COOKIE_AUTH_TOKEN_KEY } = this._store.config;
 
-    return cookies[COOKIE_AUTH_TOKEN_KEY];
+    return this._context.request.req.cookies[COOKIE_AUTH_TOKEN_KEY];
+  }
+
+  private _setAuthToken(token: string): void {
+    const { COOKIE_AUTH_TOKEN_KEY } = this._store.config;
+
+    this._context.request.res.cookie(COOKIE_AUTH_TOKEN_KEY, token);
   }
 }

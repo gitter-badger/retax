@@ -3,7 +3,11 @@ import * as _ from 'lodash';
 import { IConfigStore } from './interfaces';
 
 export default class ConfigStore<T> implements IConfigStore<T> {
-  constructor(private _config: T) {}
+  private _config: T;
+
+  // constructor(
+  //   private _config: T
+  // ) {}
 
   /**
    * Get the current config

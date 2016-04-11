@@ -9,13 +9,15 @@ import {
  */
 export interface IActionsCreatorServiceRuntimeConfig {
   apis?: IInjectableUserServiceMap;
+  actionsCreators?: IInjectableUserServiceMap;
 }
 
 /**
  * This is the type of the configure function of the action creator
  */
 export interface IActionsCreatorServiceConfig {
-  apis: IUserServiceMap;
+  apis?: IUserServiceMap;
+  actionsCreators?: IUserServiceMap;
 }
 
 /**
@@ -28,5 +30,5 @@ export interface IActionsCreatorService extends IUserService {
 }
 
 export interface IActionsCreatorServiceConstructor {
-  new(services?: IUserService[]): IActionsCreatorService;
+  new(apis?: IUserService[], actionsCreators?: IUserService[]): IActionsCreatorService;
 }

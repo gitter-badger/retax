@@ -9,9 +9,11 @@ import { METADATA_KEYS } from '../annotator';
 
 abstract class AbstractActionsCreator implements IActionsCreator {
   public apis: IUserServiceMap;
+  public actionsCreators: IUserServiceMap;
 
   public configure(config: IActionsCreatorServiceConfig): void {
     this.apis = config.apis;
+    this.actionsCreators = config.actionsCreators;
   }
 
   /**

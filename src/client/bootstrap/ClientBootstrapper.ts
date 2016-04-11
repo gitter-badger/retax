@@ -1,15 +1,17 @@
 import { injectable, inject } from 'inversify';
+import { render } from 'react-dom';
+import { browserHistory } from 'react-router';
 
 import { IClientBootstrapper } from './interfaces';
 
 import {
-  IKernelMediator, KERNEL_MEDIATOR,
+  IKernelMediator, KERNEL_MEDIATOR, KernelMediator
 } from '../../di';
 import {
-  clientModule,
+  clientModule, contextModuleFactory,
   IInversifyKernelFacade,
   IRetaxConfig,
-  DOM_BOOTSTRAPPER, IDomBootstrapper,
+  JSX_BUILDER, IJSXBuilder,
 } from '../../core';
 
 @injectable()
@@ -25,18 +27,24 @@ export default class ClientBootstrapper implements IClientBootstrapper {
     this._retaxConfig = config;
   }
 
-  public bootstrap(element: Element): Promise<void> {
+  public async bootstrap(element: Element): Promise<void> {
+    // configure history
+    const history = browserHistory;
+    const location = history.createLocation(window.location);
+    history.replace(location);
+
+    // create IOC kernel
     this._kernelFacade = this._kernelMediator.create([
       clientModule,
+      contextModuleFactory({ history, retaxConfig: this._retaxConfig }),
     ]);
-    const bootstrapper = this._kernelFacade.getService<IDomBootstrapper>(DOM_BOOTSTRAPPER);
 
-    bootstrapper.config(this._retaxConfig);
+    // build the app
+    const builder = this._kernelFacade.getService<IJSXBuilder>(JSX_BUILDER);
+    const app = await builder.build(this._kernelFacade);
 
-    return bootstrapper.bootstrap({
-      kernel: this._kernelFacade,
-      element,
-    });
+    // render!
+    render(app, element);
   }
 
   public reload(): void {

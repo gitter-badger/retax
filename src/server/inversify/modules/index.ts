@@ -3,4 +3,4 @@
  * You DON'T HAVE to use them. You could just create your own modules in your project.
  */
 
-export { default as serverModule } from './server';
+export { default as serverModule, middlewareFactoryModuleFactory } from './server';

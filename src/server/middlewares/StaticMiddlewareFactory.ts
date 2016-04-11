@@ -3,18 +3,18 @@ import { Request, Response, NextFunction } from 'express';
 
 import { IRetaxMiddlewareFactory, IRetaxMiddleware } from './interfaces';
 
-import { IServerConfigProxy } from '../configProxy';
+import { IServerConfigStore } from '../configStores';
 import { IConfigStore } from '../../utils';
 import { IInternalConfig, INTERNAL_CONFIG_STORE } from '../../core';
 
 import {
-  SERVER_CONFIG_PROXY,
+  SERVER_CONFIG_STORE,
 } from '../inversify';
 
 @injectable()
 export default class StaticMiddlewareFactory implements IRetaxMiddlewareFactory {
   constructor(
-    @inject(SERVER_CONFIG_PROXY) private _configProxy: IServerConfigProxy,
+    @inject(SERVER_CONFIG_STORE) private _configStore: IServerConfigStore,
     @inject(INTERNAL_CONFIG_STORE) private _store: IConfigStore<IInternalConfig>
   ) {}
 
@@ -31,7 +31,8 @@ export default class StaticMiddlewareFactory implements IRetaxMiddlewareFactory 
 
   private _generateHtmlMarkup(): string {
     const { INITIAL_STATE_KEY } = this._store.config;
-    const assets = this._configProxy.config.isomorphicTools.assets();
+
+    const assets = this._configStore.config.isomorphicTools.assets();
 
     return `
       <!DOCTYPE html>

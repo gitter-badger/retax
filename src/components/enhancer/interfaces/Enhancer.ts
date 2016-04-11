@@ -7,22 +7,36 @@ import {
 } from '../../../di';
 import { RetaxConsumer } from '../../../core';
 
+export interface IInjectionMap {
+  keys: string[];
+  serviceId: Symbol;
+}
+
+export interface IApiEnhancmentConfig extends IApiServiceRuntimeConfig {}
+
+export interface IActionsCreatorEnhancmentConfig {
+  apis?: IInjectionMap;
+  actionsCreators?: IInjectionMap;
+}
+
+export interface IComponentEnhancmentConfig {
+  actionsCreators?: IInjectionMap;
+}
+
 export interface IEnhancer {
   extendApi(
     Target: IApiServiceConstructor,
-    config: IApiServiceRuntimeConfig
+    config: IApiEnhancmentConfig
   ): IApiServiceConstructor;
 
   extendActionsCreator(
     Target: IActionsCreatorServiceConstructor,
-    keys: string[],
-    servicesId: Symbol
+    config: IActionsCreatorEnhancmentConfig
   ): IActionsCreatorServiceConstructor;
 
   extendComponent(
     ComposedComponent: React.ComponentClass<any>,
-    keys: string[],
-    servicesId: Symbol
+    config: IComponentEnhancmentConfig
   ): typeof RetaxConsumer;
 }
 

@@ -9,7 +9,9 @@ export interface ICreateStoreConfig {
 }
 
 export interface IReduxFacade {
-  reduxStore: Redux.Store;
-  authToken: string;
-  connectRedux(initialState: IImmutableState, history: HistoryModule.History): Redux.Store;
+  storePromise: Promise<Redux.Store>;
+
+  getAuthToken(): Promise<string>;
+  setAuthToken(token: string): Promise<ReduxActions.Action>;
+  dispatch(action: ReduxActions.Action): Promise<ReduxActions.Action>;
 }

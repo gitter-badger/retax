@@ -3,24 +3,35 @@ import * as React from 'react';
 import { Provider } from 'react-redux';
 import { Router } from 'react-router';
 
-import { IJSXBuilder, IBuilderConfig } from './interfaces';
+import { IJSXBuilder } from './interfaces';
 
+import { IInversifyKernelFacade } from '../inversifyKernelFacade';
+import { IReduxFacade } from '../redux';
+import { IReactRouterFacade } from '../reactRouter';
 import { RetaxProvider } from '../components';
-import { IRetaxConfigProxy } from '../configProxy';
+import { IRetaxConfigStore } from '../configStores';
 
-import { RETAX_PROVIDER_COMPONENT, RETAX_CONFIG_PROXY } from '../inversify';
+import {
+  RETAX_PROVIDER_COMPONENT,
+  RETAX_CONFIG_STORE,
+  REDUX_FACADE,
+  REACT_ROUTER_FACADE,
+} from '../inversify';
 
 @injectable()
 export default class ClientBuilder implements IJSXBuilder {
   constructor(
-    @inject(RETAX_CONFIG_PROXY) private _configProxy: IRetaxConfigProxy,
-    @inject(RETAX_PROVIDER_COMPONENT) private RetaxProviderComponent: typeof RetaxProvider
+    @inject(RETAX_CONFIG_STORE) private _configStore: IRetaxConfigStore,
+    @inject(RETAX_PROVIDER_COMPONENT) private RetaxProviderComponent: typeof RetaxProvider,
+    @inject(REDUX_FACADE) private _reduxFacade: IReduxFacade,
+    @inject(REACT_ROUTER_FACADE) private _routerFacade: IReactRouterFacade
   ) {}
 
-  public build(options: IBuilderConfig): React.ReactElement<any> {
+  public async build(kernel: IInversifyKernelFacade): Promise<JSX.Element> {
     const { RetaxProviderComponent} = this;
-    const { kernel, store, renderProps } = options;
-    const { react: { appendChild } } = this._configProxy.config;
+    const { react: { appendChild } } = this._configStore.config;
+
+    const [store, renderProps] = await Promise.all([this._reduxFacade.storePromise, this._routerFacade.renderPropsPromise]);
 
     return (
       <RetaxProviderComponent kernel={kernel}>

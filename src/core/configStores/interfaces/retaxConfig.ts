@@ -1,3 +1,4 @@
+import { IReduxFacade } from '../../redux';
 import { IConfigStore } from '../../../utils';
 
 export interface IClientConfig {
@@ -42,4 +43,9 @@ export interface IRetaxConfig {
 }
 
 
-export interface IRetaxConfigStore extends IConfigStore<IRetaxConfig> {}
+export interface IRetaxConfigStore extends IConfigStore<IRetaxConfig> {
+  /**
+   * Runtime evaluated config
+   */
+  evaluateConfig(store: Redux.Store): IRetaxConfig;
+}

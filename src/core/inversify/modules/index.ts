@@ -4,6 +4,6 @@
  * It is highly recommended to use them with retax-client and retax-server
  */
 
-export { default as commonModule } from './common';
+export { default as commonModule, contextModuleFactory } from './common';
 export { default as clientModule } from './client';
 export { default as serverModule } from './server';

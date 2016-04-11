@@ -2,23 +2,23 @@ import { IKernel } from 'inversify';
 
 import commonModule from './common';
 
-import { IDomBootstrapper, DomBootstrapper } from '../../bootstrap';
-import { IDomCookieProxy, DomCookieProxy } from '../../cookieProxies';
+import { ICookieProxy, DomCookieProxy } from '../../cookieProxies';
 import { IJSXBuilder, ClientBuilder } from '../../JSXBuilders';
 import { IStateProxy, DomStateProxy } from '../../stateProxies';
+import { IRetaxConfigStore, DomRetaxConfigStore } from '../../configStores';
 
 import {
-  BOOTSTRAPPERS,
-  COOKIE_PROXIES,
-  JSX_BUILDERS,
-  STATE_PROXIES,
+  RETAX_CONFIG_STORE,
+  COOKIE_PROXY,
+  JSX_BUILDER,
+  STATE_PROXY,
 } from '../identifiers';
 
 export default function clientModule(kernel: IKernel): void {
   kernel.load(commonModule);
 
-  kernel.bind<IDomBootstrapper>(BOOTSTRAPPERS.DOM_BOOTSTRAPPER).to(DomBootstrapper);
-  kernel.bind<IDomCookieProxy>(COOKIE_PROXIES.DOM_COOKIE_PROXY).to(DomCookieProxy);
-  kernel.bind<IJSXBuilder>(JSX_BUILDERS.CLIENT_BUILDER).to(ClientBuilder);
-  kernel.bind<IStateProxy>(STATE_PROXIES.DOM_STATE_PROXY).to(DomStateProxy);
+  kernel.bind<IRetaxConfigStore>(RETAX_CONFIG_STORE).to(DomRetaxConfigStore).inSingletonScope();
+  kernel.bind<ICookieProxy>(COOKIE_PROXY).to(DomCookieProxy).inSingletonScope();
+  kernel.bind<IStateProxy>(STATE_PROXY).to(DomStateProxy).inSingletonScope();
+  kernel.bind<IJSXBuilder>(JSX_BUILDER).to(ClientBuilder);
 }

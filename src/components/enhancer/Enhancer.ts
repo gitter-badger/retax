@@ -2,16 +2,21 @@ import * as React from 'react';
 import * as _ from 'lodash';
 import { inject, multiInject, injectable } from 'inversify';
 
-import { IEnhancer } from './interfaces';
+import {
+  IEnhancer,
+  IApiEnhancmentConfig,
+  IActionsCreatorEnhancmentConfig,
+  IComponentEnhancmentConfig,
+} from './interfaces';
 
 import {
   IUserService, IUserServiceMap,
-  IApiServiceRuntimeConfig, IApiServiceConstructor,
+  IApiServiceConstructor,
   IActionsCreatorServiceConstructor,
 } from '../../di';
 import {
   RetaxConsumer,
-  IRetaxConfigProxy, RETAX_CONFIG_PROXY,
+  IRetaxConfigStore, RETAX_CONFIG_STORE,
   IReduxFacade, REDUX_FACADE,
 } from '../../core';
 
@@ -19,16 +24,16 @@ import {
 export default class Enhancer implements IEnhancer {
   public extendApi(
     Target: IApiServiceConstructor,
-    config: IApiServiceRuntimeConfig
+    config: IApiEnhancmentConfig
   ): IApiServiceConstructor {
 
     @injectable()
     class EnhancedApi extends Target {
       constructor(
         @inject(REDUX_FACADE) reduxFacade: IReduxFacade,
-        @inject(RETAX_CONFIG_PROXY) configProxy: IRetaxConfigProxy
+        @inject(RETAX_CONFIG_STORE) configStore: IRetaxConfigStore
       ) {
-        super(reduxFacade, configProxy);
+        super(reduxFacade, configStore);
         this.configure(config);
       }
     }
@@ -38,17 +43,20 @@ export default class Enhancer implements IEnhancer {
 
   public extendActionsCreator(
     Target: IActionsCreatorServiceConstructor,
-    keys: string[],
-    apiListId: Symbol
+    config: IActionsCreatorEnhancmentConfig
   ): IActionsCreatorServiceConstructor {
 
     @injectable()
     class EnhancedActionsCreator extends Target {
       constructor(
-        @multiInject(apiListId) services: IUserService[]
+        @multiInject(config.apis.serviceId) apis: IUserService[],
+        @multiInject(config.actionsCreators.serviceId) actionsCreators: IUserService[]
       ) {
-        super(services);
-        this.configure({ apis: _.zipObject<IUserServiceMap>(keys, services) });
+        super(apis, actionsCreators);
+        this.configure({
+          actionsCreators: _.zipObject<IUserServiceMap>(config.actionsCreators.keys, actionsCreators),
+          apis: _.zipObject<IUserServiceMap>(config.apis.keys, apis),
+        });
       }
     }
 
@@ -57,8 +65,7 @@ export default class Enhancer implements IEnhancer {
 
   public extendComponent(
     ComposedComponent: React.ComponentClass<any>,
-    keys: string[],
-    actionsCreatorListId: Symbol
+    config: IComponentEnhancmentConfig
   ): typeof RetaxConsumer {
 
     class RetaxComponent extends RetaxConsumer<void, void> {
@@ -67,11 +74,14 @@ export default class Enhancer implements IEnhancer {
       public render(): JSX.Element {
         const { kernel } = this.context;
 
-        const services = kernel.getAllServices<IUserService[]>(actionsCreatorListId);
+        const services = kernel.getAllServices<IUserService[]>(config.actionsCreators.serviceId);
 
         return React.createElement(
           ComposedComponent,
-          Object.assign(_.zipObject<IUserServiceMap>(keys, services), this.props)
+          Object.assign(
+            _.zipObject<IUserServiceMap>(config.actionsCreators.keys, services),
+            this.props
+          )
         );
       }
     }

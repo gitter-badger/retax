@@ -10,5 +10,5 @@ export interface IResolveRouteConfig extends ReactRouter.MatchArgs {
 }
 
 export interface IReactRouterFacade {
-  resolveRoute(config: IResolveRouteConfig): Promise<ReactRouter.IRouterContextProps>;
+  renderPropsPromise: Promise<ReactRouter.IRouterContextProps>;
 }

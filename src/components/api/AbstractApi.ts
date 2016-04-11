@@ -12,7 +12,7 @@ import { HTTP_METHODS } from './httpMethods';
 
 import {
   IReduxFacade,
-  IRetaxConfigProxy,
+  IRetaxConfigStore,
 } from '../../core';
 import { IRoutesMap, IApiServiceRuntimeConfig } from '../../di';
 
@@ -24,9 +24,9 @@ abstract class AbstractApi implements IApi {
 
   constructor(
     private _reduxFacade: IReduxFacade,
-    private _configProxy: IRetaxConfigProxy
+    private _configStore: IRetaxConfigStore
   ) {
-    const { authHeaderName, baseUrl } = _configProxy.config.api;
+    const { authHeaderName, baseUrl } = _configStore.config.api;
     this._authHeaderName = authHeaderName;
     this.baseUrl = baseUrl;
   }
@@ -53,7 +53,7 @@ abstract class AbstractApi implements IApi {
     { url, filters, body, headers }: IMethodConfig
   ): Promise<T> {
     const fullUrl = this._makeFullUrl({ url, filters });
-    const fetchConfig = this._makeFetchConfig({ method, body, headers });
+    const fetchConfig = await this._makeFetchConfig({ method, body, headers });
 
     const response = await fetch(fullUrl, fetchConfig);
 
@@ -63,12 +63,10 @@ abstract class AbstractApi implements IApi {
   /**
    * Compute the fetch configuration
    */
-  private _makeFetchConfig(
+  private async _makeFetchConfig(
     { method, body, headers }: IFetchConfig = { method: HTTP_METHODS.GET }
-  ): RequestInit {
-    const token = this._reduxFacade.authToken;
-
-    console.log(token);
+  ): Promise<RequestInit> {
+    const token = await this._reduxFacade.getAuthToken();
 
     const isJson = typeof body === 'object' && !(body instanceof FormData);
     const bodyToSend = isJson ? JSON.stringify(body) : body;
