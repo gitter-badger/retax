@@ -1,21 +1,25 @@
-import { handleActions } from 'redux-actions';
-import { fromJS } from 'immutable';
+import { Map } from 'immutable';
 
-import { ISetAuthTokenPayload } from '../actionsCreators';
+import { IRetaxState } from './interfaces';
+
+import { TSetAuthTokenPayload } from '../actionsCreators';
 import { SET_AUTH_TOKEN } from '../constants';
 
-export interface IRetaxState extends Immutable.Map<string, any> {}
+import { reducerFactory, IReducer, IAction } from '../../../utils';
 
 function getInitialState(): IRetaxState {
-  return fromJS({
+  return Map<string, string>({
     authToken: undefined,
   });
 }
 
-export default handleActions({
-  [SET_AUTH_TOKEN](state: IRetaxState, action: ReduxActions.Action): IRetaxState {
-    const payload: ISetAuthTokenPayload = action.payload;
+const retaxReducer: IReducer<IRetaxState, any, any> = reducerFactory(
+  getInitialState(),
+  {
+    [SET_AUTH_TOKEN](state: IRetaxState, action: IAction<TSetAuthTokenPayload, void>): IRetaxState {
+      return state.set('authToken', action.payload);
+    },
+  }
+);
 
-    return state.set('authToken', payload);
-  },
-}, getInitialState());
+export default retaxReducer;

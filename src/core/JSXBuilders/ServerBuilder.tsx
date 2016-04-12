@@ -36,8 +36,7 @@ export default class ServerBuilder implements IJSXBuilder {
     const { react: { appendChild } } = this._configStore.config;
     const { isomorphicTools } = this._context.request;
 
-    const store = await this._reduxFacade.storePromise;
-    const renderProps = await this._routerFacade.renderPropsPromise;
+    const [store, renderProps] = await Promise.all([this._reduxFacade.storePromise, this._routerFacade.renderPropsPromise]);
 
     const assets = isomorphicTools && isomorphicTools.assets();
 

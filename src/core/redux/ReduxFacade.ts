@@ -4,13 +4,16 @@ import { routerReducer, routerMiddleware, syncHistoryWithStore } from 'react-rou
 
 import { IReduxFacade, ICreateStoreConfig } from './interfaces';
 import * as internalReducers from './reducers';
-import { setAuthToken } from './actionsCreators';
+import { credentialsMiddleware } from './middlewares';
+import { setAuthToken, TSetAuthTokenPayload } from './actionsCreators';
 
 import { IRetaxConfigStore } from '../configStores';
 import { IReducersMap } from '../configStores';
 import { ICookieProxy } from '../cookieProxies';
 import { IStateProxy } from '../stateProxies';
 import { IContext } from '../context';
+
+import { IAction } from '../../utils';
 
 import {
   RETAX_CONFIG_STORE,
@@ -29,7 +32,6 @@ export default class ReduxFacade implements IReduxFacade {
     @inject(STATE_PROXY) private _stateProxy: IStateProxy,
     @inject(CONTEXT) private _context: IContext
   ) {
-    // can't init the store here, we need configStore to be configured
     this._storePromise = this._initialize();
     this.setAuthToken(this._cookieProxy.authToken);
   }
@@ -49,11 +51,11 @@ export default class ReduxFacade implements IReduxFacade {
     return retax.get('authToken');
   }
 
-  public setAuthToken(token: string): Promise<ReduxActions.Action> {
+  public setAuthToken(token: string): Promise<IAction<TSetAuthTokenPayload, void>> {
     return this.dispatch(setAuthToken(token));
   }
 
-  public async dispatch(action: ReduxActions.Action): Promise<ReduxActions.Action> {
+  public async dispatch(action: IAction<any, any>): Promise<IAction<any, any>> {
     const store = await this.storePromise;
 
     return store.dispatch(action);
@@ -92,6 +94,7 @@ export default class ReduxFacade implements IReduxFacade {
     const finalStoreEnhancers = [
       applyMiddleware(...[
         ...middlewares.filter(x => !!x),
+        credentialsMiddleware(this._cookieProxy),
         reduxRouterMiddleware,
       ]),
     ];

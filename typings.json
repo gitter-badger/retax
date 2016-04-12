@@ -21,7 +21,6 @@
     "react-router-redux": "registry:dt/react-router-redux#4.0.0+20160316155526",
     "react-router/history": "registry:dt/react-router/history#2.0.0+20160316155526",
     "redux": "registry:dt/redux#1.0.0+20160317120654",
-    "redux-actions": "registry:dt/redux-actions#0.8.0+20160317120654",
     "serve-static": "registry:dt/serve-static#0.0.0+20160317120654"
   },
   "ambientDevDependencies": {}

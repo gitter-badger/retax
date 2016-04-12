@@ -1,5 +1,7 @@
 import { IImmutableState } from '../../stateProxies';
 
+import { IAction } from '../../../utils';
+
 export interface ICreateStoreConfig {
   initialState: IImmutableState;
   history: HistoryModule.History;
@@ -12,6 +14,6 @@ export interface IReduxFacade {
   storePromise: Promise<Redux.Store>;
 
   getAuthToken(): Promise<string>;
-  setAuthToken(token: string): Promise<ReduxActions.Action>;
-  dispatch(action: ReduxActions.Action): Promise<ReduxActions.Action>;
+  setAuthToken(token: string): Promise<IAction<string, void>>;
+  dispatch<P, M>(action: IAction<P, M>): Promise<IAction<P, M>>;
 }
