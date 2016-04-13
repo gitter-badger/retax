@@ -23,15 +23,15 @@ export default class Injector implements IInjector {
     return res;
   }
 
-  public registerService(Services: IUserServiceConstructor|IUserServiceConstructor[]): Symbol {
+  public registerService(Services: IUserServiceConstructor|IUserServiceConstructor[], name?: string): Symbol {
     let serviceId: Symbol;
     let ServicesToRegister: IUserServiceConstructor[];
 
     if (Services instanceof Array) {
-      serviceId = Symbol(`UserService[] - ${generateRandomId()}`);
+      serviceId = Symbol(`UserService[] - ${name || generateRandomId()}`);
       ServicesToRegister = Services;
     } else {
-      serviceId = Symbol(`UserService - ${generateRandomId()}`);
+      serviceId = Symbol(`UserService - ${name || generateRandomId()}`);
       ServicesToRegister = [Services];
     }
 
@@ -57,9 +57,13 @@ export default class Injector implements IInjector {
 
   private _createKernelModuleLoader(id: Symbol, Services: IUserServiceConstructor[]): IKernelModule {
     return kernel => {
-      Services.forEach(Service => {
-        kernel.bind<IUserService>(id).to(Service);
-      });
+      if (Services.length === 0) { // we need to bind something for id.
+        kernel.bind<IUserService>(id).toValue(undefined);
+      } else {
+        Services.forEach(Service => {
+          kernel.bind<IUserService>(id).to(Service);
+        });
+      }
     };
   }
 

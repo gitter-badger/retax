@@ -19,8 +19,8 @@ export interface IInjectableUserServiceMap extends HashMap<IUserServiceConstruct
 export interface IInjector {
   userModules: IUserModule[];
 
-  registerService(Service: IUserServiceConstructor): Symbol;
-  registerService(Services: IUserServiceConstructor[]): Symbol;
+  registerService(Service: IUserServiceConstructor, name?: string): Symbol;
+  registerService(Services: IUserServiceConstructor[], name?: string): Symbol;
 }
 
 

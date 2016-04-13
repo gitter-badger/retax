@@ -33,7 +33,6 @@ export default class ReduxFacade implements IReduxFacade {
     @inject(CONTEXT) private _context: IContext
   ) {
     this._storePromise = this._initialize();
-    this.setAuthToken(this._cookieProxy.authToken);
   }
 
   get storePromise(): Promise<Redux.Store> {
@@ -76,6 +75,8 @@ export default class ReduxFacade implements IReduxFacade {
     });
 
     syncHistoryWithStore(this._context.history, store);
+
+    store.dispatch(setAuthToken(this._cookieProxy.authToken));
 
     return store;
   }

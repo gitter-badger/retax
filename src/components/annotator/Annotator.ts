@@ -48,8 +48,8 @@ export default class Annotator implements IAnnotator {
       const { keys: apiKeys, values: Apis } = this._splitEntries(config.apis);
       const { keys: actionsCreatorsKeys, values: ActionsCreators } = this._splitEntries(config.actionsCreators);
 
-      const apisServiceId = this._injector.registerService(Apis);
-      const actionsCreatorsServiceId = this._injector.registerService(ActionsCreators);
+      const apisServiceId = this._injector.registerService(Apis, `Api ${apiKeys.toString()}`);
+      const actionsCreatorsServiceId = this._injector.registerService(ActionsCreators, `Actions Creator ${actionsCreatorsKeys.toString()}`);
 
       const EnhancedTarget = this._enhancer.extendActionsCreator(Target, {
         actionsCreators: {
@@ -68,10 +68,9 @@ export default class Annotator implements IAnnotator {
 
   public RetaxComponent(config: IRetaxComponentRuntimeConfig = {}): ClassDecorator {
     return (ComposedComponent: React.ComponentClass<any>) => {
-
       const { keys: actionsCreatorKeys, values: ActionsCreators } = this._splitEntries(config.actionsCreators);
 
-      const actionsCreatorServiceId = this._injector.registerService(ActionsCreators);
+      const actionsCreatorServiceId = this._injector.registerService(ActionsCreators, `Actions Creator ${actionsCreatorKeys.toString()}`);
 
       return this._enhancer.extendComponent(ComposedComponent, {
         actionsCreators: {

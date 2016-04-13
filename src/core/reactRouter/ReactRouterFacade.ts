@@ -37,6 +37,7 @@ export default class ReactRouterFacade implements IReactRouterFacade {
   private async _resolveRoute(): Promise<ReactRouter.IRouterContextProps> {
     let resolutionTry = 0;
     let finalRenderProps;
+
     const store = await this._reduxFacade.storePromise;
 
     do {

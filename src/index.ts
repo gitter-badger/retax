@@ -3,4 +3,4 @@ export { default as retaxMiddleware } from './server/entry';
 export * from './components/entry';
 
 export { actionsCreatorFactory, reducerFactory } from './utils';
-export { setAuthToken } from './core';
+export { setAuthToken, removeAuthToken } from './core';

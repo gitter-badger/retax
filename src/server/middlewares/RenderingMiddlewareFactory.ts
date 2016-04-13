@@ -41,6 +41,9 @@ export default class RenderingMiddlewareFactory implements IRetaxMiddlewareFacto
         const builder = kernel.getService<IJSXBuilder>(JSX_BUILDER);
         const app = await builder.build(kernel);
 
+        // reload the kernel (usefull if the user uses code splitting)
+        this._kernelMediator.reload(kernel);
+
         // render!
         const markup = renderToString(app);
 

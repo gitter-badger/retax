@@ -43,6 +43,9 @@ export default class ClientBootstrapper implements IClientBootstrapper {
     const builder = this._kernelFacade.getService<IJSXBuilder>(JSX_BUILDER);
     const app = await builder.build(this._kernelFacade);
 
+    // reload the kernel (usefull if the user uses code splitting)
+    this._kernelMediator.reload(this._kernelFacade);
+
     // render!
     render(app, element);
   }
