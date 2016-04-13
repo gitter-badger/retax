@@ -14,7 +14,7 @@ import {
   IReduxFacade,
   IRetaxConfigStore,
 } from '../../core';
-import { IRoutesMap, IApiServiceRuntimeConfig } from '../../di';
+import { IRoutesMap, IApiServiceRuntimeConfig } from '../../core';
 
 abstract class AbstractApi implements IApi {
   public routes: IRoutesMap;

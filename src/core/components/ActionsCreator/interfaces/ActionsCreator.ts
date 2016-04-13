@@ -2,7 +2,7 @@ import {
   IUserService,
   IUserServiceMap,
   IInjectableUserServiceMap,
-} from './Injector';
+} from '../../Service';
 
 /**
  * This is the type of the object passed in the annotation

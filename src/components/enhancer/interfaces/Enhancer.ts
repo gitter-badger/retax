@@ -4,7 +4,7 @@ import {
   IUserServiceConstructor,
   IApiServiceRuntimeConfig, IApiServiceConstructor,
   IActionsCreatorServiceConstructor,
-} from '../../../di';
+} from '../../../core';
 import { RetaxConsumer } from '../../../core';
 
 export interface IInjectionMap {

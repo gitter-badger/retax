@@ -1,12 +1,8 @@
 import { IKernelModule, injectable } from 'inversify';
 
-import {
-  IInjector,
-  IUserService,
-  IUserServiceConstructor,
-  IUserModule,
-} from './interfaces';
+import { IInjector, IUserModule } from './interfaces';
 
+import { IUserService, IUserServiceConstructor } from '../../core';
 import { generateRandomId } from '../../utils';
 
 @injectable()

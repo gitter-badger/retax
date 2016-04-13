@@ -1,6 +1,6 @@
 import {
   IActionsCreatorService,
-} from '../../../di';
+} from '../../../core';
 
 export interface IActionsCreator extends IActionsCreatorService {
   export(): IExportReturn;

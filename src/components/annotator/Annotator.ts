@@ -5,15 +5,15 @@ import { IAnnotator } from './interfaces';
 import { METADATA_KEYS } from './metadataKeys';
 
 import { IEnhancer } from '../enhancer';
+import { INJECTOR, IInjector } from '../../di';
 import {
-  INJECTOR, IInjector,
   IInjectableUserServiceMap,
   IUserServiceConstructor,
   IApiServiceRuntimeConfig, IApiServiceConstructor,
   IActionsCreatorServiceConstructor,
   IActionsCreatorServiceRuntimeConfig,
   IRetaxComponentRuntimeConfig,
-} from '../../di';
+} from '../../core';
 
 import { ENHANCER } from '../inversify';
 

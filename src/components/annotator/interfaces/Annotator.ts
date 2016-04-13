@@ -2,7 +2,7 @@ import {
   IRetaxComponentRuntimeConfig,
   IApiServiceRuntimeConfig,
   IActionsCreatorServiceRuntimeConfig,
-} from '../../../di';
+} from '../../../core';
 
 export interface IAnnotator {
   action(): MethodDecorator;

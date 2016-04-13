@@ -3,7 +3,7 @@ import { IActionsCreator, IExportReturn } from './interfaces';
 import {
   IActionsCreatorServiceConfig,
   IUserServiceMap,
-} from '../../di';
+} from '../../core';
 
 import { METADATA_KEYS } from '../annotator';
 

@@ -13,7 +13,7 @@ import {
   IUserService, IUserServiceMap,
   IApiServiceConstructor,
   IActionsCreatorServiceConstructor,
-} from '../../di';
+} from '../../core';
 import {
   RetaxConsumer,
   IRetaxConfigStore, RETAX_CONFIG_STORE,

@@ -1,4 +1,4 @@
-import { IApiService } from '../../../di';
+import { IApiService } from '../../../core';
 import { HttpMethod } from './httpMethods';
 import { IRestFilter } from './restApi';
 

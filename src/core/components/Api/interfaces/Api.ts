@@ -1,8 +1,7 @@
-import {
-  IUserService,
-} from './Injector';
+import { IUserService } from '../../Service';
 
-import { IRetaxConfigStore, IReduxFacade } from '../../../core';
+import { IRetaxConfigStore } from '../../../configStores';
+import { IReduxFacade } from '../../../redux';
 
 /**
  * API Like service
@@ -30,11 +29,6 @@ export interface IApiService extends IUserService {
   routes: IRoutesMap;
 
   configure(config: IApiServiceRuntimeConfig): void;
-}
-
-export interface IAggregateApiService {
-  reduxFacade: IReduxFacade;
-  configProxy: IRetaxConfigStore;
 }
 
 export interface IApiServiceConstructor {

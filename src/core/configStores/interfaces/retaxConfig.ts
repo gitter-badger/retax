@@ -1,4 +1,3 @@
-import { IReduxFacade } from '../../redux';
 import { IConfigStore } from '../../../utils';
 
 export interface IClientConfig {
@@ -34,12 +33,17 @@ export interface IApiConfig {
   authHeaderName?: string;
 }
 
+export interface ILifecycleConfig {
+  preRoute?: void; // IActionsCreatorService
+}
+
 export interface IRetaxConfig {
-  store?: IReduxStoreConfig;
-  router?: IReactRouterConfig;
-  react?: IReactConfig;
-  client?: IClientConfig;
   api?: IApiConfig;
+  client?: IClientConfig;
+  lifecycle?: ILifecycleConfig;
+  react?: IReactConfig;
+  router?: IReactRouterConfig;
+  store?: IReduxStoreConfig;
 }
 
 

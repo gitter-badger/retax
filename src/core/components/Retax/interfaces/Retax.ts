@@ -1,3 +1,4 @@
+import { IInjectableUserServiceMap } from '../../Service';
 import { IInversifyKernelFacade } from '../../../inversifyKernelFacade';
 
 export interface IRetaxChildContext {
@@ -5,3 +6,7 @@ export interface IRetaxChildContext {
 }
 
 export interface IRetaxProps extends IRetaxChildContext {}
+
+export interface IRetaxComponentRuntimeConfig {
+  actionsCreators?: IInjectableUserServiceMap;
+}
