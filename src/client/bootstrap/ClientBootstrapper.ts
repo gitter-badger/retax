@@ -5,13 +5,13 @@ import { browserHistory } from 'react-router';
 import { IClientBootstrapper } from './interfaces';
 
 import {
-  IKernelMediator, KERNEL_MEDIATOR, KernelMediator
+  IKernelMediator, KERNEL_MEDIATOR,
 } from '../../di';
 import {
-  clientModule, contextModuleFactory,
+  clientModule, contextModuleFactory, lifecycleModuleFactory,
   IInversifyKernelFacade,
   IRetaxConfig,
-  JSX_BUILDER, IJSXBuilder,
+  MEDIATOR, IRetaxMediator,
 } from '../../core';
 
 @injectable()
@@ -37,11 +37,12 @@ export default class ClientBootstrapper implements IClientBootstrapper {
     this._kernelFacade = this._kernelMediator.create([
       clientModule,
       contextModuleFactory({ history, retaxConfig: this._retaxConfig }),
+      lifecycleModuleFactory(this._retaxConfig.lifecycle),
     ]);
 
     // build the app
-    const builder = this._kernelFacade.getService<IJSXBuilder>(JSX_BUILDER);
-    const app = await builder.build(this._kernelFacade);
+    const mediator = this._kernelFacade.getService<IRetaxMediator>(MEDIATOR);
+    const app = await mediator.run(this._kernelFacade);
 
     // reload the kernel (usefull if the user uses code splitting)
     this._kernelMediator.reload(this._kernelFacade);

@@ -29,6 +29,10 @@ export interface IActionsCreatorService extends IUserService {
   configure(config: IActionsCreatorServiceConfig): void;
 }
 
+/**
+ * A service constructor allowing to create an actions creator.
+ */
 export interface IActionsCreatorServiceConstructor {
   new(apis?: IUserService[], actionsCreators?: IUserService[]): IActionsCreatorService;
 }
+

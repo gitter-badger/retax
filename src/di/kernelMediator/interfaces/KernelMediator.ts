@@ -1,6 +1,6 @@
 import { IKernelModule } from 'inversify';
 
-import { IInversifyKernelFacade } from '../../../core';
+import { IInversifyKernelFacade, ILifecycleConfig } from '../../../core';
 
 export interface IKernelMediator {
   create(modules: IKernelModule[]): IInversifyKernelFacade;

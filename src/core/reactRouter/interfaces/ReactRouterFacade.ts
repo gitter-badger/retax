@@ -1,3 +1,5 @@
+import { IAsyncInitializable } from '../../mediator';
+
 export interface IMatchArgs extends ReactRouter.MatchArgs {};
 
 export interface IMatchResult {
@@ -9,6 +11,6 @@ export interface IResolveRouteConfig extends ReactRouter.MatchArgs {
   store: Redux.Store;
 }
 
-export interface IReactRouterFacade {
-  renderPropsPromise: Promise<ReactRouter.IRouterContextProps>;
+export interface IReactRouterFacade extends IAsyncInitializable<void, ReactRouter.IRouterContextProps> {
+  renderProps: ReactRouter.IRouterContextProps;
 }

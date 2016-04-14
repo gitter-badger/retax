@@ -35,3 +35,9 @@ export const STATE_PROXY = Symbol('StateProxy');
 
 // bootstrapping context
 export const CONTEXT = Symbol('Context');
+
+// mediator
+export const MEDIATOR = Symbol('Mediator');
+
+// lifecycle
+export const WILL_RESOLVE_ROUTE_HOOK = Symbol('PreRouteHook');

@@ -30,8 +30,8 @@ export default class ClientBuilder implements IJSXBuilder {
   public async build(kernel: IInversifyKernelFacade): Promise<JSX.Element> {
     const { RetaxProviderComponent} = this;
     const { react: { appendChild } } = this._configStore.config;
-
-    const [store, renderProps] = await Promise.all([this._reduxFacade.storePromise, this._routerFacade.renderPropsPromise]);
+    const { store } = this._reduxFacade;
+    const { renderProps } = this._routerFacade;
 
     return (
       <RetaxProviderComponent kernel={kernel}>

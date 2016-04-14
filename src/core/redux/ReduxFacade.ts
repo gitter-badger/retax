@@ -10,7 +10,7 @@ import { setAuthToken, TSetAuthTokenPayload } from './actionsCreators';
 import { IRetaxConfigStore } from '../configStores';
 import { IReducersMap } from '../configStores';
 import { ICookieProxy } from '../cookieProxies';
-import { IStateProxy } from '../stateProxies';
+import { IImmutableState } from '../stateProxies';
 import { IContext } from '../context';
 
 import { IAction } from '../../utils';
@@ -18,53 +18,55 @@ import { IAction } from '../../utils';
 import {
   RETAX_CONFIG_STORE,
   COOKIE_PROXY,
-  STATE_PROXY,
   CONTEXT,
 } from '../inversify';
 
 @injectable()
 export default class ReduxFacade implements IReduxFacade {
-  private _storePromise: Promise<Redux.Store>;
+  private _store: Redux.Store;
 
   constructor(
     @inject(RETAX_CONFIG_STORE) private _configStore: IRetaxConfigStore,
     @inject(COOKIE_PROXY) private _cookieProxy: ICookieProxy,
-    @inject(STATE_PROXY) private _stateProxy: IStateProxy,
     @inject(CONTEXT) private _context: IContext
   ) {
-    this._storePromise = this._initialize();
   }
 
-  get storePromise(): Promise<Redux.Store> {
-    if (this._storePromise === null) {
+  get store(): Redux.Store {
+    if (this._store === undefined) {
       throw new Error('The store has not been initialized yet');
     }
 
-    return this._storePromise;
+    return this._store;
   }
 
-  public async getAuthToken(): Promise<string> {
-    const store = await this.storePromise;
-    const { retax } = store.getState();
+  public getAuthToken(): string {
+    const { retax } = this.store.getState();
 
     return retax.get('authToken');
   }
 
-  public setAuthToken(token: string): Promise<IAction<TSetAuthTokenPayload, void>> {
+  public setAuthToken(token: string): IAction<TSetAuthTokenPayload, void> {
     return this.dispatch(setAuthToken(token));
   }
 
-  public async dispatch(action: IAction<any, any>): Promise<IAction<any, any>> {
-    const store = await this.storePromise;
-
-    return store.dispatch(action);
+  public dispatch(action: IAction<any, any>): IAction<any, any> {
+    return this.store.dispatch(action);
   }
 
-  private async _initialize(): Promise<Redux.Store> {
+  public initialize(initialState: IImmutableState): Redux.Store {
+    // create the store
+    this._store = this._initStore(initialState);
+
+    // initialize the store with the current auth token
+    this.dispatch(setAuthToken(this._cookieProxy.authToken));
+
+    return this._store;
+  }
+
+  private _initStore(initialState: IImmutableState): Redux.Store {
     const { middlewares, reducers, storeEnhancers } = this._configStore.config.store;
     const rootReducer = this._combineReducers(reducers);
-
-    const initialState = await this._stateProxy.statePromise;
 
     const store = this._createStore({
       initialState,
@@ -75,8 +77,6 @@ export default class ReduxFacade implements IReduxFacade {
     });
 
     syncHistoryWithStore(this._context.history, store);
-
-    store.dispatch(setAuthToken(this._cookieProxy.authToken));
 
     return store;
   }

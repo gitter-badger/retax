@@ -1,3 +1,5 @@
+import { ILifecycleServiceConstructor } from '../../components';
+
 import { IConfigStore } from '../../../utils';
 
 export interface IClientConfig {
@@ -27,14 +29,13 @@ export interface IReactConfig {
   appendChild?: JSX.Element;
 }
 
-
 export interface IApiConfig {
   baseUrl?: string;
   authHeaderName?: string;
 }
 
 export interface ILifecycleConfig {
-  preRoute?: void; // IActionsCreatorService
+  willResolveRoute?: ILifecycleServiceConstructor;
 }
 
 export interface IRetaxConfig {

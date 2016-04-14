@@ -5,7 +5,7 @@ import { IKernelMediator } from './interfaces';
 import { IKernelFactory } from '../kernelFactory';
 import { IInjector } from '../injector';
 
-import { IInversifyKernelFacade } from '../../core';
+import { IInversifyKernelFacade, ILifecycleConfig } from '../../core';
 
 import {
   KERNEL_FACTORY,

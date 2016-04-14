@@ -3,5 +3,5 @@ export interface IImmutableState {
 }
 
 export interface IStateProxy {
-  statePromise: Promise<IImmutableState>;
+  read(): Promise<IImmutableState>;
 }

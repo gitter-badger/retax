@@ -7,8 +7,8 @@ import { IRetaxMiddlewareFactory, IRetaxMiddleware } from './interfaces';
 
 import { IServerConfigStore } from '../configStores';
 import {
-  serverModule, contextModuleFactory,
-  IJSXBuilder, JSX_BUILDER,
+  serverModule, contextModuleFactory, lifecycleModuleFactory,
+  IRetaxMediator, MEDIATOR,
 } from '../../core';
 import { IKernelMediator, KERNEL_MEDIATOR } from '../../di';
 
@@ -35,11 +35,12 @@ export default class RenderingMiddlewareFactory implements IRetaxMiddlewareFacto
         const kernel = this._kernelMediator.create([
           serverModule,
           contextModuleFactory({ history, retaxConfig, request: { req, res, isomorphicTools } }),
+          lifecycleModuleFactory(retaxConfig.lifecycle),
         ]);
 
         // builder the app
-        const builder = kernel.getService<IJSXBuilder>(JSX_BUILDER);
-        const app = await builder.build(kernel);
+        const mediator = kernel.getService<IRetaxMediator>(MEDIATOR);
+        const app = await mediator.run(kernel);
 
         // reload the kernel (usefull if the user uses code splitting)
         this._kernelMediator.reload(kernel);

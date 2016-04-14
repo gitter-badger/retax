@@ -10,6 +10,7 @@ export const initialConfig: IRetaxConfig = {
   client: {
     keepInitialState: false,
   },
+  lifecycle: {},
   react: {},
   router: {
     static: {},

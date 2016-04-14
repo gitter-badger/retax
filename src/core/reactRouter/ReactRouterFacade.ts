@@ -4,8 +4,8 @@ import { replace } from 'react-router-redux';
 
 import { IReactRouterFacade, IMatchArgs, IMatchResult } from './interfaces';
 
-import { IReduxFacade } from '../redux';
 import { IRetaxConfigStore } from '../configStores';
+import { IReduxFacade } from '../redux';
 import { IContext } from '../context';
 
 import {
@@ -16,32 +16,36 @@ import {
 
 @injectable()
 export default class ReactRouterFacade implements IReactRouterFacade {
-  private _renderPropsPromise: Promise<ReactRouter.IRouterContextProps>;
+  private _renderProps: ReactRouter.IRouterContextProps;
 
   constructor(
     @inject(CONTEXT) private _context: IContext,
     @inject(REDUX_FACADE) private _reduxFacade: IReduxFacade,
     @inject(RETAX_CONFIG_STORE) private _configStores: IRetaxConfigStore
-  ) {
-    this._renderPropsPromise = this._resolveRoute();
-  }
+  ) {}
 
-  get renderPropsPromise(): Promise<ReactRouter.IRouterContextProps> {
-    if (this._renderPropsPromise === null) {
-      throw new Error('The react router module has not been initialized yet');
+  get renderProps(): ReactRouter.IRouterContextProps {
+    if (!this._renderProps) {
+      throw new Error('renderProps has not been initialized');
     }
 
-    return this._renderPropsPromise;
+    return this._renderProps;
+  }
+
+  public async initialize(): Promise<ReactRouter.IRouterContextProps> {
+    this._renderProps = await this._resolveRoute();
+
+    return this._renderProps;
   }
 
   private async _resolveRoute(): Promise<ReactRouter.IRouterContextProps> {
+    const { store } = this._reduxFacade;
     let resolutionTry = 0;
     let finalRenderProps;
 
-    const store = await this._reduxFacade.storePromise;
-
     do {
-      const routes = this._configStores.evaluateConfig(store).router.static;
+      const config = this._configStores.evaluateConfig(store);
+      const routes = config.router.static;
 
       const { renderProps, redirectLocation } = await this._match({
         history: this._context.history,
@@ -49,7 +53,7 @@ export default class ReactRouterFacade implements IReactRouterFacade {
       });
 
       if (redirectLocation) {
-        this._reduxFacade.dispatch(replace(redirectLocation));
+        store.dispatch(replace(redirectLocation));
       }
 
       finalRenderProps = renderProps;

@@ -1,3 +1,4 @@
+import { IInitializable } from '../../mediator';
 import { IImmutableState } from '../../stateProxies';
 
 import { IAction } from '../../../utils';
@@ -10,10 +11,10 @@ export interface ICreateStoreConfig {
   rootReducer: Redux.Reducer;
 }
 
-export interface IReduxFacade {
-  storePromise: Promise<Redux.Store>;
+export interface IReduxFacade extends IInitializable<IImmutableState, Redux.Store> {
+  store: Redux.Store;
 
-  getAuthToken(): Promise<string>;
-  setAuthToken(token: string): Promise<IAction<string, void>>;
-  dispatch<P, M>(action: IAction<P, M>): Promise<IAction<P, M>>;
+  getAuthToken(): string;
+  setAuthToken(token: string): IAction<string, void>;
+  dispatch<P, M>(action: IAction<P, M>): IAction<P, M>;
 }
