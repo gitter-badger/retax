@@ -40,4 +40,4 @@ export const CONTEXT = Symbol('Context');
 export const MEDIATOR = Symbol('Mediator');
 
 // lifecycle
-export const WILL_RESOLVE_ROUTE_HOOK = Symbol('PreRouteHook');
+export const LIFECYCLE_ACTIONS_CREATOR = Symbol('LifecycleActionsCreator');

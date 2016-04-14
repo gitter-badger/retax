@@ -66,6 +66,10 @@ export default class Annotator implements IAnnotator {
     };
   }
 
+  public LifecycleManager(config: IActionsCreatorServiceRuntimeConfig = {}): ClassDecorator {
+    return this.ActionsCreator(config);
+  }
+
   public RetaxComponent(config: IRetaxComponentRuntimeConfig = {}): ClassDecorator {
     return (ComposedComponent: React.ComponentClass<any>) => {
       const { keys: actionsCreatorKeys, values: ActionsCreators } = this._splitEntries(config.actionsCreators);

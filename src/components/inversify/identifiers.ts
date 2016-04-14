@@ -9,3 +9,6 @@ export const API_CONSTRUCTOR = Symbol('AbstractApiConstructor');
 
 // enhancer
 export const ENHANCER = Symbol('Enhancer');
+
+// lifecycle manager
+export const LIFECYCLE_MANAGER_CONSTRUCTOR = Symbol('LifecycleManagerConstructor');

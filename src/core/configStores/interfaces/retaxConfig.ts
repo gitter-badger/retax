@@ -34,14 +34,10 @@ export interface IApiConfig {
   authHeaderName?: string;
 }
 
-export interface ILifecycleConfig {
-  willResolveRoute?: ILifecycleServiceConstructor;
-}
-
 export interface IRetaxConfig {
   api?: IApiConfig;
   client?: IClientConfig;
-  lifecycle?: ILifecycleConfig;
+  lifecycle?: ILifecycleServiceConstructor;
   react?: IReactConfig;
   router?: IReactRouterConfig;
   store?: IReduxStoreConfig;

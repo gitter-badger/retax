@@ -17,7 +17,7 @@ abstract class AbstractActionsCreator implements IActionsCreator {
   }
 
   /**
-   * We are loosing typing here. We should find a better solution than that
+   * We are loosing typing here. We should find a better solution
    */
   public export(): IExportReturn {
     const methodNames: string[] = Reflect.getMetadata(METADATA_KEYS.RETAX_ACTIONS, this) || [];

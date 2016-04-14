@@ -1,7 +1,7 @@
 import {
   IActionsCreatorService,
   IActionsCreatorServiceConstructor,
-} from './ActionsCreator';
+} from '../../ActionsCreator';
 
 import {
   IUserService,

@@ -13,7 +13,7 @@ import {
   STATE_PROXY,
   REDUX_FACADE,
   REACT_ROUTER_FACADE,
-  WILL_RESOLVE_ROUTE_HOOK,
+  LIFECYCLE_ACTIONS_CREATOR,
   JSX_BUILDER,
 } from '../inversify';
 
@@ -23,7 +23,7 @@ export default class RetaxMediator implements IRetaxMediator {
     @inject(STATE_PROXY) private _stateProxy: IStateProxy,
     @inject(REDUX_FACADE) private _reduxFacade: IReduxFacade,
     @inject(REACT_ROUTER_FACADE) private _routerFacade: IReactRouterFacade,
-    @inject(WILL_RESOLVE_ROUTE_HOOK) private _willResolveRouteHook: ILifecycleService,
+    @inject(LIFECYCLE_ACTIONS_CREATOR) private _lifecycleActionsCreator: ILifecycleService,
     @inject(JSX_BUILDER) private _jsxBuilder: IJSXBuilder
   ) {}
 
@@ -47,8 +47,8 @@ export default class RetaxMediator implements IRetaxMediator {
   }
 
   private async _runPreRouteHook(): Promise<void> {
-    if (this._willResolveRouteHook) {
-      await this._reduxFacade.dispatch(this._willResolveRouteHook.main());
+    if (this._lifecycleActionsCreator) {
+      await this._reduxFacade.dispatch(this._lifecycleActionsCreator.willResolveRoute());
     }
   }
 }

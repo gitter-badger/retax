@@ -1,12 +1,11 @@
 import { IKernel, IKernelModule } from 'inversify';
 
-import { RetaxProvider, ILifecycleService } from '../../components';
+import { RetaxProvider, ILifecycleService, ILifecycleServiceConstructor } from '../../components';
 import { IInternalConfigStore, InternalConfigStore } from '../../configStores';
 import { IReactRouterFacade, ReactRouterFacade } from '../../reactRouter';
 import { IReduxFacade, ReduxFacade } from '../../redux';
 import { IRetaxMediator, RetaxMediator } from '../../mediator';
 import { IContext } from '../../context';
-import { ILifecycleConfig } from '../../configStores';
 
 import {
   MEDIATOR,
@@ -15,7 +14,7 @@ import {
   REACT_ROUTER_FACADE,
   REDUX_FACADE,
   CONTEXT,
-  WILL_RESOLVE_ROUTE_HOOK,
+  LIFECYCLE_ACTIONS_CREATOR,
 } from '../identifiers';
 
 export default function commonModule(kernel: IKernel): void {
@@ -34,12 +33,12 @@ export function contextModuleFactory(context: IContext): IKernelModule {
   };
 }
 
-export function lifecycleModuleFactory(lifecycleConfig: ILifecycleConfig): IKernelModule {
+export function lifecycleModuleFactory(LifecycleActionsCreator: ILifecycleServiceConstructor): IKernelModule {
   return function lifecycleModule(kernel: IKernel): void {
-    if (lifecycleConfig.willResolveRoute) {
-      kernel.bind<ILifecycleService>(WILL_RESOLVE_ROUTE_HOOK).to(lifecycleConfig.willResolveRoute);
+    if (LifecycleActionsCreator) {
+      kernel.bind<ILifecycleService>(LIFECYCLE_ACTIONS_CREATOR).to(LifecycleActionsCreator);
     } else {
-      kernel.bind<ILifecycleService>(WILL_RESOLVE_ROUTE_HOOK).toValue(undefined);
+      kernel.bind<ILifecycleService>(LIFECYCLE_ACTIONS_CREATOR).toValue(undefined);
     }
   };
 }
