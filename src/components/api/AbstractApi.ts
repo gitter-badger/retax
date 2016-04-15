@@ -1,4 +1,4 @@
-import fetch from 'isomorphic-fetch';
+import 'isomorphic-fetch';
 
 import {
   IApi,
@@ -7,8 +7,10 @@ import {
   IFetchConfig,
   IHeader,
   HttpMethod,
+  IHttpError,
 } from './interfaces';
 import { HTTP_METHODS } from './httpMethods';
+import HttpError from './HttpError';
 
 import {
   IReduxFacade,
@@ -53,20 +55,37 @@ abstract class AbstractApi implements IApi {
     { url, filters, body, headers }: IMethodConfig
   ): Promise<T> {
     const fullUrl = this._makeFullUrl({ url, filters });
-    const fetchConfig = await this._makeFetchConfig({ method, body, headers });
+    const fetchConfig = this._makeFetchConfig({ method, body, headers });
 
     const response = await fetch(fullUrl, fetchConfig);
+    const error = await this._checkResponse(response);
+
+    if (error) throw error;
 
     return response.json();
+  }
+
+  private async _checkResponse(response: IResponse): Promise<IHttpError> {
+    let error: IHttpError;
+
+    if (!response.ok) {
+      error = new HttpError({
+        status: response.status,
+        statusText: response.statusText,
+        text: await response.text(),
+      });
+    }
+
+    return error;
   }
 
   /**
    * Compute the fetch configuration
    */
-  private async _makeFetchConfig(
+  private _makeFetchConfig(
     { method, body, headers }: IFetchConfig = { method: HTTP_METHODS.GET }
-  ): Promise<RequestInit> {
-    const token = await this._reduxFacade.getAuthToken();
+  ): RequestInit {
+    const token = this._reduxFacade.getAuthToken();
 
     const isJson = typeof body === 'object' && !(body instanceof FormData);
     const bodyToSend = isJson ? JSON.stringify(body) : body;
