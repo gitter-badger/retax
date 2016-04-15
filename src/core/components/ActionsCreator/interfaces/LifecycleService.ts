@@ -13,7 +13,7 @@ import { IAction } from '../../../../utils';
  * A service used for lifecycle managment
  */
 export interface ILifecycleService extends IActionsCreatorService {
-  willResolveRoute(): IAction<any, any>;
+  willResolveRoute(hasToken: boolean): IAction<any, any>;
 }
 
 /**

@@ -10,7 +10,7 @@ import {
   IHttpError,
 } from './interfaces';
 import { HTTP_METHODS } from './httpMethods';
-import HttpError from './HttpError';
+import ApiError from './ApiError';
 
 import {
   IReduxFacade,
@@ -69,7 +69,7 @@ abstract class AbstractApi implements IApi {
     let error: IHttpError;
 
     if (!response.ok) {
-      error = new HttpError({
+      error = new ApiError({
         status: response.status,
         statusText: response.statusText,
         text: await response.text(),

@@ -3,6 +3,7 @@ import { injectable, inject } from 'inversify';
 import { IRetaxMediator } from './interfaces';
 
 import { IInversifyKernelFacade } from '../inversifyKernelFacade';
+import { ICookieProxy } from '../cookieProxies';
 import { IStateProxy } from '../stateProxies';
 import { IReduxFacade } from '../redux';
 import { IReactRouterFacade } from '../reactRouter';
@@ -10,6 +11,7 @@ import { ILifecycleService } from '../components';
 import { IJSXBuilder } from '../JSXBuilders';
 
 import {
+  COOKIE_PROXY,
   STATE_PROXY,
   REDUX_FACADE,
   REACT_ROUTER_FACADE,
@@ -20,6 +22,7 @@ import {
 @injectable()
 export default class RetaxMediator implements IRetaxMediator {
   constructor(
+    @inject(COOKIE_PROXY) private _cookieProxy: ICookieProxy,
     @inject(STATE_PROXY) private _stateProxy: IStateProxy,
     @inject(REDUX_FACADE) private _reduxFacade: IReduxFacade,
     @inject(REACT_ROUTER_FACADE) private _routerFacade: IReactRouterFacade,
@@ -47,8 +50,10 @@ export default class RetaxMediator implements IRetaxMediator {
   }
 
   private async _runPreRouteHook(): Promise<void> {
+    const { authToken } = this._cookieProxy;
+
     if (this._lifecycleActionsCreator) {
-      await this._reduxFacade.dispatch(this._lifecycleActionsCreator.willResolveRoute());
+      await this._reduxFacade.dispatch(this._lifecycleActionsCreator.willResolveRoute(!!authToken));
     }
   }
 }

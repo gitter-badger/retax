@@ -29,6 +29,8 @@ export default class DomCookieProxy implements ICookieProxy {
   }
 
   private _setAuthToken(token: string): void {
+    if (!token) return;
+
     const { COOKIE_AUTH_TOKEN_KEY } = this._store.config;
 
     Cookie.set(COOKIE_AUTH_TOKEN_KEY, token, { expires: 1 });

@@ -30,15 +30,17 @@ export default class RequestCookieProxy implements ICookieProxy {
     this._context.request.res.cookie(COOKIE_AUTH_TOKEN_KEY, undefined);
   }
 
+  private _setAuthToken(token: string): void {
+    if (!token) return;
+
+    const { COOKIE_AUTH_TOKEN_KEY } = this._store.config;
+
+    this._context.request.res.cookie(COOKIE_AUTH_TOKEN_KEY, token);
+  }
+
   private _readAuthToken(): string {
     const { COOKIE_AUTH_TOKEN_KEY } = this._store.config;
 
     return this._context.request.req.cookies[COOKIE_AUTH_TOKEN_KEY];
-  }
-
-  private _setAuthToken(token: string): void {
-    const { COOKIE_AUTH_TOKEN_KEY } = this._store.config;
-
-    this._context.request.res.cookie(COOKIE_AUTH_TOKEN_KEY, token);
   }
 }
