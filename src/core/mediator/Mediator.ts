@@ -9,8 +9,10 @@ import { IReduxFacade } from '../redux';
 import { IReactRouterFacade } from '../reactRouter';
 import { ILifecycleService } from '../components';
 import { IJSXBuilder } from '../JSXBuilders';
+import { IContext } from '../context';
 
 import {
+  CONTEXT,
   COOKIE_PROXY,
   STATE_PROXY,
   REDUX_FACADE,
@@ -22,6 +24,7 @@ import {
 @injectable()
 export default class RetaxMediator implements IRetaxMediator {
   constructor(
+    @inject(CONTEXT) private _context: IContext,
     @inject(COOKIE_PROXY) private _cookieProxy: ICookieProxy,
     @inject(STATE_PROXY) private _stateProxy: IStateProxy,
     @inject(REDUX_FACADE) private _reduxFacade: IReduxFacade,
@@ -32,19 +35,25 @@ export default class RetaxMediator implements IRetaxMediator {
 
   public async run(kernel: IInversifyKernelFacade): Promise<JSX.Element> {
     // initial state
-    const initialState = await this._stateProxy.read();
+    const initialState = this._stateProxy.read();
 
     // this.redux Facade init
     this._reduxFacade.initialize(initialState);
 
-    // hook preroute hook
+    // preroute hook
     await this._runPreRouteHook();
 
     // this.router resolve route
-    await this._routerFacade.initialize();
+    const renderProps = await this._routerFacade.initialize();
+
+    // postroute hook
+    await this._runPostRouteHook(renderProps);
 
     // builder
     const appPromise =  this._jsxBuilder.build(kernel);
+
+    // history hook
+    this._attachHistoryChangeHook();
 
     return appPromise;
   }
@@ -52,8 +61,32 @@ export default class RetaxMediator implements IRetaxMediator {
   private async _runPreRouteHook(): Promise<void> {
     const { authToken } = this._cookieProxy;
 
-    if (this._lifecycleActionsCreator) {
-      await this._reduxFacade.dispatch(this._lifecycleActionsCreator.willResolveRoute(!!authToken));
+    if (this._lifecycleActionsCreator && this._lifecycleActionsCreator.willResolveRoute) {
+      await this._reduxFacade.dispatch(
+        this._lifecycleActionsCreator.willResolveRoute(!!authToken)
+      );
     }
+  }
+
+  private async _runPostRouteHook(renderProps: ReactRouter. IRouterContextProps): Promise<void> {
+    if (this._lifecycleActionsCreator && this._lifecycleActionsCreator.didResolveRoute) {
+      await this._reduxFacade.dispatch(
+        this._lifecycleActionsCreator.didResolveRoute(renderProps)
+      );
+    }
+  }
+
+  private _attachHistoryChangeHook(): void {
+    if (this._lifecycleActionsCreator && this._lifecycleActionsCreator.historyDidChanged) {
+      this._context.history.listen(this._historyChangeHook.bind(this));
+    }
+  }
+
+  private async _historyChangeHook(location: HistoryModule.Location): Promise<void> {
+    const renderProps = await this._routerFacade.resolveRoute();
+
+    this._reduxFacade.dispatch(
+      this._lifecycleActionsCreator.historyDidChanged(location, renderProps)
+    );
   }
 }

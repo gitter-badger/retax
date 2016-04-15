@@ -13,4 +13,6 @@ export interface IResolveRouteConfig extends ReactRouter.MatchArgs {
 
 export interface IReactRouterFacade extends IAsyncInitializable<void, ReactRouter.IRouterContextProps> {
   renderProps: ReactRouter.IRouterContextProps;
+
+  resolveRoute(): Promise<ReactRouter.IRouterContextProps>;
 }

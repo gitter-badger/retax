@@ -33,12 +33,12 @@ export default class ReactRouterFacade implements IReactRouterFacade {
   }
 
   public async initialize(): Promise<ReactRouter.IRouterContextProps> {
-    this._renderProps = await this._resolveRoute();
+    this._renderProps = await this.resolveRoute();
 
     return this._renderProps;
   }
 
-  private async _resolveRoute(): Promise<ReactRouter.IRouterContextProps> {
+  public async resolveRoute(): Promise<ReactRouter.IRouterContextProps> {
     const { store } = this._reduxFacade;
     let resolutionTry = 0;
     let finalRenderProps;

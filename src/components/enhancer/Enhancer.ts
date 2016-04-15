@@ -1,4 +1,5 @@
 import * as React from 'react';
+import hoistNonReactStatic from 'hoist-non-react-statics';
 import * as _ from 'lodash';
 import { inject, multiInject, injectable } from 'inversify';
 
@@ -93,6 +94,6 @@ export default class Enhancer implements IEnhancer {
       RetaxLib.retax.reload();
     }
 
-    return RetaxComponent;
+    return hoistNonReactStatic(RetaxComponent, ComposedComponent);
   }
 }

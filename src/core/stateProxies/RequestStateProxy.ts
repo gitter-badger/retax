@@ -9,7 +9,7 @@ export default class RequestStateProxy extends AStateConverter implements IState
     super();
   }
 
-  public read(): Promise<IImmutableState> {
-    return Promise.resolve<IImmutableState>({});
+  public read(): IImmutableState {
+    return {};
   }
 }

@@ -6,7 +6,7 @@ import { ConfigStore } from '../../utils';
 
 export const initialConfig: IInternalConfig = {
   COOKIE_AUTH_TOKEN_KEY: 'auth_token',
-  INITIAL_STATE_KEY: '__INITIAL_STATE_KEY__',
+  INITIAL_STATE_KEY: '__INITIAL_STATE__',
 };
 
 @injectable()

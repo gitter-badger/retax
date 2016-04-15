@@ -76,7 +76,7 @@ export default class ReduxFacade implements IReduxFacade {
       middlewares,
     });
 
-    syncHistoryWithStore(this._context.history, store);
+    this._context.history = syncHistoryWithStore(this._context.history, store);
 
     return store;
   }

@@ -13,7 +13,9 @@ import { IAction } from '../../../../utils';
  * A service used for lifecycle managment
  */
 export interface ILifecycleService extends IActionsCreatorService {
-  willResolveRoute(hasToken: boolean): IAction<any, any>;
+  willResolveRoute?(hasToken: boolean): IAction<any, any>;
+  didResolveRoute?(renderProps: ReactRouter.IRouterContextProps): IAction<any, any>;
+  historyDidChanged?(location: HistoryModule.Location, renderProps: ReactRouter.IRouterContextProps): IAction<any, any>;
 }
 
 /**

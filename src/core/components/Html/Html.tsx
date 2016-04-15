@@ -6,7 +6,7 @@ import { IHtmlProps } from './interfaces';
 
 export default class Html extends React.Component<IHtmlProps, void> {
   public render(): JSX.Element {
-    const { store, rootComponent, assets } = this.props;
+    const { store, rootComponent, assets, internalConfig } = this.props;
     const content = renderToString(rootComponent);
 
     const head = Helmet.rewind();
@@ -31,7 +31,7 @@ export default class Html extends React.Component<IHtmlProps, void> {
           <script
             dangerouslySetInnerHTML={{
               __html: `
-                window.__INITIAL_STATE__=${JSON.stringify(store.getState())};
+                window.${internalConfig.INITIAL_STATE_KEY}=${JSON.stringify(store.getState())};
               `,
             }}
             charSet="UTF-8"
