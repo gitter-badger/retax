@@ -1,6 +1,9 @@
-# Retax [![Build Status](https://travis-ci.org/hourliert/react-component-seed.svg?branch=develop)](https://travis-ci.org/hourliert/react-component-seed)
+# Retax
 
-Retax written with React.
+This project is in **ALPHA** state. You **MUST NOT** use it in prodution.
+
+* Core APIs are almost stable.
+* Components and utils APIs are very unstable.
 
 ## Getting started
 ```
