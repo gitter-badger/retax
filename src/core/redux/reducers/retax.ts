@@ -1,11 +1,12 @@
 import { Map } from 'immutable';
+import { Reducer } from 'redux';
 
 import { IRetaxState } from './interfaces';
 
 import { TSetAuthTokenPayload } from '../actionsCreators';
 import { SET_AUTH_TOKEN, REMOVE_AUTH_TOKEN } from '../constants';
 
-import { reducerFactory, IReducer, IAction } from '../../../utils';
+import { reducerFactory, IAction } from '../../../utils';
 
 function getInitialState(): IRetaxState {
   return Map<string, string>({
@@ -13,7 +14,7 @@ function getInitialState(): IRetaxState {
   });
 }
 
-const retaxReducer: IReducer<IRetaxState, any, any> = reducerFactory(
+const retaxReducer: Reducer<IRetaxState> = reducerFactory(
   getInitialState(),
   {
     [SET_AUTH_TOKEN](state: IRetaxState, action: IAction<TSetAuthTokenPayload, void>): IRetaxState {

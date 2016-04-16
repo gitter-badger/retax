@@ -1,3 +1,5 @@
+import { Store, Middleware, ReducersMapObject, StoreEnhancer } from 'redux';
+
 import { ILifecycleServiceConstructor } from '../../components';
 
 import { IConfigStore } from '../../../utils';
@@ -12,17 +14,17 @@ export interface IReducersMap {
 
 export interface IReduxStoreConfig {
   nonImmutableKeys?: string[];
-  middlewares?: Redux.Middleware[];
-  reducers?: IReducersMap;
+  middlewares?: Middleware[];
+  reducers?: ReducersMapObject;
   initialState?: Object;
-  storeEnhancers?: Function[];
+  storeEnhancers?: StoreEnhancer<any>[];
 }
 
 export type IRoute = ReactRouter.PlainRoute | ReactRouter.RouteElement;
 
 export interface IReactRouterConfig {
   static?: IRoute;
-  dynamic?: (store: Redux.Store, userAgent: string) => IRoute;
+  dynamic?: (store: Store<any>, userAgent: string) => IRoute;
 }
 
 export interface IReactConfig {
@@ -48,5 +50,5 @@ export interface IRetaxConfigStore extends IConfigStore<IRetaxConfig> {
   /**
    * Runtime evaluated config
    */
-  evaluateConfig(store: Redux.Store): IRetaxConfig;
+  evaluateConfig(store: Store<any>): IRetaxConfig;
 }

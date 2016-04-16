@@ -1,4 +1,5 @@
 declare module 'redux-logger' {
+  import { Middleware } from 'redux';
 
   type LoggerPredicate = (getState: () => any, action: any) => boolean;
 
@@ -35,5 +36,5 @@ declare module 'redux-logger' {
     errorTransformer?: (error: any) => any;
   }
 
-  export default function createLogger(options?: ReduxLoggerOptions): Redux.Middleware;
+  export default function createLogger(options?: ReduxLoggerOptions): Middleware;
 }

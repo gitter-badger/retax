@@ -1,4 +1,5 @@
 import { injectable, inject } from 'inversify';
+import { Store } from 'redux';
 
 import RetaxConfigStore from './RetaxConfigStore';
 import { IRetaxConfig } from './interfaces';
@@ -17,7 +18,7 @@ export default class RequestRetaxConfigStore extends RetaxConfigStore {
     super(_context.retaxConfig);
   }
 
-  public evaluateConfig(store: Redux.Store): IRetaxConfig {
+  public evaluateConfig(store: Store<any>): IRetaxConfig {
     const evaluatedConfig = this.config;
     const { router } = evaluatedConfig;
 

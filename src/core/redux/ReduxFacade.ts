@@ -1,5 +1,5 @@
 import { injectable, inject } from 'inversify';
-import { combineReducers, createStore, applyMiddleware, compose } from 'redux';
+import { combineReducers, createStore, applyMiddleware, compose, Store, Reducer, ReducersMapObject } from 'redux';
 import { routerReducer, routerMiddleware, syncHistoryWithStore } from 'react-router-redux';
 
 import { IReduxFacade, ICreateStoreConfig } from './interfaces';
@@ -8,7 +8,6 @@ import { credentialsMiddleware } from './middlewares';
 import { setAuthToken, TSetAuthTokenPayload } from './actionsCreators';
 
 import { IRetaxConfigStore } from '../configStores';
-import { IReducersMap } from '../configStores';
 import { ICookieProxy } from '../cookieProxies';
 import { IImmutableState } from '../stateProxies';
 import { IContext } from '../context';
@@ -23,7 +22,7 @@ import {
 
 @injectable()
 export default class ReduxFacade implements IReduxFacade {
-  private _store: Redux.Store;
+  private _store: Store<any>;
 
   constructor(
     @inject(RETAX_CONFIG_STORE) private _configStore: IRetaxConfigStore,
@@ -32,7 +31,7 @@ export default class ReduxFacade implements IReduxFacade {
   ) {
   }
 
-  get store(): Redux.Store {
+  get store(): Store<any> {
     if (this._store === undefined) {
       throw new Error('The store has not been initialized yet');
     }
@@ -54,7 +53,7 @@ export default class ReduxFacade implements IReduxFacade {
     return this.store.dispatch(action);
   }
 
-  public initialize(initialState: IImmutableState): Redux.Store {
+  public initialize(initialState: IImmutableState): Store<any> {
     // create the store
     this._store = this._initStore(initialState);
 
@@ -64,7 +63,7 @@ export default class ReduxFacade implements IReduxFacade {
     return this._store;
   }
 
-  private _initStore(initialState: IImmutableState): Redux.Store {
+  private _initStore(initialState: IImmutableState): Store<any> {
     const { middlewares, reducers, storeEnhancers } = this._configStore.config.store;
     const rootReducer = this._combineReducers(reducers);
 
@@ -81,31 +80,32 @@ export default class ReduxFacade implements IReduxFacade {
     return store;
   }
 
-  private _combineReducers(reducers: IReducersMap): Redux.Reducer {
+  private _combineReducers(reducers: ReducersMapObject): Reducer<any> {
     return combineReducers(Object.assign({
       routing: routerReducer,
     }, internalReducers, reducers));
   }
 
-  private _createStore(config: ICreateStoreConfig): Redux.Store {
+  private _createStore(config: ICreateStoreConfig): Store<any> {
     const { initialState, history, middlewares = [], storeEnhancers = [], rootReducer } = config;
+    const finalStoreEnhancers = [];
 
     const reduxRouterMiddleware = routerMiddleware(history);
 
-    const finalStoreEnhancers = [
-      applyMiddleware(...[
+    const middlewareEnhancer = applyMiddleware(
+      ...[
         ...middlewares.filter(x => !!x),
         credentialsMiddleware(this._cookieProxy),
         reduxRouterMiddleware,
-      ]),
-    ];
+      ]
+    );
 
     finalStoreEnhancers.push(...storeEnhancers.filter(x => !!x));
 
     return createStore(
       rootReducer,
       initialState,
-      <any>compose(...finalStoreEnhancers)
+      compose(middlewareEnhancer, ...finalStoreEnhancers)
     );
   }
 }

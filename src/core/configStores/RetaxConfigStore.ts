@@ -1,3 +1,5 @@
+import { Store } from 'redux';
+
 import { IRetaxConfig, IRetaxConfigStore } from './interfaces';
 
 import { ConfigStore } from '../../utils';
@@ -32,7 +34,7 @@ abstract class RetaxConfigStore extends ConfigStore<IRetaxConfig> implements IRe
     this.config = userConfig;
   }
 
-  public abstract evaluateConfig(store: Redux.Store): IRetaxConfig;
+  public abstract evaluateConfig(store: Store<any>): IRetaxConfig;
 }
 
 export default RetaxConfigStore;
