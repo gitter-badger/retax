@@ -9,5 +9,5 @@ export default function reducerFactory<S>(initialState: S, handlers: ReducersMap
     } else {
       return state;
     }
-  }
+  };
 }
