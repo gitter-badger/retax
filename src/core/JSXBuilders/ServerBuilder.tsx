@@ -46,7 +46,7 @@ export default class ServerBuilder implements IJSXBuilder {
         <Provider store={store} key="provider">
           <div className="flex layout vertical">
             <RouterContext {...renderProps} />
-            {appendChild}
+            {appendChild && React.Children.only(appendChild)}
           </div>
         </Provider>
       </RetaxProviderComponent>

@@ -38,7 +38,7 @@ export default class ClientBuilder implements IJSXBuilder {
         <Provider store={store} key="provider">
           <div className="flex layout vertical">
             <Router {...renderProps} />
-            {appendChild}
+            {appendChild && React.Children.only(appendChild)}
           </div>
         </Provider>
       </RetaxProviderComponent>

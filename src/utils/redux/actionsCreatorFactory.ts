@@ -26,5 +26,5 @@ export default function makeActionCreator<P, M>(
     }
 
     return action;
-  }
+  };
 }
