@@ -7,7 +7,7 @@
   "typings": "libTs/src/index.d.ts",
   "scripts": {
     "prepublish": "builder run build",
-    "postinstall": "builder run typings:install",
+    "typings": "builder run typings:install",
     "build": "builder run build",
     "start": "builder run build:commonjs:watch",
     "tdd": "builder run test:all:watch",
