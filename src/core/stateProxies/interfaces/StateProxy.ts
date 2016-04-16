@@ -1,5 +1,7 @@
+import { Collection } from 'immutable';
+
 export interface IImmutableState {
-  [key: string]: Immutable.Collection<any, any> | any;
+  [key: string]: Collection<any, any> | any;
 }
 
 export interface IStateProxy {
