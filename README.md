@@ -9,5 +9,6 @@ This project is in **ALPHA** state. You **MUST NOT** use it in prodution.
 ```
 nvm use
 npm install
+npm run typings
 npm start
 ```
