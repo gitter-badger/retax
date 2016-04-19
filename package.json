@@ -6,12 +6,12 @@
   "jsnext:main": "es/index.js",
   "typings": "libTs/src/index.d.ts",
   "scripts": {
-    "prepublish": "builder run build",
+    "prepublish": "npm test && builder run build",
     "typings": "builder run typings:install",
     "build": "builder run build",
     "start": "builder run build:commonjs:watch",
     "tdd": "builder run test:all:watch",
-    "pretest": "builder run lint",
+    "pretest": "npm run typings && builder run lint",
     "test": "builder run test:all:coverage",
     "lint": "builder run lint",
     "release": "builder run release"
@@ -34,7 +34,7 @@
   },
   "homepage": "https://github.com/hourliert/retax",
   "dependencies": {
-    "builder-ts-library": "~0.0.2",
+    "builder-ts-library": "~0.0.3",
     "hoist-non-react-statics": "^1.0.5",
     "inversify": "^2.0.0-beta.1",
     "isomorphic-fetch": "^2.2.1",
@@ -44,15 +44,18 @@
   },
   "devDependencies": {
     "builder": "^2.9.1",
-    "builder-ts-library-dev": "~0.0.2",
+    "builder-ts-library-dev": "~0.0.3",
+    "cookie-parser": "^1.4.1",
     "immutable": "^3.8.0",
     "react-helmet": "^3.0.1",
     "react-redux": "^4.4.5",
     "react-router": "^2.2.4",
     "react-router-redux": "^4.0.2",
-    "redux": "^3.4.0"
+    "redux": "^3.4.0",
+    "webpack-isomorphic-tools": "^2.2.26"
   },
   "peerDependencies": {
+    "cookie-parser": "^1.4.1",
     "immutable": "^3.8.0",
     "react-dom": "^0.14.0 || ^15.0.0-0",
     "react-helmet": "^3.0.1",
@@ -60,6 +63,7 @@
     "react-router-redux": "^4.0.2",
     "react-router": "^2.2.4",
     "react": "^0.14.0 || ^15.0.0-0",
-    "redux": "^3.4.0"
+    "redux": "^3.4.0",
+    "webpack-isomorphic-tools": "^2.2.26"
   }
 }
