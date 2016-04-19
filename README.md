@@ -1,4 +1,6 @@
 # Retax
+
+[![Join the chat at https://gitter.im/hourliert/retax](https://badges.gitter.im/hourliert/retax.svg)](https://gitter.im/hourliert/retax?utm_source=badge&utm_medium=badge&utm_campaign=pr-badge&utm_content=badge)
 [![Build Status][travis-badge]][travis-link]
 [![Version][version-badge]][version-link]
 [![codecov.io][codecov-badge]][codecov-link]
